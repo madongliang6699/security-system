@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+下面来说一个非常非常重要的类，打起精神，一定要注意看。
+
+AbstractApplicationContext类（非常重要的类）
+==================================================================================================
+
+BeanFactory 这个我们已经很熟悉了，Bean工厂的顶层接口：
+
+其下有两个重要的类：
+----------------------------------------------------------------------------------------------------------------------------------
+1、DefaultListableBeanFactory类
+实现了BeanFactory接口，可以说这个可以是BeanFactory接口真正的唯一实现，内部真正实现了bean生命周期中的所有代码。
+其他的一些类都是依赖于DefaultListableBeanFactory类，将请求转发给DefaultListableBeanFactory进行bean的处理的。
+
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+2、AbstractApplicationContext：这个抽象类很重要
+这个类的三个经常用到的子类：AnnotationConfigApplicationContext、ClassPathXmlApplicationContext、FileSystemXmlApplicationContext。
+他们的主要内部的功能是依赖这个父类AbstractApplicationContext来实现的，所以大家主要看AbstractApplicationContext这个类。
+
+AbstractApplicationContext类中有2个比较重要的方法：
+public abstract ConfigurableListableBeanFactory getBeanFactory() throws IllegalStateException;
+protected void registerBeanPostProcessors(ConfigurableListableBeanFactory beanFactory)
+大家是否注意过我们使用AnnotationConfigApplicationContext的时候，经常调用reflush方法，这个方法内部就会调用上面这2个方法。
+
+第一个方法：getBeanFactory()
+返回当前应用上下文中的ConfigurableListableBeanFactory，这也是个接口类型的，这个接口有一个唯一的实现类：DefaultListableBeanFactory。
+有没有很熟悉，上面说过：DefaultListableBeanFactory是BeanFactory真正的唯一实现。
+应用上下文中就会使用这个ConfigurableListableBeanFactory来操作spring容器。
+
+
+第二个方法：registerBeanPostProcessors
+说的通俗点：这个方法就是向ConfigurableListableBeanFactory中注册BeanPostProcessor，
+内部会从spring容器中获取所有类型的BeanPostProcessor，将其添加到DefaultListableBeanFactory#beanPostProcessors列表中
+【原来上面学习中使用到的beanPostProcessors列表，都是在这个地方添加进去的】
+
+看一下这个方法的源码：
+protected void registerBeanPostProcessors(ConfigurableListableBeanFactory beanFactory) {
+    PostProcessorRegistrationDelegate.registerBeanPostProcessors(beanFactory, this);
+}
+会将请求转发给PostProcessorRegistrationDelegate#registerBeanPostProcessors。
+内部比较长，大家可以去看一下源码，这个方法内部主要用到了4个BeanPostProcessor类型的List集合。
+
+List< BeanPostProcessor> priorityOrderedPostProcessors = new ArrayList<>();
+List< BeanPostProcessor> orderedPostProcessors =
+List< BeanPostProcessor> nonOrderedPostProcessors;
+List< BeanPostProcessor> internalPostProcessors = new ArrayList<>();
+先说一下：当到方法的时候，spring容器中已经完成了所有Bean的注册。
+spring会从容器中找出所有类型的BeanPostProcessor列表，然后按照下面的规则将其分别放到上面的4个集合中，
+上面4个集合中的BeanPostProcessor会被依次添加到DefaultListableBeanFactory#beanPostProcessors列表中。
+
+来看一下4个集合的分别放的是那些BeanPostProcessor：
+priorityOrderedPostProcessors（指定优先级的BeanPostProcessor）
+实现org.springframework.core.PriorityOrdered接口的BeanPostProcessor，但是不包含MergedBeanDefinitionPostProcessor类型的
+
+orderedPostProcessors（指定了顺序的BeanPostProcessor）
+实现了org.springframework.core.annotation.Order接口的BeanPostProcessor，但是不包含MergedBeanDefinitionPostProcessor类型的
+
+nonOrderedPostProcessors（未指定顺序的BeanPostProcessor）
+上面2种类型之外以及MergedBeanDefinitionPostProcessor之外的
+
+internalPostProcessors
+MergedBeanDefinitionPostProcessor类型的BeanPostProcessor列表。
+
+************
+大家可以去看一下CommonAnnotationBeanPostProcessor和AutowiredAnnotationBeanPostProcessor，这两个类都实现了PriorityOrdered接口，
+但是他们也实现了MergedBeanDefinitionPostProcessor接口，所以最终他们会被丢到internalPostProcessors这个集合中，会被放入BeanPostProcessor的最后面。
+************
+
+
+
+</body>
+</html>

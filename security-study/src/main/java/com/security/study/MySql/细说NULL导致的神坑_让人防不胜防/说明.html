@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+总结：
+
+NULL作为布尔值的时候，不为1也不为0。【也就是说，通过布尔值查询或比较数据的时候，null的数据是被忽略了的】
+
+任何值和NULL使用运算符（>、<、>=、<=、!=、<>）或者（in、not in、any/some、all），返回值都为NULL。
+
+当IN和NULL比较时，无法查询出为NULL的记录。【比如：select * from test1 where a in (null,1); 虽然in中有null，但是是查不出是null的数据记录的】
+
+当NOT IN 后面有NULL值时，不论什么情况下，整个sql的查询结果都为空。
+
+判断是否为空只能用IS NULL、IS NOT NULL
+
+count(字段)无法统计字段为NULL的值，count(*)可以统计值为null的行
+
+当字段为主键的时候，字段会自动设置为not null
+
+NULL导致的坑让人防不胜防，强烈建议创建字段的时候字段不允许为NULL，给个默认值
+
+
+
+
+
+
+</body>
+</html>

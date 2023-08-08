@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+本包的内容：
+是在学习了@EnableAspectJAutoProxy注解之后，自己有了一些类似 @EnableXXX 开启某个功能的注解的 实现套路的心得。
+因此，在当前包目录下，就模仿@EnableAspectJAutoProxy注解，写一个自己的@EnableXXX注解，实现一些自己的功能，总结整个实现该功能的原理。
+并且经过研究@EnableAspectJAutoProxy注解之后，需要先研究@Import注解，本包内先总结@Import注解，再实现自己的@EnableXXX。
+
+=======================================================================================================================
+看了@EnableAspectJAutoProxy注解的原理（源码）之后，其实也不难，就是@EnableAspectJAutoProxy注解上面有一个注解@Import，这个注解既熟悉又陌生，
+见过它很多次，就是没使用过，@EnableAspectJAutoProxy注解的第一个核心点就是这个@Import注解, 利用@Import注解可以注入一个或一批实例到spring容器，
+
+正好，Java充电社有一篇文章专门讲解@Import注解，http://itsoku.com/course/5/101
+下面就基于这篇文章和网上的文章，来总结一下。
+
+==============================================================================================================
+@Import出现的背景：
+
+用注解的方式批量注册bean，前面2篇文章中，我们介绍了2种方式： 到目前，我们知道的批量定义bean的方式有2种：
+@Configuration结合@Bean注解的方式
+@CompontentScan扫描包的方式
+（上面这个还没学习，先学的@Import）
+
+但是上面两种有一些问题：
+问题1
+如果需要注册的类是在第三方的jar中，那么我们如果想注册这些bean有2种方式：
+通过@Bean标注方法的方式，一个个来注册
+@CompontentScan的方式：默认的@CompontentScan是无能为力的，默认情况下只会注册@Compontent标注的类，此时只能自定义@CompontentScan中的过滤器来实现了
+这2种方式都不是太好，每次有变化，调整的代码都比较多。
+
+问题2
+通常我们的项目中有很多子模块，可能每个模块都是独立开发的，最后通过jar的方式引进来，每个模块中都有各自的@Configuration、@Bean标注的类，
+或者使用@CompontentScan标注的类，被@Configuration、@Bean、@CompontentScan标注的类，我们统称为bean配置类，配置类可以用来注册bean，
+此时如果我们只想使用其中几个模块的配置类，怎么办？
+
+@Import可以很好的解决这2个问题，下面我们来看@Import怎么玩的。
+
+============================================================================================================================
+下面就说一下@Import注解注入bean的三种用法（@Import一般用在类和注解上）：
+
+第一：静态注入自己的bean实例。
+例如：@Import({MyUser.class, MyPerson.class})
+就是使用类的默认构造方法实例化一个bean到容器中，bean名称为完整的类名。这个和@Bean的作用类似了，@Bean使用在方法上是把方法的返回值注入到容器中。 一般不这么用@Import注解。
+这么用的话，如果想要一下子注册很多的bean就不方便，并且也不好控制bean的内部初始化数据的设置。如果@Import只有这些功能，那就没有存在的必要了，
+它的作用在于动态的带有逻辑性的注入bean。请看下面两种注入方式。
+
+第二：注册一个自定义类，这个类实现了ImportSelector接口以及其方法selectImports(), 比如： @Import(MyImportSelector.class)
+MyImportSelector的类：
+    public class MyImportSelector implements ImportSelector {
+        @Override
+        public String[] selectImports(AnnotationMetadata importingClassMetadata) {
+            return new String[0];
+        }
+    }
+selectImports()这个方法的返回值是一个字符串数组，只要在配置类被引用了，这里返回的字符串数组中的类名就会被Spring容器new出来，
+然后再把这些对象注入IOC容器中。
+比如demo1，注入MyUser对象。demo1只是静态的注入一个bean。
+看demo2是怎么动态注入的，动态注入就是：就是你想通过开关来控制是否注入该Bean，或者说通过配置来控制注入哪些Bean，这个时候就有了ImportSelector的用武之地了。
+
+
+第三： 引入ImportBeanDefinitionRegister的实现类
+当配置类实现了 ImportBeanDefinitionRegistrar 接口，你就可以自定义往容器中注册想注入的Bean。
+这个接口相比与 ImportSelector 接口的主要区别就是，ImportSelector接口是返回一个类，你不能对这个类进行任何操作，
+但是 ImportBeanDefinitionRegistrar 是可以自己注入 BeanDefinition，可以添加属性之类的。
+demo3是一个简单的例子。
+demo4是一个复杂点的使用的例子，模仿了mybatis的@MapperScan的功能，@MyMapperScan扫描指定包下面的特定注解@MyMapper。
+
+ImportBeanDefinitionRegister的特点就是可以操作需要注入的bean， 而且它还有个方便的地方，那就是做包扫描的时候，比如@MapperScan类似这种的时候，用它处理更为方便（因为扫描到了直接注册即可）
+
+
+
+
+=========================================================================================================================
+正是@Import有了上面的可以快速批量导入bean的能力，所以@Import可以用于导入第三方包。
+它的长处在于你可以通过配置控制是否注入该bean，也可以通过条件控制注入哪些bean到spring容器中。
+
+
+</body>
+</html>

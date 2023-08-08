@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<!-- saved from url=(0029)http://itsoku.com/course/3/44 -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+        
+        <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
+        <link rel="icon" href="http://itsoku.com/static/images/favicon.ico" type="image/x-icon">
+        <link rel="shortcut icon" href="http://itsoku.com/static/images/favicon.ico" type="image/x-icon">
+        <title>专辑：MySQL教程_常用函数汇总-Java充电社【公众号：Java充电社】</title>
+        <meta name="keywords" content="Java,数据库,MySQL,JVM,Spring,Spring Boot,Spring Cloud,Netty,分布式事务,程序员,Java开发者,Java程序员,Java充电社,Java干货铺子">
+        <meta name="description" content="Java充电社(www.itsoku.com)提供了大量Java学习教程，让大家更好更轻松的学习各种Java技术。">
+<link rel="stylesheet" href="./专辑：MySQL教程_常用函数汇总-Java充电社【公众号：Java充电社】_files/editormd.preview.css">
+<link rel="stylesheet" href="./专辑：MySQL教程_常用函数汇总-Java充电社【公众号：Java充电社】_files/itsoku.css">
+<script src="./专辑：MySQL教程_常用函数汇总-Java充电社【公众号：Java充电社】_files/jquery.min.js.下载"></script>
+<script src="./专辑：MySQL教程_常用函数汇总-Java充电社【公众号：Java充电社】_files/itsoku.js.下载"></script>
+    </head>
+<body>
+<div class="container navigation">
+    <div class="row">
+        <div class="col nav">
+            <ul class="pc-nav" id="runoob-detail-nav">
+                <li><a href="http://itsoku.com/">Java充电社</a></li>
+                <li><a href="http://itsoku.com/">专辑</a></li>
+                <li><a href="http://itsoku.com/articles">博文</a></li>
+                <li><a href="http://itsoku.com/self">联系我</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="container" style="display:none">
+    <div class="row" style="line-height: 35px; ">
+        <marquee direction="right" scrollamount="5">
+        <a href="https://mp.weixin.qq.com/s/DKgnvbhZ8oA5kWfNcX0ZHA" target="_blank" style="font-size: 1.2em; font-weight: bold;display: block; text-decoration: none">
+            <font>本人继续续收门徒，亲手指导</font>
+        </a>
+        </marquee>
+    </div>
+</div><div class="container main" id="container">
+    <div class="row">
+<div class="article-nav"><a href="http://itsoku.com/course/3">MySQL教程</a> &nbsp;-&gt; &nbsp;常用函数汇总</div>
+<div id="course-nav" class="left-column">
+    <div class="article-list">
+            <div>
+            <a href="http://itsoku.com/course/3/35">1、MySQL的一些基础知识</a>
+            </div>
+            <div>
+            <a href="http://itsoku.com/course/3/36">2、MySQL中数据类型介绍</a>
+            </div>
+            <div>
+            <a href="http://itsoku.com/course/3/37">3、MySQL管理员常用的一些命令</a>
+            </div>
+            <div>
+            <a href="http://itsoku.com/course/3/38">4、DDL常见操作汇总</a>
+            </div>
+            <div>
+            <a href="http://itsoku.com/course/3/39">5、DML常见操作</a>
+            </div>
+            <div>
+            <a href="http://itsoku.com/course/3/40">6、select查下基础篇</a>
+            </div>
+            <div>
+            <a href="http://itsoku.com/course/3/41">7、select条件查询</a>
+            </div>
+            <div>
+            <a href="http://itsoku.com/course/3/42">8、排序和分页（order by 、limit）</a>
+            </div>
+            <div>
+            <a href="http://itsoku.com/course/3/43">9、分组查询（group by、having）</a>
+            </div>
+            <div>
+            <a class="selected" href="http://itsoku.com/course/3/44">10、常用函数汇总</a>
+            </div>
+            <div>
+            <a href="http://itsoku.com/course/3/45">11、深入了解连接查询及原理</a>
+            </div>
+            <div>
+            <a href="http://itsoku.com/course/3/46">12、子查询（本篇非常重要，高手必备）</a>
+            </div>
+            <div>
+            <a href="http://itsoku.com/course/3/47">13、细说NULL导致的神坑，让人防不胜防</a>
+            </div>
+            <div>
+            <a href="http://itsoku.com/course/3/48">14、事务详解</a>
+            </div>
+            <div>
+            <a href="http://itsoku.com/course/3/49">15、视图</a>
+            </div>
+            <div>
+            <a href="http://itsoku.com/course/3/50">16、变量</a>
+            </div>
+            <div>
+            <a href="http://itsoku.com/course/3/51">17、存储过程 &amp; 自定义函数详解</a>
+            </div>
+            <div>
+            <a href="http://itsoku.com/course/3/52">18、流程控制语句介绍</a>
+            </div>
+            <div>
+            <a href="http://itsoku.com/course/3/53">19、游标详解</a>
+            </div>
+            <div>
+            <a href="http://itsoku.com/course/3/54">20、异常捕获及处理详解</a>
+            </div>
+            <div>
+            <a href="http://itsoku.com/course/3/55">21、什么是索引？</a>
+            </div>
+            <div>
+            <a href="http://itsoku.com/course/3/56">22、MySQL索引原理详解</a>
+            </div>
+            <div>
+            <a href="http://itsoku.com/course/3/57">23、MySQL索引管理</a>
+            </div>
+            <div>
+            <a href="http://itsoku.com/course/3/58">24、如何正确的使用索引？</a>
+            </div>
+            <div>
+            <a href="http://itsoku.com/course/3/59">25、sql中的where条件在数据库中提取与应用浅析</a>
+            </div>
+            <div>
+            <a href="http://itsoku.com/course/3/60">26、聊聊如何使用MySQL实现分布式锁</a>
+            </div>
+            <div>
+            <a href="http://itsoku.com/course/3/61">27、MySQL如何确保数据不丢失的？有几点我们可以借鉴</a>
+            </div>
+            <div>
+            <a href="http://itsoku.com/course/3/196">28、MySQL系列测试库脚本</a>
+            </div>
+            <div>
+            <a href="http://itsoku.com/course/3/211">29、win10安装mysql5.7.20解压版</a>
+            </div>
+    </div>
+</div>
+<div class="col middle-column">
+    <div class="article-header">
+            <div class="blog-article-item">
+                <a href="http://itsoku.com/course/3/43">上一篇：分组查询（group by、having）</a>
+            </div>
+            <div class="blog-article-item">
+                <a href="http://itsoku.com/course/3/45">下一篇：深入了解连接查询及原理</a>
+            </div>
+    </div>
+    <div class="article-content">
+        <div class="blog-article-content markdown-body editormd-html-preview" id="editormd-view">
+
+        <div style="display:none"></div>
+
+
+<p>打算提升sql技能的，可以加我微信itsoku，带你成为sql高手。</p>
+<p>这是Mysql系列第10篇。</p>
+<p>环境：mysql5.7.25，cmd命令中进行演示。</p>
+<h2 id="h2-u76EEu5F55"><a name="目录" class="reference-link"></a><span class="header-link octicon octicon-link"></span>目录</h2><h2 id="h2-mysql-"><a name="MySQL 数值型函数" class="reference-link"></a><span class="header-link octicon octicon-link"></span>MySQL 数值型函数</h2><table>
+<thead>
+<tr>
+<th>函数名称</th>
+<th>作 用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>abs</td>
+<td>求绝对值</td>
+</tr>
+<tr>
+<td>sqrt</td>
+<td>求二次方根</td>
+</tr>
+<tr>
+<td>mod</td>
+<td>求余数</td>
+</tr>
+<tr>
+<td>ceil 和 ceiling</td>
+<td>两个函数功能相同，都是返回不小于参数的最小整数，即向上取整</td>
+</tr>
+<tr>
+<td>floor</td>
+<td>向下取整，返回值转化为一个BIGINT</td>
+</tr>
+<tr>
+<td>rand</td>
+<td>生成一个0~1之间的随机数，传入整数参数是，用来产生重复序列</td>
+</tr>
+<tr>
+<td>round</td>
+<td>对所传参数进行四舍五入</td>
+</tr>
+<tr>
+<td>sign</td>
+<td>返回参数的符号</td>
+</tr>
+<tr>
+<td>pow 和 power</td>
+<td>两个函数的功能相同，都是所传参数的次方的结果值</td>
+</tr>
+<tr>
+<td>sin</td>
+<td>求正弦值</td>
+</tr>
+<tr>
+<td>asin</td>
+<td>求反正弦值，与函数 SIN 互为反函数</td>
+</tr>
+<tr>
+<td>cos</td>
+<td>求余弦值</td>
+</tr>
+<tr>
+<td>acos</td>
+<td>求反余弦值，与函数 COS 互为反函数</td>
+</tr>
+<tr>
+<td>tan</td>
+<td>求正切值</td>
+</tr>
+<tr>
+<td>atan</td>
+<td>求反正切值，与函数 TAN 互为反函数</td>
+</tr>
+<tr>
+<td>cot</td>
+<td>求余切值</td>
+</tr>
+</tbody>
+</table>
+<h3 id="h3-abs-"><a name="abs:求绝对值" class="reference-link"></a><span class="header-link octicon octicon-link"></span>abs:求绝对值</h3><blockquote>
+<p>函数 ABS(x) 返回 x 的绝对值。正数的绝对值是其本身，负数的绝对值为其相反数，0 的绝对值是 0。</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select abs</span><span class="pun">(</span><span class="lit">5</span><span class="pun">),</span><span class="pln">abs</span><span class="pun">(-</span><span class="lit">2.4</span><span class="pun">),</span><span class="pln">abs</span><span class="pun">(-</span><span class="lit">24</span><span class="pun">),</span><span class="pln">abs</span><span class="pun">(</span><span class="lit">0</span><span class="pun">);</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+--------+-----------+----------+--------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> abs</span><span class="pun">(</span><span class="lit">5</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> abs</span><span class="pun">(-</span><span class="lit">2.4</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> abs</span><span class="pun">(-</span><span class="lit">24</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> abs</span><span class="pun">(</span><span class="lit">0</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+--------+-----------+----------+--------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln">      </span><span class="lit">5</span><span class="pln"> </span><span class="pun">|</span><span class="pln">       </span><span class="lit">2.4</span><span class="pln"> </span><span class="pun">|</span><span class="pln">       </span><span class="lit">24</span><span class="pln"> </span><span class="pun">|</span><span class="pln">      </span><span class="lit">0</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+--------+-----------+----------+--------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h3 id="h3-sqrt-"><a name="sqrt:求二次方跟（开方）" class="reference-link"></a><span class="header-link octicon octicon-link"></span>sqrt:求二次方跟（开方）</h3><blockquote>
+<p>函数 SQRT(x) 返回非负数 x 的二次方根。负数没有平方根，返回结果为 NULL。</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select sqrt</span><span class="pun">(</span><span class="lit">25</span><span class="pun">),</span><span class="pln">sqrt</span><span class="pun">(</span><span class="lit">120</span><span class="pun">),</span><span class="pln">sqrt</span><span class="pun">(-</span><span class="lit">9</span><span class="pun">);</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+----------+--------------------+----------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> sqrt</span><span class="pun">(</span><span class="lit">25</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> sqrt</span><span class="pun">(</span><span class="lit">120</span><span class="pun">)</span><span class="pln">          </span><span class="pun">|</span><span class="pln"> sqrt</span><span class="pun">(-</span><span class="lit">9</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+----------+--------------------+----------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln">        </span><span class="lit">5</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="lit">10.954451150103322</span><span class="pln"> </span><span class="pun">|</span><span class="pln">     NULL </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+----------+--------------------+----------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h3 id="h3-mod-"><a name="mod:求余数" class="reference-link"></a><span class="header-link octicon octicon-link"></span>mod:求余数</h3><blockquote>
+<p>函数 MOD(x,y) 返回 x 被 y 除后的余数，MOD() 对于带有小数部分的数值也起作用，它返回除法运算后的余数。</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select mod</span><span class="pun">(</span><span class="lit">63</span><span class="pun">,</span><span class="lit">8</span><span class="pun">),</span><span class="pln">mod</span><span class="pun">(</span><span class="lit">120</span><span class="pun">,</span><span class="lit">10</span><span class="pun">),</span><span class="pln">mod</span><span class="pun">(</span><span class="lit">15.5</span><span class="pun">,</span><span class="lit">3</span><span class="pun">);</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+-----------+-------------+-------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> mod</span><span class="pun">(</span><span class="lit">63</span><span class="pun">,</span><span class="lit">8</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> mod</span><span class="pun">(</span><span class="lit">120</span><span class="pun">,</span><span class="lit">10</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> mod</span><span class="pun">(</span><span class="lit">15.5</span><span class="pun">,</span><span class="lit">3</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+-----------+-------------+-------------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln">         </span><span class="lit">7</span><span class="pln"> </span><span class="pun">|</span><span class="pln">           </span><span class="lit">0</span><span class="pln"> </span><span class="pun">|</span><span class="pln">         </span><span class="lit">0.5</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+-----------+-------------+-------------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h3 id="h3-ceil-ceiling-"><a name="ceil和ceiling:向上取整" class="reference-link"></a><span class="header-link octicon octicon-link"></span>ceil和ceiling:向上取整</h3><blockquote>
+<p>函数 CEIL(x) 和 CEILING(x) 的意义相同，返回不小于 x 的最小整数值，返回值转化为一个 BIGINT。</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select ceil</span><span class="pun">(-</span><span class="lit">2.5</span><span class="pun">),</span><span class="pln">ceiling</span><span class="pun">(</span><span class="lit">2.5</span><span class="pun">);</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+------------+--------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> ceil</span><span class="pun">(-</span><span class="lit">2.5</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> ceiling</span><span class="pun">(</span><span class="lit">2.5</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+------------+--------------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln">         </span><span class="pun">-</span><span class="lit">2</span><span class="pln"> </span><span class="pun">|</span><span class="pln">            </span><span class="lit">3</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+------------+--------------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h3 id="h3-floor-"><a name="floor:向下取整" class="reference-link"></a><span class="header-link octicon octicon-link"></span>floor:向下取整</h3><blockquote>
+<p>floor(x) 函数返回小于 x 的最大整数值。</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select floor</span><span class="pun">(</span><span class="lit">5</span><span class="pun">),</span><span class="pln">floor</span><span class="pun">(</span><span class="lit">5.66</span><span class="pun">),</span><span class="pln">floor</span><span class="pun">(-</span><span class="lit">4</span><span class="pun">),</span><span class="pln">floor</span><span class="pun">(-</span><span class="lit">4.66</span><span class="pun">);</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+----------+-------------+-----------+--------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> floor</span><span class="pun">(</span><span class="lit">5</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> floor</span><span class="pun">(</span><span class="lit">5.66</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> floor</span><span class="pun">(-</span><span class="lit">4</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> floor</span><span class="pun">(-</span><span class="lit">4.66</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+----------+-------------+-----------+--------------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln">        </span><span class="lit">5</span><span class="pln"> </span><span class="pun">|</span><span class="pln">           </span><span class="lit">5</span><span class="pln"> </span><span class="pun">|</span><span class="pln">        </span><span class="pun">-</span><span class="lit">4</span><span class="pln"> </span><span class="pun">|</span><span class="pln">           </span><span class="pun">-</span><span class="lit">5</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+----------+-------------+-----------+--------------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h3 id="h3-rand-"><a name="rand:生成一个随机数" class="reference-link"></a><span class="header-link octicon octicon-link"></span>rand:生成一个随机数</h3><blockquote>
+<p>生成一个0~1之间的随机数，传入整数参数是，用来产生重复序列</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select rand</span><span class="pun">(),</span><span class="pln"> rand</span><span class="pun">(),</span><span class="pln"> rand</span><span class="pun">();</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+--------------------+--------------------+--------------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> rand</span><span class="pun">()</span><span class="pln">             </span><span class="pun">|</span><span class="pln"> rand</span><span class="pun">()</span><span class="pln">             </span><span class="pun">|</span><span class="pln"> rand</span><span class="pun">()</span><span class="pln">             </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+--------------------+--------------------+--------------------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="lit">0.5224735778965741</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="lit">0.3678060549942833</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="lit">0.2716095720153391</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+--------------------+--------------------+--------------------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li><li class="L7"><code class="lang-java"></code></li><li class="L8"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select rand</span><span class="pun">(</span><span class="lit">1</span><span class="pun">),</span><span class="pln">rand</span><span class="pun">(</span><span class="lit">2</span><span class="pun">),</span><span class="pln">rand</span><span class="pun">(</span><span class="lit">1</span><span class="pun">);</span></code></li><li class="L9"><code class="lang-java"><span class="pun">+---------------------+--------------------+---------------------+</span></code></li><li class="L0"><code class="lang-java"><span class="pun">|</span><span class="pln"> rand</span><span class="pun">(</span><span class="lit">1</span><span class="pun">)</span><span class="pln">             </span><span class="pun">|</span><span class="pln"> rand</span><span class="pun">(</span><span class="lit">2</span><span class="pun">)</span><span class="pln">            </span><span class="pun">|</span><span class="pln"> rand</span><span class="pun">(</span><span class="lit">1</span><span class="pun">)</span><span class="pln">             </span><span class="pun">|</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+---------------------+--------------------+---------------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="lit">0.40540353712197724</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="lit">0.6555866465490187</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="lit">0.40540353712197724</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+---------------------+--------------------+---------------------+</span></code></li><li class="L4"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li><li class="L5"><code class="lang-java"></code></li><li class="L6"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select rand</span><span class="pun">(</span><span class="lit">1</span><span class="pun">),</span><span class="pln">rand</span><span class="pun">(</span><span class="lit">2</span><span class="pun">),</span><span class="pln">rand</span><span class="pun">(</span><span class="lit">1</span><span class="pun">);</span></code></li><li class="L7"><code class="lang-java"><span class="pun">+---------------------+--------------------+---------------------+</span></code></li><li class="L8"><code class="lang-java"><span class="pun">|</span><span class="pln"> rand</span><span class="pun">(</span><span class="lit">1</span><span class="pun">)</span><span class="pln">             </span><span class="pun">|</span><span class="pln"> rand</span><span class="pun">(</span><span class="lit">2</span><span class="pun">)</span><span class="pln">            </span><span class="pun">|</span><span class="pln"> rand</span><span class="pun">(</span><span class="lit">1</span><span class="pun">)</span><span class="pln">             </span><span class="pun">|</span></code></li><li class="L9"><code class="lang-java"><span class="pun">+---------------------+--------------------+---------------------+</span></code></li><li class="L0"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="lit">0.40540353712197724</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="lit">0.6555866465490187</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="lit">0.40540353712197724</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+---------------------+--------------------+---------------------+</span></code></li><li class="L2"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h3 id="h3-round-"><a name="round:四舍五入函数" class="reference-link"></a><span class="header-link octicon octicon-link"></span>round:四舍五入函数</h3><blockquote>
+<p>返回最接近于参数 x 的整数；ROUND(x,y) 函数对参数x进行四舍五入的操作，返回值保留小数点后面指定的y位。</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select round</span><span class="pun">(-</span><span class="lit">6.6</span><span class="pun">),</span><span class="pln">round</span><span class="pun">(-</span><span class="lit">8.44</span><span class="pun">),</span><span class="pln">round</span><span class="pun">(</span><span class="lit">3.44</span><span class="pun">);</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+-------------+--------------+-------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> round</span><span class="pun">(-</span><span class="lit">6.6</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> round</span><span class="pun">(-</span><span class="lit">8.44</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> round</span><span class="pun">(</span><span class="lit">3.44</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+-------------+--------------+-------------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln">          </span><span class="pun">-</span><span class="lit">7</span><span class="pln"> </span><span class="pun">|</span><span class="pln">           </span><span class="pun">-</span><span class="lit">8</span><span class="pln"> </span><span class="pun">|</span><span class="pln">           </span><span class="lit">3</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+-------------+--------------+-------------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li><li class="L7"><code class="lang-java"></code></li><li class="L8"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select round</span><span class="pun">(-</span><span class="lit">6.66</span><span class="pun">,</span><span class="lit">1</span><span class="pun">),</span><span class="pln">round</span><span class="pun">(</span><span class="lit">3.33</span><span class="pun">,</span><span class="lit">3</span><span class="pun">),</span><span class="pln">round</span><span class="pun">(</span><span class="lit">88.66</span><span class="pun">,-</span><span class="lit">1</span><span class="pun">),</span><span class="pln">round</span><span class="pun">(</span><span class="lit">88.46</span><span class="pun">,-</span><span class="lit">2</span><span class="pun">);</span></code></li><li class="L9"><code class="lang-java"><span class="pun">+----------------+---------------+-----------------+-----------------+</span></code></li><li class="L0"><code class="lang-java"><span class="pun">|</span><span class="pln"> round</span><span class="pun">(-</span><span class="lit">6.66</span><span class="pun">,</span><span class="lit">1</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> round</span><span class="pun">(</span><span class="lit">3.33</span><span class="pun">,</span><span class="lit">3</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> round</span><span class="pun">(</span><span class="lit">88.66</span><span class="pun">,-</span><span class="lit">1</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> round</span><span class="pun">(</span><span class="lit">88.46</span><span class="pun">,-</span><span class="lit">2</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+----------------+---------------+-----------------+-----------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln">           </span><span class="pun">-</span><span class="lit">6.7</span><span class="pln"> </span><span class="pun">|</span><span class="pln">         </span><span class="lit">3.330</span><span class="pln"> </span><span class="pun">|</span><span class="pln">              </span><span class="lit">90</span><span class="pln"> </span><span class="pun">|</span><span class="pln">             </span><span class="lit">100</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+----------------+---------------+-----------------+-----------------+</span></code></li><li class="L4"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h3 id="h3-sign-"><a name="sign:返回参数的符号" class="reference-link"></a><span class="header-link octicon octicon-link"></span>sign:返回参数的符号</h3><blockquote>
+<p>返回参数的符号，x 的值为负、零和正时返回结果依次为 -1、0 和 1。</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select sign</span><span class="pun">(-</span><span class="lit">6</span><span class="pun">),</span><span class="pln">sign</span><span class="pun">(</span><span class="lit">0</span><span class="pun">),</span><span class="pln">sign</span><span class="pun">(</span><span class="lit">34</span><span class="pun">);</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+----------+---------+----------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> sign</span><span class="pun">(-</span><span class="lit">6</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> sign</span><span class="pun">(</span><span class="lit">0</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> sign</span><span class="pun">(</span><span class="lit">34</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+----------+---------+----------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln">       </span><span class="pun">-</span><span class="lit">1</span><span class="pln"> </span><span class="pun">|</span><span class="pln">       </span><span class="lit">0</span><span class="pln"> </span><span class="pun">|</span><span class="pln">        </span><span class="lit">1</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+----------+---------+----------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h3 id="h3-pow-power-"><a name="pow 和 power:次方函数" class="reference-link"></a><span class="header-link octicon octicon-link"></span>pow 和 power:次方函数</h3><blockquote>
+<p>POW(x,y) 函数和 POWER(x,y) 函数用于计算 x 的 y 次方。</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select pow</span><span class="pun">(</span><span class="lit">5</span><span class="pun">,-</span><span class="lit">2</span><span class="pun">),</span><span class="pln">pow</span><span class="pun">(</span><span class="lit">10</span><span class="pun">,</span><span class="lit">3</span><span class="pun">),</span><span class="pln">pow</span><span class="pun">(</span><span class="lit">100</span><span class="pun">,</span><span class="lit">0</span><span class="pun">),</span><span class="pln">power</span><span class="pun">(</span><span class="lit">4</span><span class="pun">,</span><span class="lit">3</span><span class="pun">),</span><span class="pln">power</span><span class="pun">(</span><span class="lit">6</span><span class="pun">,-</span><span class="lit">3</span><span class="pun">);</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+-----------+-----------+------------+------------+----------------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> pow</span><span class="pun">(</span><span class="lit">5</span><span class="pun">,-</span><span class="lit">2</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> pow</span><span class="pun">(</span><span class="lit">10</span><span class="pun">,</span><span class="lit">3</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> pow</span><span class="pun">(</span><span class="lit">100</span><span class="pun">,</span><span class="lit">0</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> power</span><span class="pun">(</span><span class="lit">4</span><span class="pun">,</span><span class="lit">3</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> power</span><span class="pun">(</span><span class="lit">6</span><span class="pun">,-</span><span class="lit">3</span><span class="pun">)</span><span class="pln">          </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+-----------+-----------+------------+------------+----------------------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln">      </span><span class="lit">0.04</span><span class="pln"> </span><span class="pun">|</span><span class="pln">      </span><span class="lit">1000</span><span class="pln"> </span><span class="pun">|</span><span class="pln">          </span><span class="lit">1</span><span class="pln"> </span><span class="pun">|</span><span class="pln">         </span><span class="lit">64</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="lit">0.004629629629629629</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+-----------+-----------+------------+------------+----------------------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h3 id="h3-sin-"><a name="sin:正弦函数" class="reference-link"></a><span class="header-link octicon octicon-link"></span>sin:正弦函数</h3><blockquote>
+<p>SIN(x) 返回 x 的正弦值，其中 x 为弧度值。</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select sin</span><span class="pun">(</span><span class="lit">1</span><span class="pun">),</span><span class="pln">sin</span><span class="pun">(</span><span class="lit">0.5</span><span class="pun">*</span><span class="pln">pi</span><span class="pun">()),</span><span class="pln">pi</span><span class="pun">();</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+--------------------+---------------+----------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> sin</span><span class="pun">(</span><span class="lit">1</span><span class="pun">)</span><span class="pln">             </span><span class="pun">|</span><span class="pln"> sin</span><span class="pun">(</span><span class="lit">0.5</span><span class="pun">*</span><span class="pln">pi</span><span class="pun">())</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> pi</span><span class="pun">()</span><span class="pln">     </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+--------------------+---------------+----------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="lit">0.8414709848078965</span><span class="pln"> </span><span class="pun">|</span><span class="pln">             </span><span class="lit">1</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="lit">3.141593</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+--------------------+---------------+----------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<blockquote>
+<p>注：PI() 函数返回圆周率（3.141593）</p>
+</blockquote>
+<p><strong>其他几个三角函数在此就不说了，有兴趣的可以自己去练习一下。</strong></p>
+<h2 id="h2-mysql-"><a name="MySQL 字符串函数" class="reference-link"></a><span class="header-link octicon octicon-link"></span>MySQL 字符串函数</h2><table>
+<thead>
+<tr>
+<th>函数名称</th>
+<th>作 用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>length</td>
+<td>计算字符串长度函数，返回字符串的字节长度</td>
+</tr>
+<tr>
+<td>concat</td>
+<td>合并字符串函数，返回结果为连接参数产生的字符串，参数可以使一个或多个</td>
+</tr>
+<tr>
+<td>insert</td>
+<td>替换字符串函数</td>
+</tr>
+<tr>
+<td>lower</td>
+<td>将字符串中的字母转换为小写</td>
+</tr>
+<tr>
+<td>upper</td>
+<td>将字符串中的字母转换为大写</td>
+</tr>
+<tr>
+<td>left</td>
+<td>从左侧字截取符串，返回字符串左边的若干个字符</td>
+</tr>
+<tr>
+<td>right</td>
+<td>从右侧字截取符串，返回字符串右边的若干个字符</td>
+</tr>
+<tr>
+<td>trim</td>
+<td>删除字符串左右两侧的空格</td>
+</tr>
+<tr>
+<td>replace</td>
+<td>字符串替换函数，返回替换后的新字符串</td>
+</tr>
+<tr>
+<td>substr 和 substring</td>
+<td>截取字符串，返回从指定位置开始的指定长度的字符换</td>
+</tr>
+<tr>
+<td>reverse</td>
+<td>字符串反转（逆序）函数，返回与原始字符串顺序相反的字符串</td>
+</tr>
+</tbody>
+</table>
+<h3 id="h3-length-"><a name="length:返回字符串直接长度" class="reference-link"></a><span class="header-link octicon octicon-link"></span>length:返回字符串直接长度</h3><blockquote>
+<p>返回值为字符串的字节长度，使用 uft8（UNICODE 的一种变长字符编码，又称万国码）编码字符集时，一个汉字是 3 个字节，一个数字或字母是一个字节。</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select length</span><span class="pun">(</span><span class="str">'javacode2018'</span><span class="pun">),</span><span class="pln">length</span><span class="pun">(</span><span class="str">'路人甲Java'</span><span class="pun">),</span><span class="pln">length</span><span class="pun">(</span><span class="str">'路人'</span><span class="pun">);</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+------------------------+-------------------------+------------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> length</span><span class="pun">(</span><span class="str">'javacode2018'</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> length</span><span class="pun">(</span><span class="str">'路人甲Java'</span><span class="pun">)</span><span class="pln">    </span><span class="pun">|</span><span class="pln"> length</span><span class="pun">(</span><span class="str">'路人'</span><span class="pun">)</span><span class="pln">   </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+------------------------+-------------------------+------------------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln">                     </span><span class="lit">12</span><span class="pln"> </span><span class="pun">|</span><span class="pln">                      </span><span class="lit">13</span><span class="pln"> </span><span class="pun">|</span><span class="pln">                </span><span class="lit">6</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+------------------------+-------------------------+------------------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h3 id="h3-concat-"><a name="concat:合并字符串" class="reference-link"></a><span class="header-link octicon octicon-link"></span>concat:合并字符串</h3><blockquote>
+<p>CONCAT(sl，s2，…) 函数返回结果为连接参数产生的字符串，或许有一个或多个参数。</p>
+<p>若有任何一个参数为 NULL，则返回值为 NULL。若所有参数均为非二进制字符串，则结果为非二进制字符串。若自变量中含有任一二进制字符串，则结果为一个二进制字符串。  </p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select concat</span><span class="pun">(</span><span class="str">'路人甲'</span><span class="pun">,</span><span class="str">'java'</span><span class="pun">),</span><span class="pln">concat</span><span class="pun">(</span><span class="str">'路人甲'</span><span class="pun">,</span><span class="kwd">null</span><span class="pun">,</span><span class="str">'java'</span><span class="pun">);</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+----------------------------+---------------------------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> concat</span><span class="pun">(</span><span class="str">'路人甲'</span><span class="pun">,</span><span class="str">'java'</span><span class="pun">)</span><span class="pln">    </span><span class="pun">|</span><span class="pln"> concat</span><span class="pun">(</span><span class="str">'路人甲'</span><span class="pun">,</span><span class="kwd">null</span><span class="pun">,</span><span class="str">'java'</span><span class="pun">)</span><span class="pln">    </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+----------------------------+---------------------------------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="pun">路人甲</span><span class="pln">java                 </span><span class="pun">|</span><span class="pln"> NULL                            </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+----------------------------+---------------------------------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h3 id="h3-insert-"><a name="insert:替换字符串" class="reference-link"></a><span class="header-link octicon octicon-link"></span>insert:替换字符串</h3><blockquote>
+<p>INSERT(s1，x，len，s2) 返回字符串 s1，子字符串起始于 x 位置，并且用 len 个字符长的字符串代替 s2。</p>
+<p>x的值从1开始，第一个字符的x=1，若 x 超过字符串长度，则返回值为原始字符串。</p>
+<p>假如 len 的长度大于其他字符串的长度，则从位置 x 开始替换。</p>
+<p>若任何一个参数为 NULL，则返回值为 NULL。</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select</span></code></li><li class="L1"><code class="lang-java"><span class="pln">    </span><span class="pun">-&gt;</span><span class="pln">   insert</span><span class="pun">(</span><span class="str">'路人甲Java'</span><span class="pun">,</span><span class="pln"> </span><span class="lit">2</span><span class="pun">,</span><span class="pln"> </span><span class="lit">4</span><span class="pun">,</span><span class="pln"> </span><span class="str">'**'</span><span class="pun">)</span><span class="pln"> AS col1</span><span class="pun">,</span></code></li><li class="L2"><code class="lang-java"><span class="pln">    </span><span class="pun">-&gt;</span><span class="pln">   insert</span><span class="pun">(</span><span class="str">'路人甲Java'</span><span class="pun">,</span><span class="pln"> </span><span class="pun">-</span><span class="lit">1</span><span class="pun">,</span><span class="pln"> </span><span class="lit">4</span><span class="pun">,</span><span class="str">'**'</span><span class="pun">)</span><span class="pln"> AS col2</span><span class="pun">,</span></code></li><li class="L3"><code class="lang-java"><span class="pln">    </span><span class="pun">-&gt;</span><span class="pln">   insert</span><span class="pun">(</span><span class="str">'路人甲Java'</span><span class="pun">,</span><span class="pln"> </span><span class="lit">3</span><span class="pun">,</span><span class="pln"> </span><span class="lit">20</span><span class="pun">,</span><span class="str">'**'</span><span class="pun">)</span><span class="pln"> AS col3</span><span class="pun">;</span></code></li><li class="L4"><code class="lang-java"><span class="pun">+---------+---------------+----------+</span></code></li><li class="L5"><code class="lang-java"><span class="pun">|</span><span class="pln"> col1    </span><span class="pun">|</span><span class="pln"> col2          </span><span class="pun">|</span><span class="pln"> col3     </span><span class="pun">|</span></code></li><li class="L6"><code class="lang-java"><span class="pun">+---------+---------------+----------+</span></code></li><li class="L7"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="pun">路**</span><span class="pln">va  </span><span class="pun">|</span><span class="pln"> </span><span class="pun">路人甲</span><span class="typ">Java</span><span class="pln">    </span><span class="pun">|</span><span class="pln"> </span><span class="pun">路人**</span><span class="pln">   </span><span class="pun">|</span></code></li><li class="L8"><code class="lang-java"><span class="pun">+---------+---------------+----------+</span></code></li><li class="L9"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h3 id="h3-lower-"><a name="lower:将字母转换成小写" class="reference-link"></a><span class="header-link octicon octicon-link"></span>lower:将字母转换成小写</h3><blockquote>
+<p>LOWER(str) 可以将字符串 str 中的字母字符全部转换成小写。</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select lower</span><span class="pun">(</span><span class="str">'路人甲JAVA'</span><span class="pun">);</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+------------------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> lower</span><span class="pun">(</span><span class="str">'路人甲JAVA'</span><span class="pun">)</span><span class="pln">    </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+------------------------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="pun">路人甲</span><span class="pln">java             </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+------------------------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h3 id="h3-upper-"><a name="upper:将字母转换成大写" class="reference-link"></a><span class="header-link octicon octicon-link"></span>upper:将字母转换成大写</h3><blockquote>
+<p>UPPER(str) 可以将字符串 str 中的字母字符全部转换成大写。</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select upper</span><span class="pun">(</span><span class="str">'路人甲java'</span><span class="pun">);</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+------------------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> upper</span><span class="pun">(</span><span class="str">'路人甲java'</span><span class="pun">)</span><span class="pln">    </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+------------------------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="pun">路人甲</span><span class="pln">JAVA             </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+------------------------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h3 id="h3-left-"><a name="left:从左侧截取字符串" class="reference-link"></a><span class="header-link octicon octicon-link"></span>left:从左侧截取字符串</h3><blockquote>
+<p>LEFT(s，n) 函数返回字符串 s 最左边的 n 个字符，s=1表示第一个字符。</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select left</span><span class="pun">(</span><span class="str">'路人甲JAVA'</span><span class="pun">,</span><span class="lit">2</span><span class="pun">),</span><span class="pln">left</span><span class="pun">(</span><span class="str">'路人甲JAVA'</span><span class="pun">,</span><span class="lit">10</span><span class="pun">),</span><span class="pln">left</span><span class="pun">(</span><span class="str">'路人甲JAVA'</span><span class="pun">,-</span><span class="lit">1</span><span class="pun">);</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+-------------------------+--------------------------+--------------------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> left</span><span class="pun">(</span><span class="str">'路人甲JAVA'</span><span class="pun">,</span><span class="lit">2</span><span class="pun">)</span><span class="pln">    </span><span class="pun">|</span><span class="pln"> left</span><span class="pun">(</span><span class="str">'路人甲JAVA'</span><span class="pun">,</span><span class="lit">10</span><span class="pun">)</span><span class="pln">    </span><span class="pun">|</span><span class="pln"> left</span><span class="pun">(</span><span class="str">'路人甲JAVA'</span><span class="pun">,-</span><span class="lit">1</span><span class="pun">)</span><span class="pln">    </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+-------------------------+--------------------------+--------------------------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="pun">路人</span><span class="pln">                    </span><span class="pun">|</span><span class="pln"> </span><span class="pun">路人甲</span><span class="pln">JAVA               </span><span class="pun">|</span><span class="pln">                          </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+-------------------------+--------------------------+--------------------------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h3 id="h3-right-"><a name="right:从右侧截取字符串" class="reference-link"></a><span class="header-link octicon octicon-link"></span>right:从右侧截取字符串</h3><blockquote>
+<p>RIGHT(s，n) 函数返回字符串 s 最右边的 n 个字符。</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select right</span><span class="pun">(</span><span class="str">'路人甲JAVA'</span><span class="pun">,</span><span class="lit">1</span><span class="pun">),</span><span class="pln">right</span><span class="pun">(</span><span class="str">'路人甲JAVA'</span><span class="pun">,</span><span class="lit">10</span><span class="pun">),</span><span class="pln">right</span><span class="pun">(</span><span class="str">'路人甲JAVA'</span><span class="pun">,-</span><span class="lit">1</span><span class="pun">);</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+--------------------------+---------------------------+---------------------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> right</span><span class="pun">(</span><span class="str">'路人甲JAVA'</span><span class="pun">,</span><span class="lit">1</span><span class="pun">)</span><span class="pln">    </span><span class="pun">|</span><span class="pln"> right</span><span class="pun">(</span><span class="str">'路人甲JAVA'</span><span class="pun">,</span><span class="lit">10</span><span class="pun">)</span><span class="pln">    </span><span class="pun">|</span><span class="pln"> right</span><span class="pun">(</span><span class="str">'路人甲JAVA'</span><span class="pun">,-</span><span class="lit">1</span><span class="pun">)</span><span class="pln">    </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+--------------------------+---------------------------+---------------------------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln"> A                        </span><span class="pun">|</span><span class="pln"> </span><span class="pun">路人甲</span><span class="pln">JAVA                </span><span class="pun">|</span><span class="pln">                           </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+--------------------------+---------------------------+---------------------------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h3 id="h3-trim-"><a name="trim:删除字符串两侧空格" class="reference-link"></a><span class="header-link octicon octicon-link"></span>trim:删除字符串两侧空格</h3><blockquote>
+<p>TRIM(s) 删除字符串 s 两侧的空格。</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select </span><span class="str">'[   路人甲Java   ]'</span><span class="pun">,</span><span class="pln">concat</span><span class="pun">(</span><span class="str">'['</span><span class="pun">,</span><span class="pln">trim</span><span class="pun">(</span><span class="str">'   路人甲Java   '</span><span class="pun">),</span><span class="str">']'</span><span class="pun">);</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+-----------------------+---------------------------------------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="pun">[</span><span class="pln">   </span><span class="pun">路人甲</span><span class="typ">Java</span><span class="pln">   </span><span class="pun">]</span><span class="pln">    </span><span class="pun">|</span><span class="pln"> concat</span><span class="pun">(</span><span class="str">'['</span><span class="pun">,</span><span class="pln">trim</span><span class="pun">(</span><span class="str">'   路人甲Java   '</span><span class="pun">),</span><span class="str">']'</span><span class="pun">)</span><span class="pln">    </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+-----------------------+---------------------------------------------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="pun">[</span><span class="pln">   </span><span class="pun">路人甲</span><span class="typ">Java</span><span class="pln">   </span><span class="pun">]</span><span class="pln">    </span><span class="pun">|</span><span class="pln"> </span><span class="pun">[路人甲</span><span class="typ">Java</span><span class="pun">]</span><span class="pln">                                </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+-----------------------+---------------------------------------------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h3 id="h3-replace-"><a name="replace:字符串替换" class="reference-link"></a><span class="header-link octicon octicon-link"></span>replace:字符串替换</h3><blockquote>
+<p>REPLACE(s，s1，s2) 使用字符串 s2 替换字符串 s 中所有的字符串 s1。</p>
+</blockquote>
+<h3 id="h3-substr-substring-"><a name="substr 和 substring:截取字符串" class="reference-link"></a><span class="header-link octicon octicon-link"></span>substr 和 substring:截取字符串</h3><blockquote>
+<p>substr(str,pos)</p>
+<p>substr(str from pos)</p>
+<p>substr(str,pos,len)</p>
+<p>substr(str from pos for len)</p>
+<p>substr()是substring()的同义词。</p>
+<p>没有len参数的形式是字符串str从位置pos开始返回一个子字符串。</p>
+<p>带有len参数的形式是字符串str从位置pos开始返回长度为len的子字符串。 </p>
+<p>使用FROM的形式是标准的SQL语法。 </p>
+<p>也可以对pos使用负值，在这种情况下，子字符串的开头是字符串末尾的pos字符，而不是开头。 在这个函数的任何形式中pos可以使用负值。 </p>
+<p>对于所有形式的substring()，从中提取子串的字符串中第一个字符的位置被认为是1。</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="com">/** 第三个字符之后的子字符串：inese **/</span></code></li><li class="L1"><code class="lang-java"><span class="pln">SELECT substring</span><span class="pun">(</span><span class="str">'chinese'</span><span class="pun">,</span><span class="pln"> </span><span class="lit">3</span><span class="pun">);</span></code></li><li class="L2"><code class="lang-java"><span class="com">/** 倒数第三个字符之后的子字符串：ese **/</span></code></li><li class="L3"><code class="lang-java"><span class="pln">SELECT substring</span><span class="pun">(</span><span class="str">'chinese'</span><span class="pun">,</span><span class="pln"> </span><span class="pun">-</span><span class="lit">3</span><span class="pun">);</span></code></li><li class="L4"><code class="lang-java"><span class="com">/** 第三个字符之后的两个字符：in **/</span></code></li><li class="L5"><code class="lang-java"><span class="pln">SELECT substring</span><span class="pun">(</span><span class="str">'chinese'</span><span class="pun">,</span><span class="pln"> </span><span class="lit">3</span><span class="pun">,</span><span class="pln"> </span><span class="lit">2</span><span class="pun">);</span></code></li><li class="L6"><code class="lang-java"><span class="com">/** 倒数第三个字符之后的两个字符：es **/</span></code></li><li class="L7"><code class="lang-java"><span class="pln">SELECT substring</span><span class="pun">(</span><span class="str">'chinese'</span><span class="pun">,</span><span class="pln"> </span><span class="pun">-</span><span class="lit">3</span><span class="pun">,</span><span class="pln"> </span><span class="lit">2</span><span class="pun">);</span></code></li><li class="L8"><code class="lang-java"><span class="com">/** 第三个字符之后的子字符串：inese **/</span></code></li><li class="L9"><code class="lang-java"><span class="pln">SELECT substring</span><span class="pun">(</span><span class="str">'chinese'</span><span class="pln"> FROM </span><span class="lit">3</span><span class="pun">);</span></code></li><li class="L0"><code class="lang-java"><span class="com">/** 倒数第三个字符之后的子字符串：ese **/</span></code></li><li class="L1"><code class="lang-java"><span class="pln">SELECT substring</span><span class="pun">(</span><span class="str">'chinese'</span><span class="pln"> FROM </span><span class="pun">-</span><span class="lit">3</span><span class="pun">);</span></code></li><li class="L2"><code class="lang-java"><span class="com">/** 第三个字符之后的两个字符：in **/</span></code></li><li class="L3"><code class="lang-java"><span class="pln">SELECT substring</span><span class="pun">(</span><span class="str">'chinese'</span><span class="pln"> FROM </span><span class="lit">3</span><span class="pln"> FOR </span><span class="lit">2</span><span class="pun">);</span></code></li><li class="L4"><code class="lang-java"><span class="com">/** 倒数第三个字符之后的两个字符：es **/</span></code></li><li class="L5"><code class="lang-java"><span class="pln">SELECT substring</span><span class="pun">(</span><span class="str">'chinese'</span><span class="pln"> FROM </span><span class="pun">-</span><span class="lit">3</span><span class="pln"> FOR </span><span class="lit">2</span><span class="pun">);</span></code></li></ol></pre>
+<h3 id="h3-reverse-"><a name="reverse:反转字符串" class="reference-link"></a><span class="header-link octicon octicon-link"></span>reverse:反转字符串</h3><blockquote>
+<p>REVERSE(s) 可以将字符串 s 反转，返回的字符串的顺序和 s 字符串的顺序相反。</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select reverse</span><span class="pun">(</span><span class="str">'路人甲Java'</span><span class="pun">);</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+--------------------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> reverse</span><span class="pun">(</span><span class="str">'路人甲Java'</span><span class="pun">)</span><span class="pln">    </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+--------------------------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln"> avaJ</span><span class="pun">甲人路</span><span class="pln">               </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+--------------------------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h2 id="h2-mysql-"><a name="MySQL 日期和时间函数" class="reference-link"></a><span class="header-link octicon octicon-link"></span>MySQL 日期和时间函数</h2><table>
+<thead>
+<tr>
+<th>函数名称</th>
+<th>作 用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>curdate 和 current_date</td>
+<td>两个函数作用相同，返回当前系统的日期值</td>
+</tr>
+<tr>
+<td>curtime 和 current_time</td>
+<td>两个函数作用相同，返回当前系统的时间值</td>
+</tr>
+<tr>
+<td>now 和 sysdate</td>
+<td>两个函数作用相同，返回当前系统的日期和时间值</td>
+</tr>
+<tr>
+<td>unix_timestamp</td>
+<td>获取UNIX时间戳函数，返回一个以 UNIX 时间戳为基础的无符号整数</td>
+</tr>
+<tr>
+<td>from_unixtime</td>
+<td>将 UNIX 时间戳转换为时间格式，与UNIX_TIMESTAMP互为反函数</td>
+</tr>
+<tr>
+<td>month</td>
+<td>获取指定日期中的月份</td>
+</tr>
+<tr>
+<td>monthname</td>
+<td>获取指定日期中的月份英文名称</td>
+</tr>
+<tr>
+<td>dayname</td>
+<td>获取指定曰期对应的星期几的英文名称</td>
+</tr>
+<tr>
+<td>dayofweek</td>
+<td>获取指定日期是一周中是第几天，返回值范围是1~7,1=周日</td>
+</tr>
+<tr>
+<td>week</td>
+<td>获取指定日期是一年中的第几周，返回值的范围是否为 0〜52 或 1〜53</td>
+</tr>
+<tr>
+<td>dayofyear</td>
+<td>获取指定曰期是一年中的第几天，返回值范围是1~366</td>
+</tr>
+<tr>
+<td>dayofmonth</td>
+<td>获取指定日期是一个月中是第几天，返回值范围是1~31</td>
+</tr>
+<tr>
+<td>year</td>
+<td>获取年份，返回值范围是 1970〜2069</td>
+</tr>
+<tr>
+<td>time_to_sec</td>
+<td>将时间参数转换为秒数</td>
+</tr>
+<tr>
+<td>sec_to_time</td>
+<td>将秒数转换为时间，与TIME_TO_SEC 互为反函数</td>
+</tr>
+<tr>
+<td>date_add 和 adddate</td>
+<td>两个函数功能相同，都是向日期添加指定的时间间隔</td>
+</tr>
+<tr>
+<td>date_sub 和 subdate</td>
+<td>两个函数功能相同，都是向日期减去指定的时间间隔</td>
+</tr>
+<tr>
+<td>addtime</td>
+<td>时间加法运算，在原始时间上添加指定的时间</td>
+</tr>
+<tr>
+<td>subtime</td>
+<td>时间减法运算，在原始时间上减去指定的时间</td>
+</tr>
+<tr>
+<td>datediff</td>
+<td>获取两个日期之间间隔，返回参数 1 减去参数 2 的值</td>
+</tr>
+<tr>
+<td>date_format</td>
+<td>格式化指定的日期，根据参数返回指定格式的值</td>
+</tr>
+<tr>
+<td>weekday</td>
+<td>获取指定日期在一周内的对应的工作日索引</td>
+</tr>
+</tbody>
+</table>
+<h3 id="h3-curdate-current_date-"><a name="curdate 和 current_date:两个函数作用相同，返回当前系统的日期值" class="reference-link"></a><span class="header-link octicon octicon-link"></span>curdate 和 current_date:两个函数作用相同，返回当前系统的日期值</h3><blockquote>
+<p>CURDATE() 和 CURRENT_DATE() 函数的作用相同，将当前日期按照“YYYY-MM-DD”或“YYYYMMDD”格式的值返回，具体格式根据函数用在字符串或数字语境中而定，返回的<code>date</code>类型。</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select curdate</span><span class="pun">(),</span><span class="pln">current_date</span><span class="pun">(),</span><span class="pln">current_date</span><span class="pun">()+</span><span class="lit">1</span><span class="pun">;</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+------------+----------------+------------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> curdate</span><span class="pun">()</span><span class="pln">  </span><span class="pun">|</span><span class="pln"> current_date</span><span class="pun">()</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> current_date</span><span class="pun">()+</span><span class="lit">1</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+------------+----------------+------------------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="lit">2019</span><span class="pun">-</span><span class="lit">09</span><span class="pun">-</span><span class="lit">17</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="lit">2019</span><span class="pun">-</span><span class="lit">09</span><span class="pun">-</span><span class="lit">17</span><span class="pln">     </span><span class="pun">|</span><span class="pln">         </span><span class="lit">20190918</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+------------+----------------+------------------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h3 id="h3-curtime-current_time-"><a name="curtime 和 current_time:获取系统当前时间" class="reference-link"></a><span class="header-link octicon octicon-link"></span>curtime 和 current_time:获取系统当前时间</h3><blockquote>
+<p> CURTIME() 和 CURRENT_TIME() 函数的作用相同，将当前时间以“HH：MM：SS”或“HHMMSS”格式返回，具体格式根据函数用在字符串或数字语境中而定，返回<code>time</code>类型。</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select curtime</span><span class="pun">(),</span><span class="pln">current_time</span><span class="pun">(),</span><span class="pln">current_time</span><span class="pun">()+</span><span class="lit">1</span><span class="pun">;</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+-----------+----------------+------------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> curtime</span><span class="pun">()</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> current_time</span><span class="pun">()</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> current_time</span><span class="pun">()+</span><span class="lit">1</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+-----------+----------------+------------------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="lit">16</span><span class="pun">:</span><span class="lit">11</span><span class="pun">:</span><span class="lit">25</span><span class="pln">  </span><span class="pun">|</span><span class="pln"> </span><span class="lit">16</span><span class="pun">:</span><span class="lit">11</span><span class="pun">:</span><span class="lit">25</span><span class="pln">       </span><span class="pun">|</span><span class="pln">           </span><span class="lit">161126</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+-----------+----------------+------------------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h3 id="h3-now-sysdate-"><a name="now 和 sysdate:获取当前时间日期" class="reference-link"></a><span class="header-link octicon octicon-link"></span>now 和 sysdate:获取当前时间日期</h3><blockquote>
+<p>NOW() 和 SYSDATE() 函数的作用相同，都是返回当前日期和时间值，格式为“YYYY-MM-DD HH：MM：SS”或“YYYYMMDDHHMMSS”，具体格式根据函数用在字符串或数字语境中而定，返回<code>datetime</code>类型。</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select now</span><span class="pun">(),</span><span class="pln">sysdate</span><span class="pun">();</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+---------------------+---------------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> now</span><span class="pun">()</span><span class="pln">               </span><span class="pun">|</span><span class="pln"> sysdate</span><span class="pun">()</span><span class="pln">           </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+---------------------+---------------------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="lit">2019</span><span class="pun">-</span><span class="lit">09</span><span class="pun">-</span><span class="lit">17</span><span class="pln"> </span><span class="lit">16</span><span class="pun">:</span><span class="lit">13</span><span class="pun">:</span><span class="lit">28</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="lit">2019</span><span class="pun">-</span><span class="lit">09</span><span class="pun">-</span><span class="lit">17</span><span class="pln"> </span><span class="lit">16</span><span class="pun">:</span><span class="lit">13</span><span class="pun">:</span><span class="lit">28</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+---------------------+---------------------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h3 id="h3-unix_timestamp-unix-"><a name="unix_timestamp:获取UNIX时间戳" class="reference-link"></a><span class="header-link octicon octicon-link"></span>unix_timestamp:获取UNIX时间戳</h3><blockquote>
+<p>UNIX_TIMESTAMP(date) 若无参数调用，返回一个无符号整数类型的 UNIX 时间戳（’1970-01-01 00:00:00’GMT之后的秒数）。</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select unix_timestamp</span><span class="pun">(),</span><span class="pln">unix_timestamp</span><span class="pun">(</span><span class="pln">now</span><span class="pun">()),</span><span class="pln">now</span><span class="pun">(),</span><span class="pln">unix_timestamp</span><span class="pun">(</span><span class="str">'2019-09-17 12:00:00'</span><span class="pun">);</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+------------------+-----------------------+---------------------+---------------------------------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> unix_timestamp</span><span class="pun">()</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> unix_timestamp</span><span class="pun">(</span><span class="pln">now</span><span class="pun">())</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> now</span><span class="pun">()</span><span class="pln">               </span><span class="pun">|</span><span class="pln"> unix_timestamp</span><span class="pun">(</span><span class="str">'2019-09-17 12:00:00'</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+------------------+-----------------------+---------------------+---------------------------------------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln">       </span><span class="lit">1568710893</span><span class="pln"> </span><span class="pun">|</span><span class="pln">            </span><span class="lit">1568710893</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="lit">2019</span><span class="pun">-</span><span class="lit">09</span><span class="pun">-</span><span class="lit">17</span><span class="pln"> </span><span class="lit">17</span><span class="pun">:</span><span class="lit">01</span><span class="pun">:</span><span class="lit">33</span><span class="pln"> </span><span class="pun">|</span><span class="pln">                            </span><span class="lit">1568692800</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+------------------+-----------------------+---------------------+---------------------------------------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h3 id="h3-from_unixtime-"><a name="from_unixtime:时间戳转日期" class="reference-link"></a><span class="header-link octicon octicon-link"></span>from_unixtime:时间戳转日期</h3><blockquote>
+<p>FROM_UNIXTIME(unix_timestamp[,format]) 函数把 UNIX 时间戳转换为普通格式的日期时间值，与 <code>UNIX_TIMESTAMP ()</code> 函数互为反函数。</p>
+<p>有2个参数：</p>
+<p>unix_timestamp：时间戳（秒）</p>
+<p>format：要转化的格式 比如“”%Y-%m-%d“” 这样格式化之后的时间就是 2017-11-30</p>
+<p>可以有的形式：</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>格式</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>%M</td>
+<td>月名字(January～December)</td>
+</tr>
+<tr>
+<td>%W</td>
+<td>星期名字(Sunday～Saturday)</td>
+</tr>
+<tr>
+<td>%D</td>
+<td>有英语前缀的月份的日期(1st, 2nd, 3rd, 等等）</td>
+</tr>
+<tr>
+<td>%Y</td>
+<td>年, 数字, 4 位</td>
+</tr>
+<tr>
+<td>%y</td>
+<td>年, 数字, 2 位</td>
+</tr>
+<tr>
+<td>%a</td>
+<td>缩写的星期名字(Sun～Sat)</td>
+</tr>
+<tr>
+<td>%d</td>
+<td>月份中的天数, 数字(00～31)</td>
+</tr>
+<tr>
+<td>%e</td>
+<td>月份中的天数, 数字(0～31)</td>
+</tr>
+<tr>
+<td>%m</td>
+<td>月, 数字(01～12)</td>
+</tr>
+<tr>
+<td>%c</td>
+<td>月, 数字(1～12)</td>
+</tr>
+<tr>
+<td>%b</td>
+<td>缩写的月份名字(Jan～Dec)</td>
+</tr>
+<tr>
+<td>%j</td>
+<td>一年中的天数(001～366)</td>
+</tr>
+<tr>
+<td>%H</td>
+<td>小时(00～23)</td>
+</tr>
+<tr>
+<td>%k</td>
+<td>小时(0～23)</td>
+</tr>
+<tr>
+<td>%h</td>
+<td>小时(01～12)</td>
+</tr>
+<tr>
+<td>%I（i的大写）</td>
+<td>小时(01～12)</td>
+</tr>
+<tr>
+<td>%l（L的小写）</td>
+<td>小时(1～12)</td>
+</tr>
+<tr>
+<td>%i</td>
+<td>分钟, 数字(00～59)</td>
+</tr>
+<tr>
+<td>%r</td>
+<td>时间,12 小时(hh<img src="./专辑：MySQL教程_常用函数汇总-Java充电社【公众号：Java充电社】_files/mm.png" class="emoji" title=":mm:" alt=":mm:">ss [AP]M)</td>
+</tr>
+<tr>
+<td>%T</td>
+<td>时间,24 小时(hh<img src="./专辑：MySQL教程_常用函数汇总-Java充电社【公众号：Java充电社】_files/mm.png" class="emoji" title=":mm:" alt=":mm:">ss)</td>
+</tr>
+<tr>
+<td>%S</td>
+<td>秒(00～59)</td>
+</tr>
+<tr>
+<td>%s</td>
+<td>秒(00～59)</td>
+</tr>
+<tr>
+<td>%p</td>
+<td>AM或PM</td>
+</tr>
+<tr>
+<td>%W</td>
+<td>一个星期中的天数英文名称(Sunday~Saturday）</td>
+</tr>
+<tr>
+<td>%w</td>
+<td>一个星期中的天数(0=Sunday ～6=Saturday）</td>
+</tr>
+<tr>
+<td>%U</td>
+<td>星期(0～52), 这里星期天是星期的第一天</td>
+</tr>
+<tr>
+<td>%u</td>
+<td>星期(0～52), 这里星期一是星期的第一天</td>
+</tr>
+<tr>
+<td>%%</td>
+<td>输出%</td>
+</tr>
+</tbody>
+</table>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select from_unixtime</span><span class="pun">(</span><span class="lit">1568710866</span><span class="pun">),</span><span class="pln">from_unixtime</span><span class="pun">(</span><span class="lit">1568710866</span><span class="pun">,</span><span class="str">'%Y-%m-%d %H:%h:%s'</span><span class="pun">);</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+---------------------------+-----------------------------------------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> from_unixtime</span><span class="pun">(</span><span class="lit">1568710866</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> from_unixtime</span><span class="pun">(</span><span class="lit">1568710866</span><span class="pun">,</span><span class="str">'%Y-%m-%d %H:%h:%s'</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+---------------------------+-----------------------------------------------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="lit">2019</span><span class="pun">-</span><span class="lit">09</span><span class="pun">-</span><span class="lit">17</span><span class="pln"> </span><span class="lit">17</span><span class="pun">:</span><span class="lit">01</span><span class="pun">:</span><span class="lit">06</span><span class="pln">       </span><span class="pun">|</span><span class="pln"> </span><span class="lit">2019</span><span class="pun">-</span><span class="lit">09</span><span class="pun">-</span><span class="lit">17</span><span class="pln"> </span><span class="lit">17</span><span class="pun">:</span><span class="lit">05</span><span class="pun">:</span><span class="lit">06</span><span class="pln">                           </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+---------------------------+-----------------------------------------------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h3 id="h3-month-"><a name="month:获取指定日期的月份" class="reference-link"></a><span class="header-link octicon octicon-link"></span>month:获取指定日期的月份</h3><blockquote>
+<p>MONTH(date) 函数返回指定 date 对应的月份，范围为 1～12。</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select month</span><span class="pun">(</span><span class="str">'2017-12-15'</span><span class="pun">),</span><span class="pln">month</span><span class="pun">(</span><span class="pln">now</span><span class="pun">());</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+---------------------+--------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> month</span><span class="pun">(</span><span class="str">'2017-12-15'</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> month</span><span class="pun">(</span><span class="pln">now</span><span class="pun">())</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+---------------------+--------------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln">                  </span><span class="lit">12</span><span class="pln"> </span><span class="pun">|</span><span class="pln">            </span><span class="lit">9</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+---------------------+--------------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h3 id="h3-monthname-"><a name="monthname:获取指定日期月份的英文名称" class="reference-link"></a><span class="header-link octicon octicon-link"></span>monthname:获取指定日期月份的英文名称</h3><blockquote>
+<p>MONTHNAME(date) 函数返回日期 date 对应月份的英文全名。</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select monthname</span><span class="pun">(</span><span class="str">'2017-12-15'</span><span class="pun">),</span><span class="pln">monthname</span><span class="pun">(</span><span class="pln">now</span><span class="pun">());</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+-------------------------+------------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> monthname</span><span class="pun">(</span><span class="str">'2017-12-15'</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> monthname</span><span class="pun">(</span><span class="pln">now</span><span class="pun">())</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+-------------------------+------------------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="typ">December</span><span class="pln">                </span><span class="pun">|</span><span class="pln"> </span><span class="typ">September</span><span class="pln">        </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+-------------------------+------------------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h3 id="h3-dayname-"><a name="dayname:获取指定日期的星期名称" class="reference-link"></a><span class="header-link octicon octicon-link"></span>dayname:获取指定日期的星期名称</h3><blockquote>
+<p>DAYNAME(date) 函数返回 date 对应的工作日英文名称，例如 Sunday、Monday 等。</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select now</span><span class="pun">(),</span><span class="pln">dayname</span><span class="pun">(</span><span class="pln">now</span><span class="pun">());</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+---------------------+----------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> now</span><span class="pun">()</span><span class="pln">               </span><span class="pun">|</span><span class="pln"> dayname</span><span class="pun">(</span><span class="pln">now</span><span class="pun">())</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+---------------------+----------------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="lit">2019</span><span class="pun">-</span><span class="lit">09</span><span class="pun">-</span><span class="lit">17</span><span class="pln"> </span><span class="lit">17</span><span class="pun">:</span><span class="lit">13</span><span class="pun">:</span><span class="lit">08</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="typ">Tuesday</span><span class="pln">        </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+---------------------+----------------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h3 id="h3-dayofweek-"><a name="dayofweek:获取日期对应的周索引" class="reference-link"></a><span class="header-link octicon octicon-link"></span>dayofweek:获取日期对应的周索引</h3><blockquote>
+<p>DAYOFWEEK(d) 函数返回 d 对应的一周中的索引（位置）。1 表示周日，2 表示周一，……，7 表示周六。这些索引值对应于ODBC标准。</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select now</span><span class="pun">(),</span><span class="pln">dayofweek</span><span class="pun">(</span><span class="pln">now</span><span class="pun">());</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+---------------------+------------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> now</span><span class="pun">()</span><span class="pln">               </span><span class="pun">|</span><span class="pln"> dayofweek</span><span class="pun">(</span><span class="pln">now</span><span class="pun">())</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+---------------------+------------------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="lit">2019</span><span class="pun">-</span><span class="lit">09</span><span class="pun">-</span><span class="lit">17</span><span class="pln"> </span><span class="lit">17</span><span class="pun">:</span><span class="lit">14</span><span class="pun">:</span><span class="lit">21</span><span class="pln"> </span><span class="pun">|</span><span class="pln">                </span><span class="lit">3</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+---------------------+------------------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h3 id="h3-week-"><a name="week:获取指定日期是一年中的第几周" class="reference-link"></a><span class="header-link octicon octicon-link"></span>week:获取指定日期是一年中的第几周</h3><blockquote>
+<p>WEEK(date[,mode]) 函数计算日期 date 是一年中的第几周。WEEK(date,mode) 函数允许指定星期是否起始于周日或周一，以及返回值的范围是否为 0～52 或 1～53。</p>
+<p>WEEK函数接受两个参数：</p>
+<ul>
+<li><code>date</code>是要获取周数的日期。</li><li><code>mode</code>是一个可选参数，用于确定周数计算的逻辑。它允许您指定本周是从星期一还是星期日开始，返回的周数应在<code>0</code>到<code>52</code>之间或<code>0</code>到<code>53</code>之间。</li></ul>
+<p>如果忽略<code>mode</code>参数，默认情况下<code>WEEK</code>函数将使用<code>default_week_format</code>系统变量的值。</p>
+<p>要获取<code>default_week_format</code>变量的当前值，请使用<code>SHOW VARIABLES</code>语句如下：</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> SHOW VARIABLES LIKE </span><span class="str">'default_week_format'</span><span class="pun">;</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+---------------------+-------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="typ">Variable_name</span><span class="pln">       </span><span class="pun">|</span><span class="pln"> </span><span class="typ">Value</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+---------------------+-------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln"> default_week_format </span><span class="pun">|</span><span class="pln"> </span><span class="lit">0</span><span class="pln">     </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+---------------------+-------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set</span><span class="pun">,</span><span class="pln"> </span><span class="lit">1</span><span class="pln"> warning </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<p>在我们的服务器中，<code>default_week_format</code>的默认值为<code>0</code>，下表格说明了<code>mode</code>参数如何影响<code>WEEK</code>函数：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">模式</th>
+<th style="text-align:left">一周的第一天</th>
+<th style="text-align:left">范围</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">0</td>
+<td style="text-align:left">星期日</td>
+<td style="text-align:left">0-53</td>
+</tr>
+<tr>
+<td style="text-align:left">1</td>
+<td style="text-align:left">星期一</td>
+<td style="text-align:left">0-53</td>
+</tr>
+<tr>
+<td style="text-align:left">2</td>
+<td style="text-align:left">星期日</td>
+<td style="text-align:left">1-53</td>
+</tr>
+<tr>
+<td style="text-align:left">3</td>
+<td style="text-align:left">星期一</td>
+<td style="text-align:left">1-53</td>
+</tr>
+<tr>
+<td style="text-align:left">4</td>
+<td style="text-align:left">星期日</td>
+<td style="text-align:left">0-53</td>
+</tr>
+<tr>
+<td style="text-align:left">5</td>
+<td style="text-align:left">星期一</td>
+<td style="text-align:left">0-53</td>
+</tr>
+<tr>
+<td style="text-align:left">6</td>
+<td style="text-align:left">星期日</td>
+<td style="text-align:left">1-53</td>
+</tr>
+<tr>
+<td style="text-align:left">7</td>
+<td style="text-align:left">星期一</td>
+<td style="text-align:left">1-53</td>
+</tr>
+</tbody>
+</table>
+<p> 上表中“今年有4天以上”表示：</p>
+<ul>
+<li>如果星期包含1月1日，并且在新的一年中有<code>4</code>天或更多天，那么这周是第<code>1</code>周。</li><li>否则，这一周的数字是前一年的最后一周，下周是第1周。</li></ul>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select now</span><span class="pun">(),</span><span class="pln">week</span><span class="pun">(</span><span class="pln">now</span><span class="pun">());</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+---------------------+-------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> now</span><span class="pun">()</span><span class="pln">               </span><span class="pun">|</span><span class="pln"> week</span><span class="pun">(</span><span class="pln">now</span><span class="pun">())</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+---------------------+-------------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="lit">2019</span><span class="pun">-</span><span class="lit">09</span><span class="pun">-</span><span class="lit">17</span><span class="pln"> </span><span class="lit">17</span><span class="pun">:</span><span class="lit">20</span><span class="pun">:</span><span class="lit">28</span><span class="pln"> </span><span class="pun">|</span><span class="pln">          </span><span class="lit">37</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+---------------------+-------------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h3 id="h3-dayofyear-"><a name="dayofyear:获取指定日期在一年中的位置" class="reference-link"></a><span class="header-link octicon octicon-link"></span>dayofyear:获取指定日期在一年中的位置</h3><blockquote>
+<p>DAYOFYEAR(d) 函数返回 d 是一年中的第几天，范围为 1～366。</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select now</span><span class="pun">(),</span><span class="pln">dayofyear</span><span class="pun">(</span><span class="pln">now</span><span class="pun">()),</span><span class="pln">dayofyear</span><span class="pun">(</span><span class="str">'2019-01-01'</span><span class="pun">);</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+---------------------+------------------+-------------------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> now</span><span class="pun">()</span><span class="pln">               </span><span class="pun">|</span><span class="pln"> dayofyear</span><span class="pun">(</span><span class="pln">now</span><span class="pun">())</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> dayofyear</span><span class="pun">(</span><span class="str">'2019-01-01'</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+---------------------+------------------+-------------------------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="lit">2019</span><span class="pun">-</span><span class="lit">09</span><span class="pun">-</span><span class="lit">17</span><span class="pln"> </span><span class="lit">17</span><span class="pun">:</span><span class="lit">22</span><span class="pun">:</span><span class="lit">00</span><span class="pln"> </span><span class="pun">|</span><span class="pln">              </span><span class="lit">260</span><span class="pln"> </span><span class="pun">|</span><span class="pln">                       </span><span class="lit">1</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+---------------------+------------------+-------------------------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h3 id="h3-dayofmonth-"><a name="dayofmonth:获取指定日期在一个月的位置" class="reference-link"></a><span class="header-link octicon octicon-link"></span>dayofmonth:获取指定日期在一个月的位置</h3><blockquote>
+<p>DAYOFMONTH(d) 函数返回 d 是一个月中的第几天，范围为 1～31。</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select now</span><span class="pun">(),</span><span class="pln">dayofmonth</span><span class="pun">(</span><span class="pln">now</span><span class="pun">()),</span><span class="pln">dayofmonth</span><span class="pun">(</span><span class="str">'2019-01-01'</span><span class="pun">);</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+---------------------+-------------------+--------------------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> now</span><span class="pun">()</span><span class="pln">               </span><span class="pun">|</span><span class="pln"> dayofmonth</span><span class="pun">(</span><span class="pln">now</span><span class="pun">())</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> dayofmonth</span><span class="pun">(</span><span class="str">'2019-01-01'</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+---------------------+-------------------+--------------------------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="lit">2019</span><span class="pun">-</span><span class="lit">09</span><span class="pun">-</span><span class="lit">17</span><span class="pln"> </span><span class="lit">17</span><span class="pun">:</span><span class="lit">23</span><span class="pun">:</span><span class="lit">09</span><span class="pln"> </span><span class="pun">|</span><span class="pln">                </span><span class="lit">17</span><span class="pln"> </span><span class="pun">|</span><span class="pln">                        </span><span class="lit">1</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+---------------------+-------------------+--------------------------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h3 id="h3-year-"><a name="year:获取年份" class="reference-link"></a><span class="header-link octicon octicon-link"></span>year:获取年份</h3><blockquote>
+<p>YEAR() 函数可以从指定日期值中来获取年份值。</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select now</span><span class="pun">(),</span><span class="pln">year</span><span class="pun">(</span><span class="pln">now</span><span class="pun">()),</span><span class="pln">year</span><span class="pun">(</span><span class="str">'2019-01-02'</span><span class="pun">);</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+---------------------+-------------+--------------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> now</span><span class="pun">()</span><span class="pln">               </span><span class="pun">|</span><span class="pln"> year</span><span class="pun">(</span><span class="pln">now</span><span class="pun">())</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> year</span><span class="pun">(</span><span class="str">'2019-01-02'</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+---------------------+-------------+--------------------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="lit">2019</span><span class="pun">-</span><span class="lit">09</span><span class="pun">-</span><span class="lit">17</span><span class="pln"> </span><span class="lit">17</span><span class="pun">:</span><span class="lit">28</span><span class="pun">:</span><span class="lit">10</span><span class="pln"> </span><span class="pun">|</span><span class="pln">        </span><span class="lit">2019</span><span class="pln"> </span><span class="pun">|</span><span class="pln">               </span><span class="lit">2019</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+---------------------+-------------+--------------------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h3 id="h3-time_to_sec-"><a name="time_to_sec:将时间转换为秒值" class="reference-link"></a><span class="header-link octicon octicon-link"></span>time_to_sec:将时间转换为秒值</h3><blockquote>
+<p>TIME_TO_SEC(time) 函数返回将参数 time 转换为秒数的时间值，转换公式为“小时 ×3600+ 分钟 ×60+ 秒”。</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select time_to_sec</span><span class="pun">(</span><span class="str">'15:15:15'</span><span class="pun">),</span><span class="pln">now</span><span class="pun">(),</span><span class="pln">time_to_sec</span><span class="pun">(</span><span class="pln">now</span><span class="pun">());</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+-------------------------+---------------------+--------------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> time_to_sec</span><span class="pun">(</span><span class="str">'15:15:15'</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> now</span><span class="pun">()</span><span class="pln">               </span><span class="pun">|</span><span class="pln"> time_to_sec</span><span class="pun">(</span><span class="pln">now</span><span class="pun">())</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+-------------------------+---------------------+--------------------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln">                   </span><span class="lit">54915</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="lit">2019</span><span class="pun">-</span><span class="lit">09</span><span class="pun">-</span><span class="lit">17</span><span class="pln"> </span><span class="lit">17</span><span class="pun">:</span><span class="lit">30</span><span class="pun">:</span><span class="lit">44</span><span class="pln"> </span><span class="pun">|</span><span class="pln">              </span><span class="lit">63044</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+-------------------------+---------------------+--------------------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h3 id="h3-sec_to_time-"><a name="sec_to_time:将秒值转换为时间格式" class="reference-link"></a><span class="header-link octicon octicon-link"></span>sec_to_time:将秒值转换为时间格式</h3><blockquote>
+<p>SEC_TO_TIME(seconds) 函数返回将参数 seconds 转换为小时、分钟和秒数的时间值。</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select sec_to_time</span><span class="pun">(</span><span class="lit">100</span><span class="pun">),</span><span class="pln">sec_to_time</span><span class="pun">(</span><span class="lit">10000</span><span class="pun">);</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+------------------+--------------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> sec_to_time</span><span class="pun">(</span><span class="lit">100</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> sec_to_time</span><span class="pun">(</span><span class="lit">10000</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+------------------+--------------------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="lit">00</span><span class="pun">:</span><span class="lit">01</span><span class="pun">:</span><span class="lit">40</span><span class="pln">         </span><span class="pun">|</span><span class="pln"> </span><span class="lit">02</span><span class="pun">:</span><span class="lit">46</span><span class="pun">:</span><span class="lit">40</span><span class="pln">           </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+------------------+--------------------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h3 id="h3-date_add-adddate-"><a name="date_add和adddate:向日期添加指定时间间隔" class="reference-link"></a><span class="header-link octicon octicon-link"></span>date_add和adddate:向日期添加指定时间间隔</h3><blockquote>
+<p>DATE_ADD(date,INTERVAL expr type)</p>
+<p>date：参数是合法的日期表达式。<em>expr</em> 参数是您希望添加的时间间隔。</p>
+<p>type：参数可以是下列值</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Type 值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">MICROSECOND</td>
+</tr>
+<tr>
+<td style="text-align:left">SECOND</td>
+</tr>
+<tr>
+<td style="text-align:left">MINUTE</td>
+</tr>
+<tr>
+<td style="text-align:left">HOUR</td>
+</tr>
+<tr>
+<td style="text-align:left">DAY</td>
+</tr>
+<tr>
+<td style="text-align:left">WEEK</td>
+</tr>
+<tr>
+<td style="text-align:left">MONTH</td>
+</tr>
+<tr>
+<td style="text-align:left">QUARTER</td>
+</tr>
+<tr>
+<td style="text-align:left">YEAR</td>
+</tr>
+<tr>
+<td style="text-align:left">SECOND_MICROSECOND</td>
+</tr>
+<tr>
+<td style="text-align:left">MINUTE_MICROSECOND</td>
+</tr>
+<tr>
+<td style="text-align:left">MINUTE_SECOND</td>
+</tr>
+<tr>
+<td style="text-align:left">HOUR_MICROSECOND</td>
+</tr>
+<tr>
+<td style="text-align:left">HOUR_SECOND</td>
+</tr>
+<tr>
+<td style="text-align:left">HOUR_MINUTE</td>
+</tr>
+<tr>
+<td style="text-align:left">DAY_MICROSECOND</td>
+</tr>
+<tr>
+<td style="text-align:left">DAY_SECOND</td>
+</tr>
+<tr>
+<td style="text-align:left">DAY_MINUTE</td>
+</tr>
+<tr>
+<td style="text-align:left">DAY_HOUR</td>
+</tr>
+<tr>
+<td style="text-align:left">YEAR_MONTH</td>
+</tr>
+</tbody>
+</table>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select date_add</span><span class="pun">(</span><span class="str">'2019-01-01'</span><span class="pun">,</span><span class="pln">INTERVAL </span><span class="lit">10</span><span class="pln"> day</span><span class="pun">),</span><span class="pln">adddate</span><span class="pun">(</span><span class="str">'2019-01-01 16:00:00'</span><span class="pun">,</span><span class="pln">interval </span><span class="lit">100</span><span class="pln"> SECOND</span><span class="pun">);</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+----------------------------------------+----------------------------------------------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> date_add</span><span class="pun">(</span><span class="str">'2019-01-01'</span><span class="pun">,</span><span class="pln">INTERVAL </span><span class="lit">10</span><span class="pln"> day</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> adddate</span><span class="pun">(</span><span class="str">'2019-01-01 16:00:00'</span><span class="pun">,</span><span class="pln">interval </span><span class="lit">100</span><span class="pln"> SECOND</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+----------------------------------------+----------------------------------------------------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="lit">2019</span><span class="pun">-</span><span class="lit">01</span><span class="pun">-</span><span class="lit">11</span><span class="pln">                             </span><span class="pun">|</span><span class="pln"> </span><span class="lit">2019</span><span class="pun">-</span><span class="lit">01</span><span class="pun">-</span><span class="lit">01</span><span class="pln"> </span><span class="lit">16</span><span class="pun">:</span><span class="lit">01</span><span class="pun">:</span><span class="lit">40</span><span class="pln">                                </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+----------------------------------------+----------------------------------------------------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li><li class="L7"><code class="lang-java"></code></li><li class="L8"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select date_add</span><span class="pun">(</span><span class="str">'2019-01-01'</span><span class="pun">,</span><span class="pln">INTERVAL </span><span class="pun">-</span><span class="lit">10</span><span class="pln"> day</span><span class="pun">),</span><span class="pln">adddate</span><span class="pun">(</span><span class="str">'2019-01-01 16:00:00'</span><span class="pun">,</span><span class="pln">interval </span><span class="pun">-</span><span class="lit">100</span><span class="pln"> SECOND</span><span class="pun">);</span></code></li><li class="L9"><code class="lang-java"><span class="pun">+-----------------------------------------+-----------------------------------------------------+</span></code></li><li class="L0"><code class="lang-java"><span class="pun">|</span><span class="pln"> date_add</span><span class="pun">(</span><span class="str">'2019-01-01'</span><span class="pun">,</span><span class="pln">INTERVAL </span><span class="pun">-</span><span class="lit">10</span><span class="pln"> day</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> adddate</span><span class="pun">(</span><span class="str">'2019-01-01 16:00:00'</span><span class="pun">,</span><span class="pln">interval </span><span class="pun">-</span><span class="lit">100</span><span class="pln"> SECOND</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+-----------------------------------------+-----------------------------------------------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="lit">2018</span><span class="pun">-</span><span class="lit">12</span><span class="pun">-</span><span class="lit">22</span><span class="pln">                              </span><span class="pun">|</span><span class="pln"> </span><span class="lit">2019</span><span class="pun">-</span><span class="lit">01</span><span class="pun">-</span><span class="lit">01</span><span class="pln"> </span><span class="lit">15</span><span class="pun">:</span><span class="lit">58</span><span class="pun">:</span><span class="lit">20</span><span class="pln">                                 </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+-----------------------------------------+-----------------------------------------------------+</span></code></li><li class="L4"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h3 id="h3-date_sub-subdate-"><a name="date_sub和subdate:日期减法运算" class="reference-link"></a><span class="header-link octicon octicon-link"></span>date_sub和subdate:日期减法运算</h3><blockquote>
+<p>DATE_SUB(date,INTERVAL expr type)</p>
+<p>date：参数是合法的日期表达式。<em>expr</em> 参数是您希望添加的时间间隔。</p>
+<p>type的类型和date_add中的type一样。</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select date_sub</span><span class="pun">(</span><span class="str">'2019-01-01'</span><span class="pun">,</span><span class="pln">INTERVAL </span><span class="lit">10</span><span class="pln"> day</span><span class="pun">),</span><span class="pln">subdate</span><span class="pun">(</span><span class="str">'2019-01-01 16:00:00'</span><span class="pun">,</span><span class="pln">interval </span><span class="lit">100</span><span class="pln"> SECOND</span><span class="pun">);</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+----------------------------------------+----------------------------------------------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> date_sub</span><span class="pun">(</span><span class="str">'2019-01-01'</span><span class="pun">,</span><span class="pln">INTERVAL </span><span class="lit">10</span><span class="pln"> day</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> subdate</span><span class="pun">(</span><span class="str">'2019-01-01 16:00:00'</span><span class="pun">,</span><span class="pln">interval </span><span class="lit">100</span><span class="pln"> SECOND</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+----------------------------------------+----------------------------------------------------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="lit">2018</span><span class="pun">-</span><span class="lit">12</span><span class="pun">-</span><span class="lit">22</span><span class="pln">                             </span><span class="pun">|</span><span class="pln"> </span><span class="lit">2019</span><span class="pun">-</span><span class="lit">01</span><span class="pun">-</span><span class="lit">01</span><span class="pln"> </span><span class="lit">15</span><span class="pun">:</span><span class="lit">58</span><span class="pun">:</span><span class="lit">20</span><span class="pln">                                </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+----------------------------------------+----------------------------------------------------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li><li class="L7"><code class="lang-java"></code></li><li class="L8"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select date_sub</span><span class="pun">(</span><span class="str">'2019-01-01'</span><span class="pun">,</span><span class="pln">INTERVAL </span><span class="pun">-</span><span class="lit">10</span><span class="pln"> day</span><span class="pun">),</span><span class="pln">subdate</span><span class="pun">(</span><span class="str">'2019-01-01 16:00:00'</span><span class="pun">,</span><span class="pln">interval </span><span class="pun">-</span><span class="lit">100</span><span class="pln"> SECOND</span><span class="pun">);</span></code></li><li class="L9"><code class="lang-java"><span class="pun">+-----------------------------------------+-----------------------------------------------------+</span></code></li><li class="L0"><code class="lang-java"><span class="pun">|</span><span class="pln"> date_sub</span><span class="pun">(</span><span class="str">'2019-01-01'</span><span class="pun">,</span><span class="pln">INTERVAL </span><span class="pun">-</span><span class="lit">10</span><span class="pln"> day</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> subdate</span><span class="pun">(</span><span class="str">'2019-01-01 16:00:00'</span><span class="pun">,</span><span class="pln">interval </span><span class="pun">-</span><span class="lit">100</span><span class="pln"> SECOND</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+-----------------------------------------+-----------------------------------------------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="lit">2019</span><span class="pun">-</span><span class="lit">01</span><span class="pun">-</span><span class="lit">11</span><span class="pln">                              </span><span class="pun">|</span><span class="pln"> </span><span class="lit">2019</span><span class="pun">-</span><span class="lit">01</span><span class="pun">-</span><span class="lit">01</span><span class="pln"> </span><span class="lit">16</span><span class="pun">:</span><span class="lit">01</span><span class="pun">:</span><span class="lit">40</span><span class="pln">                                 </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+-----------------------------------------+-----------------------------------------------------+</span></code></li><li class="L4"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h3 id="h3-addtime-"><a name="addtime:时间加法运算" class="reference-link"></a><span class="header-link octicon octicon-link"></span>addtime:时间加法运算</h3><blockquote>
+<p>ADDTIME(time,expr) 函数用于执行时间的加法运算。添加 expr 到 time 并返回结果。</p>
+<p>其中：time 是一个时间或日期时间表达式，expr 是一个时间表达式。</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select addtime</span><span class="pun">(</span><span class="str">'2019-09-18 23:59:59'</span><span class="pun">,</span><span class="str">'0:1:1'</span><span class="pun">),</span><span class="pln"> addtime</span><span class="pun">(</span><span class="str">'10:30:59'</span><span class="pun">,</span><span class="str">'5:10:37'</span><span class="pun">);</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+----------------------------------------+-------------------------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> addtime</span><span class="pun">(</span><span class="str">'2019-09-18 23:59:59'</span><span class="pun">,</span><span class="str">'0:1:1'</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> addtime</span><span class="pun">(</span><span class="str">'10:30:59'</span><span class="pun">,</span><span class="str">'5:10:37'</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+----------------------------------------+-------------------------------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="lit">2019</span><span class="pun">-</span><span class="lit">09</span><span class="pun">-</span><span class="lit">19</span><span class="pln"> </span><span class="lit">00</span><span class="pun">:</span><span class="lit">01</span><span class="pun">:</span><span class="lit">00</span><span class="pln">                    </span><span class="pun">|</span><span class="pln"> </span><span class="lit">15</span><span class="pun">:</span><span class="lit">41</span><span class="pun">:</span><span class="lit">36</span><span class="pln">                      </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+----------------------------------------+-------------------------------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h3 id="h3-subtime-"><a name="subtime:时间减法运算" class="reference-link"></a><span class="header-link octicon octicon-link"></span>subtime:时间减法运算</h3><blockquote>
+<p>SUBTIME(time,expr) 函数用于执行时间的减法运算。</p>
+<p>函数返回 time。expr 表示的值和格式 time 相同。time 是一个时间或日期时间表达式， expr 是一个时间。</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select subtime</span><span class="pun">(</span><span class="str">'2019-09-18 23:59:59'</span><span class="pun">,</span><span class="str">'0:1:1'</span><span class="pun">),</span><span class="pln">subtime</span><span class="pun">(</span><span class="str">'10:30:59'</span><span class="pun">,</span><span class="str">'5:12:37'</span><span class="pun">);</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+----------------------------------------+-------------------------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> subtime</span><span class="pun">(</span><span class="str">'2019-09-18 23:59:59'</span><span class="pun">,</span><span class="str">'0:1:1'</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> subtime</span><span class="pun">(</span><span class="str">'10:30:59'</span><span class="pun">,</span><span class="str">'5:12:37'</span><span class="pun">)</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+----------------------------------------+-------------------------------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="lit">2019</span><span class="pun">-</span><span class="lit">09</span><span class="pun">-</span><span class="lit">18</span><span class="pln"> </span><span class="lit">23</span><span class="pun">:</span><span class="lit">58</span><span class="pun">:</span><span class="lit">58</span><span class="pln">                    </span><span class="pun">|</span><span class="pln"> </span><span class="lit">05</span><span class="pun">:</span><span class="lit">18</span><span class="pun">:</span><span class="lit">22</span><span class="pln">                      </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+----------------------------------------+-------------------------------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h3 id="h3-datediff-"><a name="datediff:获取两个日期的时间间隔" class="reference-link"></a><span class="header-link octicon octicon-link"></span>datediff:获取两个日期的时间间隔</h3><blockquote>
+<p>DATEDIFF(date1，date2) 返回起始时间 date1 和结束时间 date2 之间的天数。date1 和 date2 为日期或 date-and-time 表达式。计算时只用到这些值的日期部分。</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select datediff</span><span class="pun">(</span><span class="str">'2017-11-30'</span><span class="pun">,</span><span class="str">'2017-11-29'</span><span class="pun">)</span><span class="pln"> as col1</span><span class="pun">,</span><span class="pln"> datediff</span><span class="pun">(</span><span class="str">'2017-11-30'</span><span class="pun">,</span><span class="str">'2017-12-15'</span><span class="pun">)</span><span class="pln"> as col2</span><span class="pun">;</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+------+------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> col1 </span><span class="pun">|</span><span class="pln"> col2 </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+------+------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln">    </span><span class="lit">1</span><span class="pln"> </span><span class="pun">|</span><span class="pln">  </span><span class="pun">-</span><span class="lit">15</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+------+------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h3 id="h3-date_format-"><a name="date_format:格式化指定的日期" class="reference-link"></a><span class="header-link octicon octicon-link"></span>date_format:格式化指定的日期</h3><blockquote>
+<p>DATE_FORMAT(date，format) 函数是根据 format 指定的格式显示 date 值。</p>
+<p>DATE_FORMAT() 函数接受两个参数：</p>
+<p>date：是要格式化的有效日期值format：是由预定义的说明符组成的格式字符串，每个说明符前面都有一个百分比字符(%)。</p>
+<p>format：格式和上面的函数<code>from_unixtime</code>中的format一样，可以参考上面的。</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select date_format</span><span class="pun">(</span><span class="str">'2017-11-30'</span><span class="pun">,</span><span class="str">'%Y%m%d'</span><span class="pun">)</span><span class="pln"> as col0</span><span class="pun">,</span><span class="pln">now</span><span class="pun">()</span><span class="pln"> as col1</span><span class="pun">,</span><span class="pln"> date_format</span><span class="pun">(</span><span class="pln">now</span><span class="pun">(),</span><span class="str">'%Y%m%d%H%i%s'</span><span class="pun">)</span><span class="pln"> as col2</span><span class="pun">;</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+----------+---------------------+----------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> col0     </span><span class="pun">|</span><span class="pln"> col1                </span><span class="pun">|</span><span class="pln"> col2           </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+----------+---------------------+----------------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="lit">20171130</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="lit">2019</span><span class="pun">-</span><span class="lit">09</span><span class="pun">-</span><span class="lit">17</span><span class="pln"> </span><span class="lit">17</span><span class="pun">:</span><span class="lit">56</span><span class="pun">:</span><span class="lit">12</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="lit">20190917175612</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+----------+---------------------+----------------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h3 id="h3-weekday-"><a name="weekday:获取指定日期在一周内的索引位置" class="reference-link"></a><span class="header-link octicon octicon-link"></span>weekday:获取指定日期在一周内的索引位置</h3><blockquote>
+<p>WEEKDAY(date) 返回date的星期索引(0=星期一，1=星期二, ……6= 星期天)。</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select now</span><span class="pun">(),</span><span class="pln">weekday</span><span class="pun">(</span><span class="pln">now</span><span class="pun">());</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+---------------------+----------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> now</span><span class="pun">()</span><span class="pln">               </span><span class="pun">|</span><span class="pln"> weekday</span><span class="pun">(</span><span class="pln">now</span><span class="pun">())</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+---------------------+----------------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="lit">2019</span><span class="pun">-</span><span class="lit">09</span><span class="pun">-</span><span class="lit">17</span><span class="pln"> </span><span class="lit">18</span><span class="pun">:</span><span class="lit">01</span><span class="pun">:</span><span class="lit">34</span><span class="pln"> </span><span class="pun">|</span><span class="pln">              </span><span class="lit">1</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+---------------------+----------------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li><li class="L7"><code class="lang-java"></code></li><li class="L8"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select now</span><span class="pun">(),</span><span class="pln">dayofweek</span><span class="pun">(</span><span class="pln">now</span><span class="pun">());</span></code></li><li class="L9"><code class="lang-java"><span class="pun">+---------------------+------------------+</span></code></li><li class="L0"><code class="lang-java"><span class="pun">|</span><span class="pln"> now</span><span class="pun">()</span><span class="pln">               </span><span class="pun">|</span><span class="pln"> dayofweek</span><span class="pun">(</span><span class="pln">now</span><span class="pun">())</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+---------------------+------------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="lit">2019</span><span class="pun">-</span><span class="lit">09</span><span class="pun">-</span><span class="lit">17</span><span class="pln"> </span><span class="lit">18</span><span class="pun">:</span><span class="lit">01</span><span class="pun">:</span><span class="lit">34</span><span class="pln"> </span><span class="pun">|</span><span class="pln">                </span><span class="lit">3</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+---------------------+------------------+</span></code></li><li class="L4"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h2 id="h2-mysql-"><a name="MySQL 聚合函数" class="reference-link"></a><span class="header-link octicon octicon-link"></span>MySQL 聚合函数</h2><table>
+<thead>
+<tr>
+<th>函数名称</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>max</td>
+<td>查询指定列的最大值</td>
+</tr>
+<tr>
+<td>min</td>
+<td>查询指定列的最小值</td>
+</tr>
+<tr>
+<td>count</td>
+<td>统计查询结果的行数</td>
+</tr>
+<tr>
+<td>sum</td>
+<td>求和，返回指定列的总和</td>
+</tr>
+<tr>
+<td>avg</td>
+<td>求平均值，返回指定列数据的平均值</td>
+</tr>
+</tbody>
+</table>
+<h2 id="h2-mysql-"><a name="MySQL 流程控制函数" class="reference-link"></a><span class="header-link octicon octicon-link"></span>MySQL 流程控制函数</h2><table>
+<thead>
+<tr>
+<th>函数名称</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>if</td>
+<td>判断，流程控制</td>
+</tr>
+<tr>
+<td>ifnull</td>
+<td>判断是否为空</td>
+</tr>
+<tr>
+<td>case</td>
+<td>搜索语句</td>
+</tr>
+</tbody>
+</table>
+<h3 id="h3-if-"><a name="if:判断" class="reference-link"></a><span class="header-link octicon octicon-link"></span>if:判断</h3><blockquote>
+<p>IF(expr,v1,v2)</p>
+<p>当 expr 为真是返回 v1 的值，否则返回 v2</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select </span><span class="kwd">if</span><span class="pun">(</span><span class="lit">1</span><span class="pun">&lt;</span><span class="lit">2</span><span class="pun">,</span><span class="lit">1</span><span class="pun">,</span><span class="lit">0</span><span class="pun">)</span><span class="pln"> c1</span><span class="pun">,</span><span class="kwd">if</span><span class="pun">(</span><span class="lit">1</span><span class="pun">&gt;</span><span class="lit">5</span><span class="pun">,</span><span class="str">'√'</span><span class="pun">,</span><span class="str">'×'</span><span class="pun">)</span><span class="pln"> c2</span><span class="pun">,</span><span class="kwd">if</span><span class="pun">(</span><span class="pln">strcmp</span><span class="pun">(</span><span class="str">'abc'</span><span class="pun">,</span><span class="str">'ab'</span><span class="pun">),</span><span class="str">'yes'</span><span class="pun">,</span><span class="str">'no'</span><span class="pun">)</span><span class="pln"> c3</span><span class="pun">;</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+----+----+-----+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> c1 </span><span class="pun">|</span><span class="pln"> c2 </span><span class="pun">|</span><span class="pln"> c3  </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+----+----+-----+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln">  </span><span class="lit">1</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="pun">×</span><span class="pln">  </span><span class="pun">|</span><span class="pln"> yes </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+----+----+-----+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h3 id="h3-ifnull-"><a name="ifnull:判断是否为空" class="reference-link"></a><span class="header-link octicon octicon-link"></span>ifnull:判断是否为空</h3><blockquote>
+<p>IFNULL(v1,v2)：v1为空返回v2，否则返回v1。</p>
+</blockquote>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select ifnull</span><span class="pun">(</span><span class="kwd">null</span><span class="pun">,</span><span class="str">'路人甲Java'</span><span class="pun">),</span><span class="pln">ifnull</span><span class="pun">(</span><span class="str">'非空'</span><span class="pun">,</span><span class="str">'为空'</span><span class="pun">);</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+------------------------------+---------------------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> ifnull</span><span class="pun">(</span><span class="kwd">null</span><span class="pun">,</span><span class="str">'路人甲Java'</span><span class="pun">)</span><span class="pln">    </span><span class="pun">|</span><span class="pln"> ifnull</span><span class="pun">(</span><span class="str">'非空'</span><span class="pun">,</span><span class="str">'为空'</span><span class="pun">)</span><span class="pln">     </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+------------------------------+---------------------------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="pun">路人甲</span><span class="typ">Java</span><span class="pln">                   </span><span class="pun">|</span><span class="pln"> </span><span class="pun">非空</span><span class="pln">                      </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+------------------------------+---------------------------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h3 id="h3-case-java-if-else-if-else"><a name="case:搜索语句,类似于java中的if..else if..else" class="reference-link"></a><span class="header-link octicon octicon-link"></span>case:搜索语句,类似于java中的if..else if..else</h3><blockquote>
+<p>类似于java中的if..else if..else</p>
+</blockquote>
+<p><strong>有2种写法</strong></p>
+<p><strong>方式1：</strong></p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pln">CASE  </span><span class="pun">&lt;表达式&gt;</span></code></li><li class="L1"><code><span class="pln">   WHEN </span><span class="pun">&lt;值</span><span class="lit">1</span><span class="pun">&gt;</span><span class="pln"> THEN </span><span class="pun">&lt;操作&gt;</span></code></li><li class="L2"><code><span class="pln">   WHEN </span><span class="pun">&lt;值</span><span class="lit">2</span><span class="pun">&gt;</span><span class="pln"> THEN </span><span class="pun">&lt;操作&gt;</span></code></li><li class="L3"><code><span class="pln">   </span><span class="pun">...</span></code></li><li class="L4"><code><span class="pln">   ELSE </span><span class="pun">&lt;操作&gt;</span></code></li><li class="L5"><code><span class="kwd">END</span><span class="pln"> CASE</span><span class="pun">;</span></code></li></ol></pre><p><strong>方式2：</strong></p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code><span class="pln">CASE</span></code></li><li class="L1"><code><span class="pln">    WHEN </span><span class="pun">&lt;条件</span><span class="lit">1</span><span class="pun">&gt;</span><span class="pln"> THEN </span><span class="pun">&lt;命令&gt;</span></code></li><li class="L2"><code><span class="pln">    WHEN </span><span class="pun">&lt;条件</span><span class="lit">2</span><span class="pun">&gt;</span><span class="pln"> THEN </span><span class="pun">&lt;命令&gt;</span></code></li><li class="L3"><code><span class="pln">    </span><span class="pun">...</span></code></li><li class="L4"><code><span class="pln">    ELSE commands</span></code></li><li class="L5"><code><span class="kwd">END</span><span class="pln"> CASE</span><span class="pun">;</span></code></li></ol></pre><p>示例：</p>
+<p>准备数据：</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">CREATE TABLE t_stu </span><span class="pun">(</span></code></li><li class="L1"><code class="lang-java"><span class="pln">  id   INT AUTO_INCREMENT  COMMENT </span><span class="str">'编号'</span><span class="pun">,</span></code></li><li class="L2"><code class="lang-java"><span class="pln">  name VARCHAR</span><span class="pun">(</span><span class="lit">10</span><span class="pun">)</span><span class="pln"> COMMENT </span><span class="str">'姓名'</span><span class="pun">,</span></code></li><li class="L3"><code class="lang-java"><span class="pln">  sex  TINYINT COMMENT </span><span class="str">'性别,0:未知,1:男,2:女'</span><span class="pun">,</span></code></li><li class="L4"><code class="lang-java"><span class="pln">  PRIMARY KEY </span><span class="pun">(</span><span class="pln">id</span><span class="pun">)</span></code></li><li class="L5"><code class="lang-java"><span class="pun">)</span><span class="pln"> COMMENT </span><span class="str">'学生表'</span><span class="pun">;</span></code></li><li class="L6"><code class="lang-java"></code></li><li class="L7"><code class="lang-java"><span class="pln">insert into t_stu </span><span class="pun">(</span><span class="pln">name</span><span class="pun">,</span><span class="pln">sex</span><span class="pun">)</span><span class="pln"> VALUES </span></code></li><li class="L8"><code class="lang-java"><span class="pln">  </span><span class="pun">(</span><span class="str">'张学友'</span><span class="pun">,</span><span class="lit">1</span><span class="pun">),</span></code></li><li class="L9"><code class="lang-java"><span class="pln">  </span><span class="pun">(</span><span class="str">'刘德华'</span><span class="pun">,</span><span class="lit">1</span><span class="pun">),</span></code></li><li class="L0"><code class="lang-java"><span class="pln">  </span><span class="pun">(</span><span class="str">'郭富城'</span><span class="pun">,</span><span class="lit">1</span><span class="pun">),</span></code></li><li class="L1"><code class="lang-java"><span class="pln">  </span><span class="pun">(</span><span class="str">'蔡依林'</span><span class="pun">,</span><span class="lit">2</span><span class="pun">),</span></code></li><li class="L2"><code class="lang-java"><span class="pln">  </span><span class="pun">(</span><span class="str">'xxx'</span><span class="pun">,</span><span class="lit">0</span><span class="pun">);</span></code></li></ol></pre>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> select </span><span class="pun">*</span><span class="pln"> from t_stu</span><span class="pun">;</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+----+-----------+------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> id </span><span class="pun">|</span><span class="pln"> name      </span><span class="pun">|</span><span class="pln"> sex  </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+----+-----------+------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln">  </span><span class="lit">1</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="pun">张学友</span><span class="pln">    </span><span class="pun">|</span><span class="pln">    </span><span class="lit">1</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">|</span><span class="pln">  </span><span class="lit">2</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="pun">刘德华</span><span class="pln">    </span><span class="pun">|</span><span class="pln">    </span><span class="lit">1</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L6"><code class="lang-java"><span class="pun">|</span><span class="pln">  </span><span class="lit">3</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="pun">郭富城</span><span class="pln">    </span><span class="pun">|</span><span class="pln">    </span><span class="lit">1</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L7"><code class="lang-java"><span class="pun">|</span><span class="pln">  </span><span class="lit">4</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="pun">蔡依林</span><span class="pln">    </span><span class="pun">|</span><span class="pln">    </span><span class="lit">2</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L8"><code class="lang-java"><span class="pun">|</span><span class="pln">  </span><span class="lit">5</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> xxx       </span><span class="pun">|</span><span class="pln">    </span><span class="lit">0</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L9"><code class="lang-java"><span class="pun">+----+-----------+------+</span></code></li><li class="L0"><code class="lang-java"><span class="lit">5</span><span class="pln"> rows in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<p>需求：查询所有学生信息，输出：姓名，性别（男、女、未知），如下：</p>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> SELECT</span></code></li><li class="L1"><code class="lang-java"><span class="pln">      t</span><span class="pun">.</span><span class="pln">name </span><span class="pun">姓名,</span></code></li><li class="L2"><code class="lang-java"><span class="pln">      </span><span class="pun">(</span><span class="pln">CASE t</span><span class="pun">.</span><span class="pln">sex</span></code></li><li class="L3"><code class="lang-java"><span class="pln">       WHEN </span><span class="lit">1</span></code></li><li class="L4"><code class="lang-java"><span class="pln">         THEN </span><span class="str">'男'</span></code></li><li class="L5"><code class="lang-java"><span class="pln">       WHEN </span><span class="lit">2</span></code></li><li class="L6"><code class="lang-java"><span class="pln">         THEN </span><span class="str">'女'</span></code></li><li class="L7"><code class="lang-java"><span class="pln">       ELSE </span><span class="str">'未知'</span><span class="pln"> END</span><span class="pun">)</span><span class="pln"> </span><span class="pun">性别</span></code></li><li class="L8"><code class="lang-java"><span class="pln">    FROM t_stu t</span><span class="pun">;</span></code></li><li class="L9"><code class="lang-java"><span class="pun">+-----------+--------+</span></code></li><li class="L0"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="pun">姓名</span><span class="pln">      </span><span class="pun">|</span><span class="pln"> </span><span class="pun">性别</span><span class="pln">   </span><span class="pun">|</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+-----------+--------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="pun">张学友</span><span class="pln">    </span><span class="pun">|</span><span class="pln"> </span><span class="pun">男</span><span class="pln">     </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="pun">刘德华</span><span class="pln">    </span><span class="pun">|</span><span class="pln"> </span><span class="pun">男</span><span class="pln">     </span><span class="pun">|</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="pun">郭富城</span><span class="pln">    </span><span class="pun">|</span><span class="pln"> </span><span class="pun">男</span><span class="pln">     </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="pun">蔡依林</span><span class="pln">    </span><span class="pun">|</span><span class="pln"> </span><span class="pun">女</span><span class="pln">     </span><span class="pun">|</span></code></li><li class="L6"><code class="lang-java"><span class="pun">|</span><span class="pln"> xxx       </span><span class="pun">|</span><span class="pln"> </span><span class="pun">未知</span><span class="pln">   </span><span class="pun">|</span></code></li><li class="L7"><code class="lang-java"><span class="pun">+-----------+--------+</span></code></li><li class="L8"><code class="lang-java"><span class="lit">5</span><span class="pln"> rows in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li><li class="L9"><code class="lang-java"></code></li><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> SELECT</span></code></li><li class="L1"><code class="lang-java"><span class="pln">    t</span><span class="pun">.</span><span class="pln">name          </span><span class="pun">姓名,</span></code></li><li class="L2"><code class="lang-java"><span class="pln">    </span><span class="pun">(</span><span class="pln">CASE</span></code></li><li class="L3"><code class="lang-java"><span class="pln">    WHEN t</span><span class="pun">.</span><span class="pln">sex </span><span class="pun">=</span><span class="pln"> </span><span class="lit">1</span></code></li><li class="L4"><code class="lang-java"><span class="pln">    THEN </span><span class="str">'男'</span></code></li><li class="L5"><code class="lang-java"><span class="pln">    WHEN t</span><span class="pun">.</span><span class="pln">sex </span><span class="pun">=</span><span class="pln"> </span><span class="lit">2</span></code></li><li class="L6"><code class="lang-java"><span class="pln">    THEN </span><span class="str">'女'</span></code></li><li class="L7"><code class="lang-java"><span class="pln">    ELSE </span><span class="str">'未知'</span><span class="pln"> END</span><span class="pun">)</span><span class="pln"> </span><span class="pun">性别</span></code></li><li class="L8"><code class="lang-java"><span class="pln">    FROM t_stu t</span><span class="pun">;</span></code></li><li class="L9"><code class="lang-java"><span class="pun">+-----------+--------+</span></code></li><li class="L0"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="pun">姓名</span><span class="pln">      </span><span class="pun">|</span><span class="pln"> </span><span class="pun">性别</span><span class="pln">   </span><span class="pun">|</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+-----------+--------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="pun">张学友</span><span class="pln">    </span><span class="pun">|</span><span class="pln"> </span><span class="pun">男</span><span class="pln">     </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="pun">刘德华</span><span class="pln">    </span><span class="pun">|</span><span class="pln"> </span><span class="pun">男</span><span class="pln">     </span><span class="pun">|</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="pun">郭富城</span><span class="pln">    </span><span class="pun">|</span><span class="pln"> </span><span class="pun">男</span><span class="pln">     </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="pun">蔡依林</span><span class="pln">    </span><span class="pun">|</span><span class="pln"> </span><span class="pun">女</span><span class="pln">     </span><span class="pun">|</span></code></li><li class="L6"><code class="lang-java"><span class="pun">|</span><span class="pln"> xxx       </span><span class="pun">|</span><span class="pln"> </span><span class="pun">未知</span><span class="pln">   </span><span class="pun">|</span></code></li><li class="L7"><code class="lang-java"><span class="pun">+-----------+--------+</span></code></li><li class="L8"><code class="lang-java"><span class="lit">5</span><span class="pln"> rows in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<h2 id="h2-u5176u4ED6u51FDu6570"><a name="其他函数" class="reference-link"></a><span class="header-link octicon octicon-link"></span>其他函数</h2><table>
+<thead>
+<tr>
+<th>函数名称</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>version</td>
+<td>数据库版本号</td>
+</tr>
+<tr>
+<td>database</td>
+<td>当前的数据库</td>
+</tr>
+<tr>
+<td>user</td>
+<td>当前连接用户</td>
+</tr>
+<tr>
+<td>password</td>
+<td>返回字符串密码形式</td>
+</tr>
+<tr>
+<td>md5</td>
+<td>返回字符串的md5数据</td>
+</tr>
+</tbody>
+</table>
+<pre class="prettyprint linenums prettyprinted" style=""><ol class="linenums"><li class="L0"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> SELECT version</span><span class="pun">();</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> version</span><span class="pun">()</span><span class="pln">  </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+------------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="lit">5.7</span><span class="pun">.</span><span class="lit">25</span><span class="pun">-</span><span class="pln">log </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+------------+</span></code></li><li class="L6"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li><li class="L7"><code class="lang-java"></code></li><li class="L8"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> SELECT database</span><span class="pun">();</span></code></li><li class="L9"><code class="lang-java"><span class="pun">+--------------+</span></code></li><li class="L0"><code class="lang-java"><span class="pun">|</span><span class="pln"> database</span><span class="pun">()</span><span class="pln">   </span><span class="pun">|</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+--------------+</span></code></li><li class="L2"><code class="lang-java"><span class="pun">|</span><span class="pln"> javacode2018 </span><span class="pun">|</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+--------------+</span></code></li><li class="L4"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li><li class="L5"><code class="lang-java"></code></li><li class="L6"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> SELECT user</span><span class="pun">();</span></code></li><li class="L7"><code class="lang-java"><span class="pun">+----------------+</span></code></li><li class="L8"><code class="lang-java"><span class="pun">|</span><span class="pln"> user</span><span class="pun">()</span><span class="pln">         </span><span class="pun">|</span></code></li><li class="L9"><code class="lang-java"><span class="pun">+----------------+</span></code></li><li class="L0"><code class="lang-java"><span class="pun">|</span><span class="pln"> root@localhost </span><span class="pun">|</span></code></li><li class="L1"><code class="lang-java"><span class="pun">+----------------+</span></code></li><li class="L2"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li><li class="L3"><code class="lang-java"></code></li><li class="L4"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> SELECT  password</span><span class="pun">(</span><span class="str">'123456'</span><span class="pun">);</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+-------------------------------------------+</span></code></li><li class="L6"><code class="lang-java"><span class="pun">|</span><span class="pln"> password</span><span class="pun">(</span><span class="str">'123456'</span><span class="pun">)</span><span class="pln">                        </span><span class="pun">|</span></code></li><li class="L7"><code class="lang-java"><span class="pun">+-------------------------------------------+</span></code></li><li class="L8"><code class="lang-java"><span class="pun">|</span><span class="pln"> </span><span class="pun">*</span><span class="lit">6BB4837EB74329105EE4568DDA7DC67ED2CA2AD9</span><span class="pln"> </span><span class="pun">|</span></code></li><li class="L9"><code class="lang-java"><span class="pun">+-------------------------------------------+</span></code></li><li class="L0"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set</span><span class="pun">,</span><span class="pln"> </span><span class="lit">1</span><span class="pln"> warning </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li><li class="L1"><code class="lang-java"></code></li><li class="L2"><code class="lang-java"><span class="pln">mysql</span><span class="pun">&gt;</span><span class="pln"> SELECT md5</span><span class="pun">(</span><span class="str">'123456'</span><span class="pun">);</span></code></li><li class="L3"><code class="lang-java"><span class="pun">+----------------------------------+</span></code></li><li class="L4"><code class="lang-java"><span class="pun">|</span><span class="pln"> md5</span><span class="pun">(</span><span class="str">'123456'</span><span class="pun">)</span><span class="pln">                    </span><span class="pun">|</span></code></li><li class="L5"><code class="lang-java"><span class="pun">+----------------------------------+</span></code></li><li class="L6"><code class="lang-java"><span class="pun">|</span><span class="pln"> e10adc3949ba59abbe56e057f20f883e </span><span class="pun">|</span></code></li><li class="L7"><code class="lang-java"><span class="pun">+----------------------------------+</span></code></li><li class="L8"><code class="lang-java"><span class="lit">1</span><span class="pln"> row in set </span><span class="pun">(</span><span class="lit">0.00</span><span class="pln"> sec</span><span class="pun">)</span></code></li></ol></pre>
+<p><strong>今天列的函数比较多，大家搜藏一下，慢慢消化，喜欢的帮忙转发一下，谢谢。</strong></p>
+<p><a style="display:none" target="_blank" href="https://mp.weixin.qq.com/s/_S1DD2JADnXvpexxaBwLLg">继续收门徒，亲手带，月薪 4W 以下的可以来找我</a></p>
+<h2 id="h2-u6700u65B0u8D44u6599"><a name="最新资料" class="reference-link"></a><span class="header-link octicon octicon-link"></span>最新资料</h2><ol>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzkzOTI3Nzc0Mg==&amp;mid=2247484964&amp;idx=2&amp;sn=c81bce2f26015ee0f9632ddc6c67df03&amp;scene=21#wechat_redirect" target="_blank">尚硅谷 Java 学科全套教程（总 207.77GB）</a></li><li><a href="https://mp.weixin.qq.com/s?__biz=MzkwOTAyMTY2NA==&amp;mid=2247484192&amp;idx=1&amp;sn=505f2faaa4cc911f553850667749bcbb&amp;scene=21#wechat_redirect" target="_blank">2021 最新版 Java 微服务学习线路图 + 视频</a></li><li><a href="https://mp.weixin.qq.com/s?__biz=MzkwOTAyMTY2NA==&amp;mid=2247484573&amp;idx=1&amp;sn=7f3d83892186c16c57bc0b99f03f1ffd&amp;scene=21#wechat_redirect" target="_blank">阿里技术大佬整理的《Spring 学习笔记.pdf》</a></li><li><a href="https://mp.weixin.qq.com/s?__biz=MzkwOTAyMTY2NA==&amp;mid=2247484544&amp;idx=2&amp;sn=c1dfe907cfaa5b9ae8e66fc247ccbe84&amp;scene=21#wechat_redirect" target="_blank">阿里大佬的《MySQL 学习笔记高清.pdf》</a></li><li><a href="https://mp.weixin.qq.com/s?__biz=MzkwOTAyMTY2NA==&amp;mid=2247485167&amp;idx=1&amp;sn=48d75c8e93e748235a3547f34921dfb7&amp;scene=21#wechat_redirect" target="_blank">2021 版 java 高并发常见面试题汇总.pdf</a></li><li><a href="https://mp.weixin.qq.com/s?__biz=MzkwOTAyMTY2NA==&amp;mid=2247485664&amp;idx=1&amp;sn=435f9f515a8f881642820d7790ad20ce&amp;scene=21#wechat_redirect" target="_blank">Idea 快捷键大全.pdf</a></li></ol>
+<p><img src="./专辑：MySQL教程_常用函数汇总-Java充电社【公众号：Java充电社】_files/2883e86e-3eff-404a-8943-0066e5e2b454.png" alt=""></p>
+</div>
+    </div>
+    <div class="article-footer">
+            <div class="blog-article-item">
+                <a href="http://itsoku.com/course/3/45">下一篇：深入了解连接查询及原理</a>
+            </div>
+            <div class="blog-article-item">
+                <a href="http://itsoku.com/course/3/43">上一篇：分组查询（group by、having）</a>
+            </div>
+    </div>
+</div>
+<div class="right-column" id="article-memu" style="top: 100px;">
+    <div class="markdown-body editormd-preview-container" id="custom-toc-container" previewcontainer="false"><div class="markdown-toc editormd-markdown-toc"><ul class="markdown-toc-list"><li><a class="toc-level-2" href="http://itsoku.com/course/3/44#%E7%9B%AE%E5%BD%95" level="2">目录</a></li><li><a class="toc-level-2" href="http://itsoku.com/course/3/44#MySQL%20%E6%95%B0%E5%80%BC%E5%9E%8B%E5%87%BD%E6%95%B0" level="2">MySQL 数值型函数</a><ul><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#abs:%E6%B1%82%E7%BB%9D%E5%AF%B9%E5%80%BC" level="3">abs:求绝对值</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#sqrt:%E6%B1%82%E4%BA%8C%E6%AC%A1%E6%96%B9%E8%B7%9F%EF%BC%88%E5%BC%80%E6%96%B9%EF%BC%89" level="3">sqrt:求二次方跟（开方）</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#mod:%E6%B1%82%E4%BD%99%E6%95%B0" level="3">mod:求余数</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#ceil%E5%92%8Cceiling:%E5%90%91%E4%B8%8A%E5%8F%96%E6%95%B4" level="3">ceil和ceiling:向上取整</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#floor:%E5%90%91%E4%B8%8B%E5%8F%96%E6%95%B4" level="3">floor:向下取整</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#rand:%E7%94%9F%E6%88%90%E4%B8%80%E4%B8%AA%E9%9A%8F%E6%9C%BA%E6%95%B0" level="3">rand:生成一个随机数</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#round:%E5%9B%9B%E8%88%8D%E4%BA%94%E5%85%A5%E5%87%BD%E6%95%B0" level="3">round:四舍五入函数</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#sign:%E8%BF%94%E5%9B%9E%E5%8F%82%E6%95%B0%E7%9A%84%E7%AC%A6%E5%8F%B7" level="3">sign:返回参数的符号</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#pow%20%E5%92%8C%20power:%E6%AC%A1%E6%96%B9%E5%87%BD%E6%95%B0" level="3">pow 和 power:次方函数</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#sin:%E6%AD%A3%E5%BC%A6%E5%87%BD%E6%95%B0" level="3">sin:正弦函数</a></li></ul></li><li><a class="toc-level-2" href="http://itsoku.com/course/3/44#MySQL%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%87%BD%E6%95%B0" level="2">MySQL 字符串函数</a><ul><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#length:%E8%BF%94%E5%9B%9E%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9B%B4%E6%8E%A5%E9%95%BF%E5%BA%A6" level="3">length:返回字符串直接长度</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#concat:%E5%90%88%E5%B9%B6%E5%AD%97%E7%AC%A6%E4%B8%B2" level="3">concat:合并字符串</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#insert:%E6%9B%BF%E6%8D%A2%E5%AD%97%E7%AC%A6%E4%B8%B2" level="3">insert:替换字符串</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#lower:%E5%B0%86%E5%AD%97%E6%AF%8D%E8%BD%AC%E6%8D%A2%E6%88%90%E5%B0%8F%E5%86%99" level="3">lower:将字母转换成小写</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#upper:%E5%B0%86%E5%AD%97%E6%AF%8D%E8%BD%AC%E6%8D%A2%E6%88%90%E5%A4%A7%E5%86%99" level="3">upper:将字母转换成大写</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#left:%E4%BB%8E%E5%B7%A6%E4%BE%A7%E6%88%AA%E5%8F%96%E5%AD%97%E7%AC%A6%E4%B8%B2" level="3">left:从左侧截取字符串</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#right:%E4%BB%8E%E5%8F%B3%E4%BE%A7%E6%88%AA%E5%8F%96%E5%AD%97%E7%AC%A6%E4%B8%B2" level="3">right:从右侧截取字符串</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#trim:%E5%88%A0%E9%99%A4%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%A4%E4%BE%A7%E7%A9%BA%E6%A0%BC" level="3">trim:删除字符串两侧空格</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#replace:%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%9B%BF%E6%8D%A2" level="3">replace:字符串替换</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#substr%20%E5%92%8C%20substring:%E6%88%AA%E5%8F%96%E5%AD%97%E7%AC%A6%E4%B8%B2" level="3">substr 和 substring:截取字符串</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#reverse:%E5%8F%8D%E8%BD%AC%E5%AD%97%E7%AC%A6%E4%B8%B2" level="3">reverse:反转字符串</a></li></ul></li><li><a class="toc-level-2" href="http://itsoku.com/course/3/44#MySQL%20%E6%97%A5%E6%9C%9F%E5%92%8C%E6%97%B6%E9%97%B4%E5%87%BD%E6%95%B0" level="2">MySQL 日期和时间函数</a><ul><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#curdate%20%E5%92%8C%20current_date:%E4%B8%A4%E4%B8%AA%E5%87%BD%E6%95%B0%E4%BD%9C%E7%94%A8%E7%9B%B8%E5%90%8C%EF%BC%8C%E8%BF%94%E5%9B%9E%E5%BD%93%E5%89%8D%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%97%A5%E6%9C%9F%E5%80%BC" level="3">curdate 和 current_date:两个函数作用相同，返回当前系统的日期值</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#curtime%20%E5%92%8C%20current_time:%E8%8E%B7%E5%8F%96%E7%B3%BB%E7%BB%9F%E5%BD%93%E5%89%8D%E6%97%B6%E9%97%B4" level="3">curtime 和 current_time:获取系统当前时间</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#now%20%E5%92%8C%20sysdate:%E8%8E%B7%E5%8F%96%E5%BD%93%E5%89%8D%E6%97%B6%E9%97%B4%E6%97%A5%E6%9C%9F" level="3">now 和 sysdate:获取当前时间日期</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#unix_timestamp:%E8%8E%B7%E5%8F%96UNIX%E6%97%B6%E9%97%B4%E6%88%B3" level="3">unix_timestamp:获取UNIX时间戳</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#from_unixtime:%E6%97%B6%E9%97%B4%E6%88%B3%E8%BD%AC%E6%97%A5%E6%9C%9F" level="3">from_unixtime:时间戳转日期</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#month:%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E6%97%A5%E6%9C%9F%E7%9A%84%E6%9C%88%E4%BB%BD" level="3">month:获取指定日期的月份</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#monthname:%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E6%97%A5%E6%9C%9F%E6%9C%88%E4%BB%BD%E7%9A%84%E8%8B%B1%E6%96%87%E5%90%8D%E7%A7%B0" level="3">monthname:获取指定日期月份的英文名称</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#dayname:%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E6%97%A5%E6%9C%9F%E7%9A%84%E6%98%9F%E6%9C%9F%E5%90%8D%E7%A7%B0" level="3">dayname:获取指定日期的星期名称</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#dayofweek:%E8%8E%B7%E5%8F%96%E6%97%A5%E6%9C%9F%E5%AF%B9%E5%BA%94%E7%9A%84%E5%91%A8%E7%B4%A2%E5%BC%95" level="3">dayofweek:获取日期对应的周索引</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#week:%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E6%97%A5%E6%9C%9F%E6%98%AF%E4%B8%80%E5%B9%B4%E4%B8%AD%E7%9A%84%E7%AC%AC%E5%87%A0%E5%91%A8" level="3">week:获取指定日期是一年中的第几周</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#dayofyear:%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E6%97%A5%E6%9C%9F%E5%9C%A8%E4%B8%80%E5%B9%B4%E4%B8%AD%E7%9A%84%E4%BD%8D%E7%BD%AE" level="3">dayofyear:获取指定日期在一年中的位置</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#dayofmonth:%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E6%97%A5%E6%9C%9F%E5%9C%A8%E4%B8%80%E4%B8%AA%E6%9C%88%E7%9A%84%E4%BD%8D%E7%BD%AE" level="3">dayofmonth:获取指定日期在一个月的位置</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#year:%E8%8E%B7%E5%8F%96%E5%B9%B4%E4%BB%BD" level="3">year:获取年份</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#time_to_sec:%E5%B0%86%E6%97%B6%E9%97%B4%E8%BD%AC%E6%8D%A2%E4%B8%BA%E7%A7%92%E5%80%BC" level="3">time_to_sec:将时间转换为秒值</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#sec_to_time:%E5%B0%86%E7%A7%92%E5%80%BC%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%97%B6%E9%97%B4%E6%A0%BC%E5%BC%8F" level="3">sec_to_time:将秒值转换为时间格式</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#date_add%E5%92%8Cadddate:%E5%90%91%E6%97%A5%E6%9C%9F%E6%B7%BB%E5%8A%A0%E6%8C%87%E5%AE%9A%E6%97%B6%E9%97%B4%E9%97%B4%E9%9A%94" level="3">date_add和adddate:向日期添加指定时间间隔</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#date_sub%E5%92%8Csubdate:%E6%97%A5%E6%9C%9F%E5%87%8F%E6%B3%95%E8%BF%90%E7%AE%97" level="3">date_sub和subdate:日期减法运算</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#addtime:%E6%97%B6%E9%97%B4%E5%8A%A0%E6%B3%95%E8%BF%90%E7%AE%97" level="3">addtime:时间加法运算</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#subtime:%E6%97%B6%E9%97%B4%E5%87%8F%E6%B3%95%E8%BF%90%E7%AE%97" level="3">subtime:时间减法运算</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#datediff:%E8%8E%B7%E5%8F%96%E4%B8%A4%E4%B8%AA%E6%97%A5%E6%9C%9F%E7%9A%84%E6%97%B6%E9%97%B4%E9%97%B4%E9%9A%94" level="3">datediff:获取两个日期的时间间隔</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#date_format:%E6%A0%BC%E5%BC%8F%E5%8C%96%E6%8C%87%E5%AE%9A%E7%9A%84%E6%97%A5%E6%9C%9F" level="3">date_format:格式化指定的日期</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#weekday:%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E6%97%A5%E6%9C%9F%E5%9C%A8%E4%B8%80%E5%91%A8%E5%86%85%E7%9A%84%E7%B4%A2%E5%BC%95%E4%BD%8D%E7%BD%AE" level="3">weekday:获取指定日期在一周内的索引位置</a></li></ul></li><li><a class="toc-level-2" href="http://itsoku.com/course/3/44#MySQL%20%E8%81%9A%E5%90%88%E5%87%BD%E6%95%B0" level="2">MySQL 聚合函数</a></li><li><a class="toc-level-2" href="http://itsoku.com/course/3/44#MySQL%20%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6%E5%87%BD%E6%95%B0" level="2">MySQL 流程控制函数</a><ul><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#if:%E5%88%A4%E6%96%AD" level="3">if:判断</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#ifnull:%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E4%B8%BA%E7%A9%BA" level="3">ifnull:判断是否为空</a></li><li><a class="toc-level-3" href="http://itsoku.com/course/3/44#case:%E6%90%9C%E7%B4%A2%E8%AF%AD%E5%8F%A5,%E7%B1%BB%E4%BC%BC%E4%BA%8Ejava%E4%B8%AD%E7%9A%84if..else%20if..else" level="3">case:搜索语句,类似于java中的if..else if..else</a></li></ul></li><li><a class="toc-level-2" href="http://itsoku.com/course/3/44#%E5%85%B6%E4%BB%96%E5%87%BD%E6%95%B0" level="2">其他函数</a></li><li><a class="toc-level-2" href="http://itsoku.com/course/3/44#%E6%9C%80%E6%96%B0%E8%B5%84%E6%96%99" level="2">最新资料</a><ul></ul></li></ul></div></div>
+</div>
+<div style="clear: both"></div>
+<button id="course-btn" class="course-btn"> <i class="fa fa-navicon"></i> </button>
+<script type="text/javascript">
+    $(function() {
+        $("#course-btn").click(function(){
+            $("#course-nav").slideToggle();
+            $('html,body').animate({
+                scrollTop:0
+            },'slow');
+        });
+
+        $(window).resize(function () {
+            var viewportWidth = $(window).width();
+            if (viewportWidth >= 768) {
+                // $("#course-nav").hide();
+                $("#course-nav").show();
+            }
+        });
+
+        $("#article-memu").css("top",$("#container").get(0).offsetTop+50);
+    });
+</script>
+    </div>
+</div>
+<div id="footer">
+    <div class="copyright">
+        Copyright © 2021 <strong><a href="http://itsoku.com/" target="_blank">Java充电社(www.itsoku.com)</a></strong>&nbsp;All Rights Reserved.
+        <br>备案号：<a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备12033211号</a>
+    </div>
+</div><script src="./专辑：MySQL教程_常用函数汇总-Java充电社【公众号：Java充电社】_files/marked.min.js.下载"></script>
+<script src="./专辑：MySQL教程_常用函数汇总-Java充电社【公众号：Java充电社】_files/prettify.min.js.下载"></script>
+<script src="./专辑：MySQL教程_常用函数汇总-Java充电社【公众号：Java充电社】_files/raphael.min.js.下载"></script>
+<script src="./专辑：MySQL教程_常用函数汇总-Java充电社【公众号：Java充电社】_files/underscore.min.js.下载"></script>
+<script src="./专辑：MySQL教程_常用函数汇总-Java充电社【公众号：Java充电社】_files/sequence-diagram.min.js.下载"></script>
+<script src="./专辑：MySQL教程_常用函数汇总-Java充电社【公众号：Java充电社】_files/flowchart.min.js.下载"></script>
+<script src="./专辑：MySQL教程_常用函数汇总-Java充电社【公众号：Java充电社】_files/jquery.flowchart.min.js.下载"></script>
+<script src="./专辑：MySQL教程_常用函数汇总-Java充电社【公众号：Java充电社】_files/editormd.js.下载"></script>
+<script type="text/javascript">
+    $(function() {
+        var testEditormdView = editormd.markdownToHTML("editormd-view", {
+            //htmlDecode      : true,       // 开启 HTML 标签解析，为了安全性，默认不开启
+            htmlDecode: "style,script,iframe",  // you can filter tags decode
+            toc             : true,
+            // tocm: true,    // Using [TOCM]
+            tocContainer: "#custom-toc-container", // 自定义 ToC 容器层
+            //gfm             : false,
+            //tocDropdown     : true,
+            // markdownSourceCode : true, // 是否保留 Markdown 源码，即是否删除保存源码的 Textarea 标签
+            emoji: true,
+            taskList: false,
+            tex: false,  // 默认不解析
+            flowChart: true,  // 默认不解析
+            sequenceDiagram: true,  // 默认不解析
+            atLink: false,
+            emailLink: false
+        });
+    });
+</script>
+<a class="to-top" title="点击返回顶部" style="position: fixed; right: 20px; bottom: 20px; cursor: pointer; display: none;"></a>
+
+</body></html>

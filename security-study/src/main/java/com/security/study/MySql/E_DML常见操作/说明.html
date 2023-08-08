@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+===================================================================================================================
+drop，truncate，delete区别
+
+drop (删除表)：删除内容和定义，释放空间，简单来说就是把整个表去掉，以后要新增数据是不可能的，除非新增一个表。
+
+drop语句将删除表的结构被依赖的约束（constrain），触发器（trigger）索引（index），依赖于该表的存储过程/函数将被保留，但其状态会变为：invalid。
+
+如果要删除表定义及其数据，请使用 drop table 语句。
+
+truncate (清空表中的数据)：删除内容、释放空间但不删除定义(保留表的数据结构)，与drop不同的是，只是清空表数据而已。
+
+注意：truncate不能删除具体行数据，要删就要把整个表清空了。
+
+delete (删除表中的数据)：delete 语句用于删除表中的行。delete语句执行删除的过程是每次从表中删除一行，并且同时将该行的删除操作作为事务记录在日志中保存，以便进行进行回滚操作。
+
+truncate与不带where的delete ：只删除数据，而不删除表的结构（定义）
+
+truncate table 删除表中的所有行，但表结构及其列、约束、索引等保持不变。
+
+对于由foreign key约束引用的表，不能使用truncate table ，而应使用不带where子句的delete语句。由于truncate table 记录在日志中，所以它不能激活触发器。
+
+delete语句是数据库操作语言(dml)，这个操作会放到 rollback segement 中，事务提交之后才生效；如果有相应的 trigger，执行的时候将被触发。
+
+truncate、drop 是数据库定义语言(ddl)，操作立即生效，原数据不放到 rollback segment 中，不能回滚，操作不触发 trigger。
+
+如果有自增列，truncate方式删除之后，自增列的值会被初始化，delete方式要分情况（如果数据库被重启了，自增列值也会被初始化，数据库未被重启，则不变）
+
+如果要删除表定义及其数据，请使用 drop table 语句
+
+安全性：小心使用 drop 和 truncate，尤其没有备份的时候，否则哭都来不及
+
+删除速度，一般来说: drop> truncate > delete
+
+
+特性          drop	truncate	delete
+条件删除	     不支持	不支持	    支持
+删除表结构	 支持	 不支持	    不支持
+事务的方式删除	 不支持	不支持	    支持
+触发触发器	 否	     否     	是
+
+
+
+
+
+
+</body>
+</html>

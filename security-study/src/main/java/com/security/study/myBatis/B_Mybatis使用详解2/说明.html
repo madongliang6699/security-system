@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+http://itsoku.com/course/4/75
+
+本文主要讲解：
+================================================================================================
+1、别名，这个好像没有太大价值，不总结了。
+mybatis内置的别名可以百度一下。
+
+别名使用建议
+别名的方式可以简化类型的写法，原本很长一串的UserModel对象，现在只用写个user就行了，用起来是不是挺爽的？
+从写法上面来说，确实少帮我们省了一些代码，但是从维护上面来讲，不是很方便。
+如Mapper xml直接写别名，看代码的时候，很难知道这个别名对应的具体类型，还需要我们去注册的地方找一下，不是太方便，如果我们在idea中写完整的类名，还可以按住Ctrl健，然后用鼠标左键点击类型直接可以跳到对应的类定义中去，如果使用别名是无法导航过去的。
+整体上来说开发和看代码都不是太方便，只是写法上比价简单。
+所以建议自定义的类尽量别使用别名，而对mybatis中内置的一些别名我们需要知道。
+
+==================================================================================================
+2、属性配置文件详解
+这里主要讲了mybatis-config.xml配置文件中的值可以以${jdbc.url}这种方式引用外部的配置文件中的数据，方便不同环境修改配置信息。
+并且支持通过url网络远程地址，从远程下载并加载配置信息。
+这里也不总结了，可以看原文
+
+=================================================================================================
+3、mybatis中引入mapper的3种方式
+
+----------------------------------------------------------------------------------------
+方式1：使用mapper resouce属性注册mapper xml文件
+目前我们所涉及到的各种例子都是采用的这种方式，使用下面的方法进行引入：
+
+< mappers>
+    < mapper resource="Mapper xml的路径（相对于classes的路径）"/>
+< /mappers>
+再来说一下这种方式的一些注意点：
+
+一般情况下面我，我们会创建一个和Mapper xml中namespace同名的Mapper接口，Mapper接口会和Mapper xml文件进行绑定
+mybatis加载mapper xml的时候，会去查找namespace对应的Mapper接口，然后进行注册，我们可以通过Mapper接口的方式去访问Mapper xml中的具体操作
+Mapper xml和Mapper 接口配合的方式是比较常见的做法，也是强烈建议大家使用的。
+【使用的比较少吧，这要配置多少个文件啊，麻烦】
+
+-------------------------------------------------------------------------------------------------
+方式2：使用mapper class属性注册Mapper接口
+引入Mapper接口
+mybatis全局配置文件中引入mapper接口，如下：
+< mappers>
+    < mapper class="接口的完整类名" />
+< /mappers>
+这种情况下，mybais会去加载class对应的接口，然后还会去加载和这个接口同一个目录的同名的xml文件。
+
+如：
+< mappers>
+    < mapper class="com.javacode2018.chat03.demo1.UserMapper" />
+< /mappers>
+上面这种写法，mybatis会自动去注册UserMapper接口，还会去查找下面的文件：
+com/javacode2018/chat03/demo1/UserMapper.xml
+
+如果编译之后的文件中少了UserMapper.xml，这个和maven有关，maven编译src/java代码的时候，默认只会对java文件进行编译然后放在target/classes目录，需要在chat03/pom.xml中加入下面配置：
+
+<build>
+    <resources>
+        <resource>
+            <directory>${project.basedir}/src/main/java</directory>
+            <includes>
+                <include>**/*.xml</include>
+            </includes>
+        </resource>
+        <resource>
+            <directory>${project.basedir}/src/main/resources</directory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+        </resource>
+    </resources>
+</build>
+源码
+方式2对应的源码大家可以去看下面这个方法：
+
+org.apache.ibatis.builder.xml.XMLConfigBuilder#mapperElement
+方法中会去加载mapper元素中class属性指定的Mapper接口，然后进行注册，随后会在接口同目录中查找同名的mapper xml文件，将解析这个xml文件，如果mapper xml文件不存在，也不会报错，源码还是比较简单的，大家可以去看一下，加深理解。
+
+
+--------------------------------------------------------------------------------------------------------
+方式3：使用package元素批量注册Mapper接口
+批量注册Mapper接口
+上面说2种方式都是一个个注册mapper的，如果我们写了很多mapper，是否能够批量注册呢？
+
+mybatis提供了扫描包批量注册的方式，需要在mybatis全局配置文件中加入下面配置：
+
+<mappers>
+    <package name="需要扫描的包" />
+</mappers>
+mybatis会扫描package元素中name属性指定的包及子包中的所有接口，将其当做Mapper 接口进行注册，所以一般我们会创建一个mapper包，里面放Mapper接口和同名的Mapper xml文件。
+
+这种批量的方式是不是用着挺爽的，不过有点不是太好，mapper xml和mapper接口放在了一个目录中，目录中既有java代码又有xml文件，看起来也挺别扭的，其实你们可以这样：
+一般我们将配置文件放在resource目录，我们可以在resource目录中创建下面子目录：
+com/javacode2018/chat03/demo3/mapper
+然后将com.javacode2018.chat03.demo3.mapper中的2个xml文件移到上面新创建的目录中去
+
+源码
+方式3的源码和方式2的源码在一个地方：
+org.apache.ibatis.builder.xml.XMLConfigBuilder#mapperElement
+方法中会去扫描指定的包中所有的接口，会将接口作为Mapper接口进行注册，然后还会找这些接口同名的Xml文件，将其注册为Mapper xml文件，相对于对方式2循环的方式。
+
+使用注意
+方式3会扫描指定包中所有的接口，把这些接口作为Mapper接口进行注册，扫描到的类型只要是接口就会被注册，所以指定的包中通常我们只放Mapper接口，避免存放一些不相干的类或者接口。
+
+
+=========================================================================================
+关于配置和源码
+本次讲解到的一些配置都是在mybatis全局配置文件中进行配置的，这些元素配置是有先后顺序的，具体元素是在下面的dtd文件中定义的：
+
+http://mybatis.org/dtd/mybatis-3-config.dtd
+建议大家去看一下这个dtd配置文件。
+
+Mybatis解析这个配置文件的入口是在下面的方法中：
+
+org.apache.ibatis.builder.xml.XMLConfigBuilder#parseConfiguration
+代码的部分实现如下：
+
+private void parseConfiguration(XNode root) {
+try {
+//issue #117 read properties first
+propertiesElement(root.evalNode("properties"));
+Properties settings = settingsAsProperties(root.evalNode("settings"));
+loadCustomVfs(settings);
+loadCustomLogImpl(settings);
+typeAliasesElement(root.evalNode("typeAliases"));
+pluginElement(root.evalNode("plugins"));
+objectFactoryElement(root.evalNode("objectFactory"));
+objectWrapperFactoryElement(root.evalNode("objectWrapperFactory"));
+reflectorFactoryElement(root.evalNode("reflectorFactory"));
+settingsElement(settings);
+// read it after objectFactory and objectWrapperFactory issue #631
+environmentsElement(root.evalNode("environments"));
+databaseIdProviderElement(root.evalNode("databaseIdProvider"));
+typeHandlerElement(root.evalNode("typeHandlers"));
+mapperElement(root.evalNode("mappers"));
+} catch (Exception e) {
+throw new BuilderException("Error parsing SQL Mapper Configuration. Cause: " + e, e);
+}
+}
+可以看到mybatis启动的时候会按顺序加载上面的标签，大家可以去看一下源码，研究一下，下篇继续深入mybatis其他知识点。
+</body>
+</html>

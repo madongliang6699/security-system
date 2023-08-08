@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+阶段12：Bean销毁阶段
+================================================================================================
+触发bean销毁的几种方式：
+调用org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#destroyBean
+调用org.springframework.beans.factory.config.ConfigurableBeanFactory#destroySingletons
+调用ApplicationContext中的close方法
+【上面这三句话什么意思，好好查一下。
+猜测意思应该是，在spring中，最基本的底层的销毁一个bean有上面三种方式（调用上面的三个方法来销毁bean），下面要讲的生命周期中，
+在适当时机销毁一个bean的时候，使用的就应该是上面三种的其中一种】
+
+
+===================================================================================================
+Bean销毁阶段会依次执行：
+1、轮询beanPostProcessors列表（上面的很多阶段都是轮训这个列表），如果是DestructionAwareBeanPostProcessor这种类型的，会调用其内部的postProcessBeforeDestruction方法
+【DestructionAwareBeanPostProcessor是BeanPostProcessor的子接口，用于添加销毁前回调。 典型的用法是在特定的bean类型上调用自定义销毁回调，匹配相应的初始化回调。Destruction：破坏，销毁】
+
+2、如果bean实现了org.springframework.beans.factory.DisposableBean接口，会调用这个接口中的destroy方法
+
+3、调用bean自定义的销毁方法
+
+----------------------------------------------------------------------------------------------
+下面详解上面的3种销毁方法：
+DestructionAwareBeanPostProcessor接口
+看一下源码：
+/**
+*DestructionAwareBeanPostProcessor是BeanPostProcessor的子接口，用于添加销毁前回调。 典型的用法是在特定的bean类型上调用自定义销毁回调，匹配相应的初始化回调。】
+*/
+public interface DestructionAwareBeanPostProcessor extends BeanPostProcessor {
+    /**
+    * bean销毁前调用的方法.
+    * 在给定的bean实例销毁之前，将此BeanPostProcessor应用于该实例，例如调用自定义销毁回调。
+    * 与DisposableBean的destroy和自定义destroy方法一样，此回调只适用于容器完全管理其生命周期的bean。对于singleton和scoped bean，通常情况就是这样。
+    */
+    void postProcessBeforeDestruction(Object bean, String beanName) throws BeansException;
+
+    /**
+    * 用来判断bean是否需要触发postProcessBeforeDestruction方法
+    */
+    default boolean requiresDestruction(Object bean) {
+        return true;
+    }
+}
+这个接口有个关键的实现类：
+org.springframework.context.annotation.CommonAnnotationBeanPostProcessor
+CommonAnnotationBeanPostProcessor#postProcessBeforeDestruction方法中会调用bean中所有标注了@PreDestroy的方法。
+【CommonAnnotationBeanPostProcessor这个类就是上面初始化前阶段提到的spring自带的实现类，其内部（或父类）的
+两个方法postProcessBeforeInitialization()和postProcessAfterInitialization是上面学过的，可以执行@PostConstruct注解的方法，
+这里的postProcessBeforeDestruction方法和上面的一个道理，可以执行bean中带有@PreDestroy的方法。
+postProcessBeforeDestruction方法是销毁bean之前要做的操作。
+@PostConstruct 用于初始化动作，功能类似代码块或静态代码块
+@PreDestroy 相反，为程序环境整体结束前执行的动作，通常用于释放它一直持有的资源
+】
+
+------------------------------------------------------------------------------------------------------
+再来说一下自定义销毁方法有3种方式：（这里说的销毁方法应该是指销毁前要执行的方法，不是销毁bean本身的方法）
+
+方式1：xml中指定销毁方法
+< bean destroy-method="bean中方法名称"/>
+
+方式2：@Bean中指定销毁方法
+@Bean(destroyMethod = "方法名")
+
+方式3：api的方式指定销毁方法
+this.beanDefinition.setDestroyMethodName(methodName);
+
+方法最终会赋值给下面这个字段
+org.springframework.beans.factory.support.AbstractBeanDefinition#destroyMethodName
+
+---------------------------------------------------------------------------------
+案例
+
+案例1：自定义DestructionAwareBeanPostProcessor，看demo12：DestructionAwareBeanPostProcessorTest
+
+案例2：触发@PreDestroy标注的方法被调用
+上面说了这个注解是在CommonAnnotationBeanPostProcessor#postProcessBeforeDestruction中被处理的，
+这个类就是一个spring已经帮我们写好的实现这个功能的案例类，我们直接使用就行了，使用的方式就是直接在bean中创建一个@PreDestroy标注的方法就行。
+看demo12：DestructionAwareBeanPostProcessorTest1
+
+案例3：看一下销毁阶段的三种方式的执行顺序：
+实际上ApplicationContext内部已经将spring内部一些常见的必须的BeannPostProcessor自动装配到beanPostProcessors列表中，比如我们熟悉的下面的几个：
+1.org.springframework.context.annotation.CommonAnnotationBeanPostProcessor
+用来处理@Resource、@PostConstruct、@PreDestroy的
+2.org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor 【原来@Autowired注解是通过bean后置处理器做的】
+用来处理@Autowired、@Value注解
+3.org.springframework.context.support.ApplicationContextAwareProcessor
+用来回调Bean实现的各种Aware接口
+所以通过ApplicationContext来销毁bean，会触发3中方式的执行。
+
+下面我们就以AnnotationConfigApplicationContext来演示一下销毁操作。
+
+看demo12：DestroyTest
+
+可以看出销毁方法调用的顺序：
+@PreDestroy标注的所有方法
+DisposableBean接口中的destroy()
+自定义的销毁方法
+
+
+
+</body>
+</html>

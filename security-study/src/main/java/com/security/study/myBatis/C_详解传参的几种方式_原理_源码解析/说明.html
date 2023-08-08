@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+主要内容
+本篇详解mapper接口传参的各种方式：
+传递一个参数
+传递一个Map参数
+传递一个javabean参数
+多参数中用@param指定参数名称
+java编译中参数名称的处理
+mapper接口传参源码分析
+传递1个Collection参数
+传递1个List参数
+传递1个数组参数
+mybatis对于集合处理源码分析
+ResultHandler作为参数的用法
+
+=======================================================================================
+传递一个参数
+
+这里没什么讲的，但是有个小知识点，就是默认情况下，mybatis并不是通过名字去匹配xml中#{xxx}的名字和方法中的参数名，
+而是通过参数的编译后的名字和参数的位置下标去匹配参数的，下面讲传递两个参数的时候有讲解。
+而下面这个案例是传递一个参数，是可以唯一匹配参数的，所以这里的方法中的参数虽然是name，但是使用#{value1212}任意名字（应该除了关键字吧）都可以匹配到
+name的值，因为默认根本就不是通过名字匹配的。
+
+UserModel getByName(String name);
+SELECT * FROM t_user WHERE name = #{value} LIMIT 1
+
+#{name}、#{val}、${x}等等写法都可以引用上面name参数的值。
+
+
+===================================================================================================
+传递一个Map参数
+用法
+如果我们需要传递的参数比较多，参数个数是动态的，那么我们可以将这些参数放在一个map中，key为参数名称，value为参数的值。
+
+===================================================================================================
+传递多个参数
+
+UserModel getByIdOrName(Long id, String name);
+SELECT * FROM t_user WHERE id=#{id} OR name = #{name} LIMIT 1
+
+大家注意一下上面的取值我们是使用#{id}取id参数的值，#{name}取name参数的值，下面我们创建测试用例，看看是否可以正常运行？
+运行报错：
+org.apache.ibatis.exceptions.PersistenceException:
+### Error querying database.  Cause: org.apache.ibatis.binding.BindingException: Parameter 'id' not found. Available parameters are [arg1, arg0, param1, param2]
+### Cause: org.apache.ibatis.binding.BindingException: Parameter 'id' not found. Available parameters are [arg1, arg0, param1, param2]
+
+上面报错，给大家解释一下，sql中我们通过#{id}去获取id参数的值，但是mybatis无法通过#{id}获取到id的值，所以报错了，从上错误中我们看到有这样的一段：
+Available parameters are [arg1, arg0, param1, param2]
+上面表示可用的参数名称列表，我们可以在sql中通过#{参数名称}来引参数列表中的参数，先不说这4个参数具体怎么来的，那么我们将sql改成下面这样试试：
+SELECT * FROM t_user WHERE id=#{arg0} OR name = #{arg1} LIMIT 1
+运行就正常了。
+SELECT * FROM t_user WHERE id=#{param1} OR name = #{param2} LIMIT 1
+这样也是正常的。
+
+-------------------------------------------------------------------------------------------------
+多参数mybatis的处理
+mybatis处理多个参数的时候，会将多个参数封装到一个map中，map的key为参数的名称，java可以通过反射获取方法参数的名称，下面这个方法：
+
+UserModel getByIdOrName(Long id, String name);
+编译之后，方法参数的名称通过反射获取的并不是id、name，而是arg0、arg1，也就是说编译之后，方法真实的参数名称会丢失，会变成arg+参数下标的格式。
+
+所以上面传递的参数相当于传递了下面这样的一个map：
+
+Map< String,Object> map = new HashMap<>();
+map.put("arg0",id);
+map.put("arg1",name);
+那么参数中的param1、param2又是什么呢？
+
+上面的map中会放入按照参数名称->参数的值的方式将其放入map中，通过反射的方式获取的参数名称是可能会发生变化的，我们编译java代码使用javac命令，javac命令有个-parameters参数，当编译代码的时候加上这个参数，方法的实际名称会被编译到class字节码文件中，当通过反射获取方法名称的时候就不是arg0、arg1这种格式了，而是真实的参数名称：id、name了，我们来修改一下maven的配置让maven编译代码的时候加上这个参数，修改chat03/pom.xml中的build元素，这个元素中加入下面代码：
+
+<plugins>
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.3</version>
+        <configuration>
+            <compilerArgs>
+                <arg>-parameters</arg>
+            </compilerArgs>
+        </configuration>
+    </plugin>
+</plugins>
+idea中编译代码也加一下这个参数，操作如下：
+点击File->Settings->Build,Execution,Deployment->Java Compiler 中的命令行参数中，加上“-parameters” 。
+
+再使用SELECT * FROM t_user WHERE id=#{arg0} OR name = #{arg1} LIMIT 1 就会报错了：
+Parameter 'arg0' not found. Available parameters are [name, id, param1, param2]
+
+参数名称变成了真实的名称了，但是还是有param1、param2，方法参数名称不管怎么变，编译方式如何变化，param1, param2始终在这里，
+这个param1, param2就是为了应对不同的编译方式导致参数名称而发生变化的，mybatis内部除了将参数按照名称->值的方式放入map外，
+还会按照参数的顺序放入一些值，这些值的key就是param+参数位置，这个位置从1开始的，所以id是第一个参数，
+对应的key是param1，name对应的key是param2，value对应的还是参数的值，所以mybatis对于参数的处理相当于下面过程：
+Map< String,Object> map = new HashMap<>();
+map.put("反射获取的参数id的名称",id);
+map.put("反射获取的参数name的名称",name);
+map.put("param1",id);
+map.put("param2",name);
+
+所以到这里，#{}中使用真实的名字和param1、param2都是可以的。
+
+************************************************
+使用注意
+使用参数名称的方式对编译环境有很强的依赖性，如果编译中加上了-parameters参数，参数实际名称可以直接使用，如果没有加，参数名称就变成arg下标的格式了，这种很容易出错
+sql中使用param1、param2、paramN这种方式来引用多参数，对参数的顺序依赖性特别强，如果有人把参数的顺序调整了或者调整了参数的个数，后果就是灾难性的，所以这种方式不建议大家使用。
+
+----------------------------------------------------------------------------------------------------
+多参数中用@param指定参数名称
+
+刚才上面讲了多参数传递的使用上面，对参数名称和顺序有很强的依赖性，容易导致一些严重的错误。
+mybatis也为我们考虑到了这种情况，可以让我们自己去指定参数的名称，通过@param(“参数名称”)来给参数指定名称。
+
+UserModel getByIdOrName(@Param("userId") Long id, @Param("userName") String name);
+SELECT * FROM t_user WHERE id=#{userId} OR name = #{userName} LIMIT 1
+
+mybatis参数处理相关源码
+上面参数的解析过程代码在org.apache.ibatis.reflection.ParamNameResolver类中，主要看下面的2个方法：
+public ParamNameResolver(Configuration config, Method method)
+public Object getNamedParams(Object[] args)
+这2个方法建议大家都设置一下断点细看一下整个过程，方法的实现不复杂，大家花半个小时去看一下加深一下理解。
+
+---------------------------------------------------------------------------------------------------------
+传递1个Collection参数
+
+当传递的参数类型是java.util.Collection的时候，会被放在map中，key为collection，value为参数的值，如下面的查询方法：
+List< UserModel> getListByIdCollection(Collection< Long> idCollection);
+上面的查询方法，mybatis内部会将idList做一下处理：
+Map< String,Object> map = new HashMap<>();
+map.put("collection",idCollection)
+
+SELECT * FROM t_user WHERE id IN (#{collection[0]},#{collection[1]})
+
+
+Mybatis中集合参数处理了源码解析
+集合参数，mybatis会进行一些特殊处理，代码在下面的方法中：
+org.apache.ibatis.session.defaults.DefaultSqlSession#wrapCollection类，
+
+private Object wrapCollection(final Object object) {
+    if (object instanceof Collection) {
+        StrictMap< Object> map = new StrictMap<>();
+        map.put("collection", object);
+        if (object instanceof List) {
+            map.put("list", object);
+        }
+        return map;
+    } else if (object != null && object.getClass().isArray()) {
+        StrictMap< Object> map = new StrictMap<>();
+        map.put("array", object);
+        return map;
+    }
+    return object;
+}
+源码解释：
+
+判断参数是否是java.util.Collection类型，如果是，会放在map中，key为collection。
+
+如果参数是java.util.List类型的，会在map中继续放一个list作为key来引用这个对象。
+【也就是说，如果参数是java.util.List类型，可以使用 #{collection}，或 #{list} 来接收。怪不得在工作中感觉直接使用list也可以，很奇怪】
+
+
+如果参数是数组类型的，会通过array来引用这个对象。
+#{array}
+
+
+
+------------------------------------------------------------------------------------------------------
+ResultHandler作为参数
+
+查询的数量比较大的时候，返回一个List集合占用的内存还是比较多的，比如我们想导出很多数据，实际上如果我们通过jdbc的方式，遍历ResultSet的next方法，一条条处理，而不用将其存到List集合中再取处理。
+
+【这个知识点很特别，本篇文章讲的并不是很透彻，去网上查询学习。这个ResultHandler作为参数好像最适合的场景就是要查询出大批量的数据做导出，
+但是，如果一下子先查询出大批的数据在list中，然后再去处理导出，很可能导致OOM。ResultHandler就可以解决这个问题。
+因为ResultHandler是一条一条查询并处理数据的。
+百度一下原理吧。
+】
+
+
+
+</body>
+</html>

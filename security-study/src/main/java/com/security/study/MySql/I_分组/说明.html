@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+where和having的区别
+where是在分组（聚合）前对记录进行筛选，而having是在分组结束后的结果里筛选，最后返回整个sql的查询结果。
+
+可以把having理解为两级查询，即含having的查询操作先获得不含having子句时的sql查询结果表，然后在这个结果表上使用having条件筛选出符合的记录，最后返回这些记录，
+因此，having后是可以跟聚合函数的，并且这个聚集函数不必与select后面的聚集函数相同。
+
+分组后排序
+需求：获取每个用户最大金额，然后按照最大金额倒序，输出：用户id，最大金额，如下：
+
+mysql> SELECT
+user_id 用户id, max(price) 最大金额
+FROM
+t_order t
+GROUP BY user_id
+ORDER BY 最大金额 desc;
+
+
+=======================================================================================
+where & group by & having & order by & limit 一起协作
+where、group by、having、order by、limit这些关键字一起使用时，先后顺序有明确的限制，语法如下：
+
+select 列 from
+表名
+where [查询条件]
+group by [分组表达式]
+having [分组过滤条件]
+order by [排序条件]
+limit [offset,] count;
+
+写法上面必须按照上面的顺序来写。
+
+
+示例：
+
+需求：查询出2018年，下单数量大于等于2的，按照下单数量降序排序，最后只输出第1条记录，显示：用户id，下单数量，如下：
+
+mysql> SELECT
+user_id 用户id, COUNT(id) 下单数量
+FROM
+t_order t
+WHERE
+t.the_year = 2018
+GROUP BY user_id
+HAVING count(id)>=2
+ORDER BY 下单数量 DESC
+LIMIT 1;
+
+===============================================================================
+mysql分组中的坑
+本文开头有介绍，分组中select后面的列只能有2种：
+
+出现在group by后面的列
+使用聚合函数的列
+oracle、sqlserver、db2中也是按照这种规范来的。
+
+文中使用的是5.7版本，默认是按照这种规范来的。
+
+mysql早期的一些版本，没有上面这些要求，select后面可以跟任何合法的列。
+
+
+
+示例
+需求：获取每个用户下单的最大金额及下单的年份，输出：用户id，最大金额，年份，写法如下：
+
+mysql> select
+user_id 用户id, max(price) 最大金额, the_year 年份
+FROM t_order t
+GROUP BY t.user_id;
+ERROR 1055 (42000): Expression #3 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'javacode2018.t.the_year' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
+上面的sql报错了，原因因为the_year不符合上面说的2条规则（select后面的列必须出现在group by中或者使用聚合函数），而sql_mode限制了这种规则，我们看一下sql_mode的配置：
+
+mysql> select @@sql_mode;
++-------------------------------------------------------------------------------------------------------------------------------------------+
+| @@sql_mode                                                                                                                                |
++-------------------------------------------------------------------------------------------------------------------------------------------+
+| ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION |
++-------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+sql_mode中包含了ONLY_FULL_GROUP_BY，这个表示select后面的列必须符合上面的说的2点规范。
+
+可以将ONLY_FULL_GROUP_BY去掉，select后面就可以加任意列了，我们来看一下效果。
+
+修改mysql中的my.ini文件：
+
+sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+重启mysql，再次运行，效果如下：
+
+mysql> select
+user_id 用户id, max(price) 最大金额, the_year 年份
+FROM t_order t
+GROUP BY t.user_id;
++----------+--------------+--------+
+| 用户id   | 最大金额     | 年份   |
++----------+--------------+--------+
+|     1001 |        88.88 |   2017 |
+|     1002 |        44.44 |   2018 |
+|     1003 |        66.66 |   2018 |
++----------+--------------+--------+
+3 rows in set (0.03 sec)
+看一下上面的数据，第一条88.88的年份是2017年，我们再来看一下原始数据：
+
+mysql> select * from t_order;
++----+---------+---------------+-------+----------+
+| id | user_id | user_name     | price | the_year |
++----+---------+---------------+-------+----------+
+|  1 |    1001 | 路人甲Java    | 11.11 |     2017 |
+|  2 |    1001 | 路人甲Java    | 22.22 |     2018 |
+|  3 |    1001 | 路人甲Java    | 88.88 |     2018 |
+|  4 |    1002 | 刘德华        | 33.33 |     2018 |
+|  5 |    1002 | 刘德华        | 12.22 |     2018 |
+|  6 |    1002 | 刘德华        | 16.66 |     2018 |
+|  7 |    1002 | 刘德华        | 44.44 |     2019 |
+|  8 |    1003 | 张学友        | 55.55 |     2018 |
+|  9 |    1003 | 张学友        | 66.66 |     2019 |
++----+---------+---------------+-------+----------+
+9 rows in set (0.00 sec)
+对比一下，user_id=1001、price=88.88是第3条数据，即the_year是2018年，但是上面的分组结果是2017年，结果和我们预期的不一致，此时mysql对这种未按照规范来的列，乱序了，mysql取的是第一条。
+
+正确的写法，提供两种，如下：
+
+mysql> SELECT
+user_id 用户id,
+price 最大金额,
+the_year 年份
+FROM
+t_order t1
+WHERE
+(t1.user_id , t1.price)
+IN
+(SELECT
+t.user_id, MAX(t.price)
+FROM
+t_order t
+GROUP BY t.user_id);
++----------+--------------+--------+
+| 用户id   | 最大金额     | 年份   |
++----------+--------------+--------+
+|     1001 |        88.88 |   2018 |
+|     1002 |        44.44 |   2019 |
+|     1003 |        66.66 |   2019 |
++----------+--------------+--------+
+3 rows in set (0.00 sec)
+mysql> SELECT
+user_id 用户id,
+price 最大金额,
+the_year 年份
+FROM
+t_order t1,(SELECT
+t.user_id uid, MAX(t.price) pc
+FROM
+t_order t
+GROUP BY t.user_id) t2
+WHERE
+t1.user_id = t2.uid
+AND  t1.price = t2.pc;
++----------+--------------+--------+
+| 用户id   | 最大金额     | 年份   |
++----------+--------------+--------+
+|     1001 |        88.88 |   2018 |
+|     1002 |        44.44 |   2019 |
+|     1003 |        66.66 |   2019 |
++----------+--------------+--------+
+3 rows in set (0.00 sec)
+上面第1种写法，比较少见，in中使用了多字段查询。
+
+建议：在写分组查询的时候，最好按照标准的规范来写，select后面出现的列必须在group by中或者必须使用聚合函数。
+
+总结
+在写分组查询的时候，最好按照标准的规范来写，select后面出现的列必须在group by中或者必须使用聚合函数。
+select语法顺序：select、from、where、group by、having、order by、limit，顺序不能搞错了，否则报错。
+in多列查询的使用，下去可以试试
+
+
+
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+
+
+阶段8：Bean属性设置阶段
+=============================================================================================
+属性设置阶段分为3个小的阶段：
+实例化后阶段
+Bean属性赋值前处理
+Bean属性赋值
+
+-----------------------------------------------------------------------------
+实例化后阶段:
+会调用InstantiationAwareBeanPostProcessor接口的postProcessAfterInstantiation这个方法，调用逻辑如下：
+
+看一下具体的调用逻辑如下：
+for (BeanPostProcessor bp : getBeanPostProcessors()) {
+    if (bp instanceof InstantiationAwareBeanPostProcessor) {
+        InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) bp;
+        if (!ibp.postProcessAfterInstantiation(bw.getWrappedInstance(), beanName)) {
+            return;
+        }
+    }
+}
+postProcessAfterInstantiation方法返回false的时候，后续的Bean属性赋值前处理、Bean属性赋值都会被跳过了。
+【怪不得实例化后阶段要放到这里而不是放到实例化阶段来讲解，原来是因为实例化后阶段是用来控制属性赋值的】
+
+来看一下postProcessAfterInstantiation这个方法的定义：
+default boolean postProcessAfterInstantiation(Object bean, String beanName) throws BeansException {
+    return true;
+}
+来看个案例，案例中返回false，跳过属性的赋值操作。
+
+案例：demo8：InstantiationAwareBeanPostProcessoryTest1
+
+
+-----------------------------------------------------------------------------------------------
+Bean属性赋值前阶段:
+这个阶段会调用InstantiationAwareBeanPostProcessor接口的postProcessProperties方法，调用逻辑：
+
+for (BeanPostProcessor bp : getBeanPostProcessors()) {
+    if (bp instanceof InstantiationAwareBeanPostProcessor) {
+        InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) bp;
+        PropertyValues pvsToUse = ibp.postProcessProperties(pvs, bw.getWrappedInstance(), beanName);
+        if (pvsToUse == null) {
+            if (filteredPds == null) {
+                filteredPds = filterPropertyDescriptorsForDependencyCheck(bw, mbd.allowCaching);
+            }
+            pvsToUse = ibp.postProcessPropertyValues(pvs, filteredPds, bw.getWrappedInstance(), beanName);
+            if (pvsToUse == null) {
+                return;
+            }
+        }
+        pvs = pvsToUse;
+    }
+}
+从上面可以看出，如果InstantiationAwareBeanPostProcessor中的postProcessProperties和postProcessPropertyValues都返回空的时候，
+表示这个bean不需要设置属性，直接返回了，直接进入下一个阶段。
+
+来看一下postProcessProperties这个方法的定义：
+@Nullable
+default PropertyValues postProcessProperties(PropertyValues pvs, Object bean, String beanName) throws BeansException {
+    return null;
+}
+PropertyValues中保存了bean实例对象中所有属性值的设置，所以我们可以在这个这个方法中对PropertyValues值进行修改。
+
+这个方法有2个比较重要的实现类
+AutowiredAnnotationBeanPostProcessor在这个方法中对@Autowired、@Value标注的字段、方法注入值。
+CommonAnnotationBeanPostProcessor在这个方法中对@Resource标注的字段和方法注入值。
+来个案例，我们在案例中对pvs进行修改。
+
+案例：demo8：Demo1
+
+上面过程都ok，进入bean赋值操作
+----------------------------------------------------------
+Bean属性赋值阶段：
+
+这个过程比较简单了，循环处理PropertyValues中的属性值信息，通过反射调用set方法将属性的值设置到bean实例中。
+PropertyValues中的值是通过bean xml中property元素配置的，或者调用MutablePropertyValues中add方法设置的值。
+【也就说是说，demo8：Demo1中我们add的值是add到MutablePropertyValues中了，赋值阶段就会从MutablePropertyValues中拿到值赋值给bean对象】
+
+
+
+
+</body>
+</html>

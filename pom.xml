@@ -20,6 +20,7 @@
     <modules>
         <module>security-common</module>
         <module>security-generator</module>
+        <module>security-study</module>
     </modules>
 
     <dependencyManagement>

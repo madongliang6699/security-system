@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+============================================================
+按函数排序
+
+需求：按照出生年份升序、编号升序，查询出编号、出生日期、出生年份、姓名，2种写法如下：
+
+SELECT id 编号,birth 出生日期,year(birth) 出生年份,name 姓名 from student ORDER BY year(birth) asc,id asc;
+
+SELECT id 编号,birth 出生日期,year(birth) 出生年份,name 姓名 from student ORDER BY 出生年份 asc,id asc;
+
+说明：
+
+year函数：属于日期函数，可以获取对应日期中的年份。
+
+上面使用了2种方式排序，第一种是在order by中使用了函数，第二种是使用了别名排序。
+
+
+====================================================================================================
+limit介绍
+
+limit中offset和count的值不能用表达式。
+
+避免踩坑
+limit中不能使用表达式，limit后面只能够跟明确的数字。
+mysql> select * from t_order where limit 1,4+1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'limit 1,4+1' at line 1
+mysql> select * from t_order where limit 1+0;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'limit 1+0' at line 1
+
+
+</body>
+</html>

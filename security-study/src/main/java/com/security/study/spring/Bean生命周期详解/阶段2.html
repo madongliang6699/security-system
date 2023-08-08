@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+阶段2：Bean元信息解析阶段
+Bean元信息的解析就是将各种方式定义的bean配置信息解析为BeanDefinition对象。
+
+-----------------------------------------------------------------------------
+阶段1里说了，bean定义的4中方式，最后都会转换形成BeanDefinition对象。
+这里阶段2说的就是把其他3种方法解析成BeanDefinition对象的过程。
+即：把xml或者注解形式或者properties文件形式的bean定义，解析生成BeanDefinition对象。
+【注意：解析的过程中具体有没有使用上API方式的那些工具类和方法，待定，需要看源码】
+
+
+======================================================================================================
+XML方式解析：XmlBeanDefinitionReader
+spring中提供了一个类 XmlBeanDefinitionReader，将xml中定义的bean解析为BeanDefinition对象。
+
+看demo2
+
+================================================================================================
+properties文件定义bean的解析：PropertiesBeanDefinitionReader
+
+很少用properties方式
+
+=================================================================================================
+注解方式：AnnotatedBeanDefinitionReader
+
+
+
+
+
+
+
+
+</body>
+</html>

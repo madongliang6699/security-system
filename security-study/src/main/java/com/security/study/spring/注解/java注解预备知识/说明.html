@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+本包的内容：
+http://itsoku.com/course/5/98
+讲注解的基础知识。
+
+=========================================================================================================
+什么是注解？
+注解和注释有点类似，唯一的区别就是注释是给人看的，而注释是给编译器和虚拟机看的，编译器和虚拟机在运行的过程中可以获取注解信息，
+然后可以根据这些注解的信息做各种想做的事情。
+总的来说：注解是对代码的一种增强，可以在代码编译或者程序运行期间获取注解的信息，然后根据这些信息做各种牛逼的事情。
+
+===============================================================================================================
+使用注解步骤：定义注解，使用注解，获取注解信息做各种牛逼的事情。
+
+==========================================================================================================
+定义注解：
+
+------------------------------------------------------------------------------------
+public @interface 注解名称{
+    [public] 参数类型 参数名称1() [default 参数默认值];
+    [public] 参数类型 参数名称2() [default 参数默认值];
+    [public] 参数类型 参数名称n() [default 参数默认值];
+}
+
+注解中可以定义多个参数，参数的定义有以下特点：
+访问修饰符必须为public，不写默认为public
+该元素的类型只能是基本数据类型、String、Class、枚举类型、注解类型（体现了注解的嵌套效果）以及上述类型的一位数组
+该元素的名称一般定义为名词，如果注解中只有一个元素，请把名字起为value（后面使用会带来便利操作）
+参数名称后面的()不是定义方法参数的地方，也不能在括号中定义任何参数，仅仅只是一个特殊的语法
+default代表默认值，值必须和第2点定义的类型一致
+如果没有默认值，代表后续使用注解时必须给该类型元素赋值
+
+------------------------------------------------------------------------------------
+指定注解的使用范围：@Target
+@Target(value = {ElementType.TYPE,ElementType.METHOD})
+public @interface MyAnnotation {
+}
+上面指定了MyAnnotation注解可以用在类、接口、注解类型、枚举类型以及方法上面，自定义注解上也可以不使用@Target注解，
+如果不使用，表示自定义注解可以用在任何地方。
+@Target的参数value可以的值是：
+package java.lang.annotation;
+/*注解的使用范围*/
+public enum ElementType {
+    /*类、接口、枚举、注解上面*/
+    TYPE,
+    /*字段上*/
+    FIELD,
+    /*方法上*/
+    METHOD,
+    /*方法的参数上*/
+    PARAMETER,
+    /*构造函数上*/
+    CONSTRUCTOR,
+    /*本地变量上*/
+    LOCAL_VARIABLE,
+    /*注解上*/
+    ANNOTATION_TYPE,
+    /*包上*/
+    PACKAGE,
+    /*类型参数上*/
+    TYPE_PARAMETER,
+    /*类型名称上*/
+    TYPE_USE
+}
+
+------------------------------------------------------------------------------------------------
+指定注解的保留策略：@Retention
+java程序的3个过程 ：源码阶段 ；源码被编译为字节码之后变成class文件 ；字节码被虚拟机加载然后运行。
+那么自定义注解会保留在上面哪个阶段呢？可以通过@Retention注解来指定，如：
+
+@Retention(RetentionPolicy.SOURCE)
+public @interface MyAnnotation {
+}
+上面指定了MyAnnotation只存在于源码阶段，后面的2个阶段都会丢失。
+
+来看一下@Retention
+
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.ANNOTATION_TYPE)
+public @interface Retention {
+RetentionPolicy value();
+}
+有一个value参数，类型为RetentionPolicy枚举，如下：
+public enum RetentionPolicy {
+    /*注解只保留在源码中，编译为字节码之后就丢失了，也就是class文件中就不存在了*/
+    SOURCE,
+    /*注解只保留在源码和字节码中，运行阶段会丢失*/
+    CLASS,
+    /*源码、字节码、运行期间都存在*/
+    RUNTIME
+}
+
+==========================================================================================================
+使用注解：
+----------------------------------------------------------------------------------------------------
+语法：将注解加载使用的目标上面，如下：
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@interface Ann2 { //@1
+    String name();
+}
+
+@Ann2(name = "我是路人甲java") //@2
+public class UseAnnotation2 {
+}
+
+上面是一个参数的注解；也可以是无参数的注解；一个参数为value的注解，使用注解可以省略参数名称；
+
+数组类型参数：
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@interface Ann4 {
+    String[] name();
+}
+@Ann4(name = {"我是路人甲java", "欢迎和我一起学spring"}) //@2 name有多个值的时候，需要使用{}包含起来
+public class UseAnnotation4 {
+    @Ann4(name = "如果只有一个值，{}可以省略")
+    public class T1 {
+    }
+}
+
+
+综合使用：
+@Target(value = {
+    ElementType.TYPE,
+    ElementType.METHOD,
+    ElementType.FIELD,
+    ElementType.PARAMETER,
+    ElementType.CONSTRUCTOR,
+    ElementType.LOCAL_VARIABLE
+})
+@Retention(RetentionPolicy.RUNTIME)
+@interface Ann6 {
+    String value();
+    ElementType elementType();
+}
+
+@Ann6(value = "我用在类上", elementType = ElementType.TYPE)
+public class UseAnnotation6 {
+
+    @Ann6(value = "我用在字段上", elementType = ElementType.FIELD)
+    private String a;
+
+    @Ann6(value = "我用在构造方法上", elementType = ElementType.CONSTRUCTOR)
+    public UseAnnotation6(@Ann6(value = "我用在方法参数上", elementType = ElementType.PARAMETER) String a) {
+        this.a = a;
+    }
+
+    @Ann6(value = "我用在了普通方法上面", elementType = ElementType.METHOD)
+    public void m1() {
+        @Ann6(value = "我用在了本地变量上", elementType = ElementType.LOCAL_VARIABLE) String a;
+    }
+}
+
+--------------------------------------------------
+下面这两个比较特殊，后期有必要的话再总结。
+@Target(ElementType.TYPE_PARAMETER)
+@Target(ElementType.TYPE_USE)
+----------------------------------------------------------------------------------------------------------
+==========================================================================================================
+注解信息的获取
+
+为了运行时能准确获取到注解的相关信息，Java在java.lang.reflect 反射包下新增了 AnnotatedElement 接口，
+它主要用于表示目前正在虚拟机中运行的程序中已使用注解的元素， 通过该接口提供的方法可以利用反射技术地读取注解的信息，看一下UML图:
+
+AnnotatedElement 接口下面的继承和实现：
+
+Package：实现类：用来表示包的信息
+Class：实现类：用来表示类的信息
+Constructor：实现类：用来表示构造方法信息
+Field：实现类：用来表示类中属性信息
+Method：实现类：用来表示方法信息
+Parameter：实现类：用来表示方法参数信息
+TypeVariable：继承接口：用来表示类型变量信息，如：类上定义的泛型类型变量，方法上面定义的泛型类型变量
+
+AnnotatedElement常用方法：
+    getAnnotation(Class<A> annotationClass)	该元素如果存在指定类型的注解，则返回这些注解，否则返回 null。
+    getAnnotations()	返回此元素上存在的所有注解，包括从父类继承的
+    isAnnotationPresent(Class<? extends Annotation> annotationClass)	如果指定类型的注解存在于此元素上，则返回 true，否则返回 false。
+    getDeclaredAnnotations()	返回直接存在于此元素上的所有注解，注意，不包括父类的注解，调用者可以随意修改返回的数组；这不会对其他调用者返回的数组产生任何影响，没有则返回长度为0的数组
+
+注意，该接口的实现类都是具备这些方法的，比如Class类，是可以使用上面这些方法的：
+    MyUser.class.getAnnotations()
+
+
+案例：看demo1
+
+======================================================================================================================
+@Inherit：实现类之间的注解继承  （看该注解的源码可以看出，该注解只能用在注解上）
+    作用：让子类可以继承父类中被@Inherited修饰的注解，注意是继承父类中的，如果接口中的注解也使用@Inherited修饰了，那么接口的实现类是无法继承这个注解的
+
+
+==========================================================================================================================
+@Repeatable重复使用注解
+    如果在一个元素上多次使用同一个注解，会报错，默认情况下注解是不允许重复使用的。如果我们想重复使用注解的时候，需要用到@Repeatable注解
+使用方法：
+    现在不总结了，有必要的话再学习。可以看本文链接的原文。
+
+===============================================================================================================
+    上面就是java中注解的功能，下面我们来介绍spring对于注解方面的支持。
+
+    @Target(ElementType.TYPE)
+    @Retention(RetentionPolicy.RUNTIME)
+    @interface A1 {
+        String value() default "a";//@0
+    }
+
+    @Target(ElementType.TYPE)
+    @Retention(RetentionPolicy.RUNTIME)
+    @A1
+    @interface B1 { //@1
+        String value() default "b";//@2
+    }
+
+    @B1("路人甲Java") //@3
+    public class UseAnnotation13 {
+        @Test
+        public void test1() {
+            //AnnotatedElementUtils是spring提供的一个查找注解的工具类
+            System.out.println(AnnotatedElementUtils.getMergedAnnotation(UseAnnotation13.class, B1.class));
+            System.out.println(AnnotatedElementUtils.getMergedAnnotation(UseAnnotation13.class, A1.class));
+        }
+    }
+    test1方法中使用到了spring中的一个类AnnotatedElementUtils，通过这个工具类可以很方便的获取注解的各种信息，方法中的2行代码用于获取UseAnnotation13类上B1注解和A1注解的信息。
+
+    上面用法很简单，没什么问题。
+
+    此时有个问题：此时如果想在UseAnnotation13上给B1上的A1注解设置值是没有办法的，注解定义无法继承导致的，如果注解定义上面能够继承，那用起来会爽很多，spring通过@Aliasfor方法解决了这个问题。
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+    Spring @AliasFor：对注解进行增强
+
+案例：demo2：通过@AliasFor解决上面难题
+
+------------------------------------------------------------------------------------
+同一个注解中的两个参数使用@AliasFor，使得这两个参数互为别名，那两个参数是等同的，给其中一个参数设置值，另一个参数也就设置了同样的值。
+当然就不能同时给这两个参数设置值了，否则报错。
+
+---------------------------------------------------------------------------------------
+使用@AliasFor的时候，不指定其value的值，会怎样?
+
+
+
+</body>
+</html>

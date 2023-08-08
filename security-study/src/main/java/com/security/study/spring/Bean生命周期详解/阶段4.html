@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+
+
+下面要介绍的从阶段4到阶段14，也就是从：BeanDefinition合并阶段到Bean初始化完成阶段，
+都是在调用getBean从容器中获取bean对象的过程中发送的操作，要注意细看了，
+大家下去了建议去看getBean这个方法的源码，以下过程均来自于这个方法：
+org.springframework.beans.factory.support.AbstractBeanFactory#doGetBean
+
+******************************************************************************************************************
+
+
+
+阶段4：BeanDefinition合并阶段
+=============================================================================================
+合并阶段是做什么的？
+可能我们定义bean的时候有父子bean关系，此时子BeanDefinition中的信息是不完整的，比如设置属性的时候配置在父BeanDefinition中，
+此时子BeanDefinition中是没有这些信息的，需要将子bean的BeanDefinition和父bean的BeanDefinition进行合并，得到最终的一个RootBeanDefinition，
+合并之后得到的RootBeanDefinition包含bean定义的所有信息，包含了从父bean中继继承过来的所有信息，
+后续bean的所有创建工作就是依靠合并之后BeanDefinition来进行的。
+
+合并BeanDefinition会使用下面这个方法：
+org.springframework.beans.factory.support.AbstractBeanFactory#getMergedBeanDefinition
+
+bean定义可能存在多级父子关系，合并的时候进进行递归合并，最终得到一个包含完整信息的RootBeanDefinition
+
+
+</body>
+</html>

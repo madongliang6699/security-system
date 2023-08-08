@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+本包内容总结于: http://itsoku.com/course/5/116
+本文主要介绍AspectJ框架的创建aop代理的方式
+============================================================================================
+本文继续AOP，目前手动Aop中三种方式已经介绍2种了，本文将介绍另外一种：AspectJProxyFactory，可能大家对这个比较陌生，
+但是@Aspect这个注解大家应该很熟悉吧，通过这个注解在spring环境中实现aop特别的方便。
+而AspectJProxyFactory这个类可以通过解析@Aspect标注的类来生成代理aop代理对象，对开发者来说，使创建代理变的更简洁了。
+
+public class ProxyCreatorSupport: 这个类是一个父类，是手动创建aop代理对象的一个算是工具支持类吧。
+其下有三个子类，这三个子类才是实际操作来创建代理对象的，也是这次学习中经常用来做例子的类：
+public class ProxyFactory
+public class ProxyFactoryBean
+public class AspectJProxyFactory
+这三个子类都是可以创建代理对象的，前几篇文章也都介绍了，本篇文章介绍AspectJProxyFactory这个类，这个类应该是比较中重要的，
+因为它可以通过解析注解的形式创建aop代理，也就是@Aspect，@Pointcut，@Before等注解。
+使用注解创建aop也是我们以后工作中经常用到的形式，所以本包中的学习比较重要。
+
+
+当然，即便是使用注解，也都逃脱不掉aop的几个概念：切点，通知，切面等。只不过这里是使用特定注解标注在方法上，达到把某个方法内的代码作为通知，或切点等。
+之前都是通过new一个通知类型的类作为一个通知（比如使用ProxyFactory创建代理的时候，就new一个MethodBeforeAdvice类作为通知），
+现在是通过注解标识一个通知，AspectJProxyFactory可以解析特定注解以添加指定的通知或切点等。
+
+
+===================================================================================
+AspectJ是什么?
+AspectJ是一个面向切面的框架，是目前最好用，最方便的AOP框架，和spring中的aop可以集成在一起使用，
+通过Aspectj提供的一些功能实现aop代理变得非常方便。
+
+AspectJ使用步骤：
+1.创建一个类，使用@Aspect标注
+2.@Aspect标注的类中，通过@Pointcut定义切入点
+3.@Aspect标注的类中，通过AspectJ提供的一些通知相关的注解定义通知
+4.使用AspectJProxyFactory结合@Ascpect标注的类，来生成代理对象
+案例看Demo1
+
+===================================================================
+AspectJProxyFactory原理:
+@Aspect标注的类上，这个类中，可以通过通过@Pointcut来定义切入点，
+可以通过@Before、@Around、@After、@AfterRunning、@AfterThrowing标注在方法上来定义通知，
+定义好了之后， 将@Aspect标注的这个类交给AspectJProxyFactory来解析生成Advisor链，进而结合目标对象一起来生成代理对象，
+大家可以去看一下源码，比较简单，这里就不多解释了。
+
+本文的重点在@Aspect标注的类上，@Aspect中有2个关键点比较重要:
+@Pointcut：标注在方法上，用来定义切入点，有11种用法，本文主要讲解这11种用法。
+@Aspect类中定义通知：可以通过@Before、@Around、@After、@AfterRunning、@AfterThrowing标注在方法上来定义通知，这个下一篇介绍。
+
+====================================================================================================================================================
+@Pointcut的12种用法:
+格式：@ 注解(value=“表达标签 (表达式格式)”)  例如: @Pointcut("execution(* com.javacode2018.aop.demo9.test1.Service1.*(..))")
+
+表达式标签（10种）
+execution：用于匹配方法执行的连接点
+within：用于匹配指定类型内的方法执行
+this：用于匹配当前AOP代理对象类型的执行方法；注意是AOP代理对象的类型匹配，这样就可能包括引入接口的类型匹配
+target：用于匹配当前目标对象类型的执行方法；注意是目标对象的类型匹配，这样就不包括引入接口的类型匹配
+args：用于匹配当前执行的方法传入的参数为指定类型的执行方法
+@within：用于匹配所以持有指定注解类型内的方法
+@target：用于匹配当前目标对象类型的执行方法，其中目标对象持有指定的注解
+@args：用于匹配当前执行的方法传入的参数持有指定注解的执行
+@annotation：用于匹配当前执行方法持有指定注解的方法
+bean：Spring AOP扩展的，AspectJ没有对于指示符，用于匹配特定名称的Bean对象的执行方法
+
+
+
+
+===================================================================================================
+10种标签组成了12种用法:
+
+--------------------------------------------------------------------------------------------------
+1、execution
+使用execution(方法表达式)匹配方法执行。
+
+execution格式
+execution(modifiers-pattern? ret-type-pattern declaring-type-pattern? name-pattern(param-pattern) throws-pattern?)
+其中带 ?号的 modifiers-pattern?，declaring-type-pattern?，hrows-pattern?是可选项
+ret-type-pattern,name-pattern, parameters-pattern是必选项
+modifier-pattern? 修饰符匹配，如public 表示匹配公有方法
+ret-type-pattern 返回值匹配，* 表示任何返回值，全路径的类名等
+declaring-type-pattern? 类路径匹配
+name-pattern 方法名匹配， 代表所有，set，代表以set开头的所有方法
+(param-pattern) 参数匹配，指定方法参数(声明的类型)，(..)代表所有参数，(*,String)代表第一个参数为任何值,第二个为String类型，(..,String)代表最后一个参数是String类型
+throws-pattern? 异常类型匹配
+
+举例说明
+表达式	描述
+public *.*(..)	任何公共方法的执行
+* com.javacode2018..IPointcutService.*()	com.javacode2018包及所有子包下IPointcutService接口中的任何无参方法
+* com.javacode2018..*.*(..)	com.javacode2018包及所有子包下任何类的任何方法
+* com.javacode2018..IPointcutService.*(*)	com.javacode2018包及所有子包下IPointcutService接口的任何只有一个参数方法
+* com.javacode2018..IPointcutService+.*()	com.javacode2018包及所有子包下IPointcutService接口及子类型的的任何无参方法
+* Service1.*(String)	匹配Service1中只有1个参数的且参数类型是String的方法
+* Service1.*(*,String)	匹配Service1中只有2个参数的且第二个参数类型是String的方法
+* Service1.*(..,String)	匹配Service1中最后1个参数类型是String的方法
+
+类型匹配语法:
+很多地方会按照类型的匹配，先来说一下类型匹配的语法。 首先让我们来了解下AspectJ类型匹配的通配符：
+*：匹配任何数量字符
+..：匹配任何数量字符的"重复"，如在类型模式中匹配"任何数量子包"；而在方法参数模式中匹配"任何数量参数"（0个或者多个参数）
++：匹配指定类型及其子类型；仅能作为后缀放在类型模式后边
+表达式	说明
+java.lang.String	匹配String类型
+java.*.String	匹配java包下的任何一级子包下的String类型，如匹配java.lang.String，但不匹配java.lang.ss.String
+java..*	匹配java包及任何子包下的任何类型，如匹配java.lang.String、java.lang.annotation.Annotation
+java.lang.*ing	匹配任何java.lang包下的以ing结尾的类型
+java.lang.Number+	匹配java.lang包下的任何Number类型及其子类型，如匹配java.lang.Number，也匹配java.lang.Integer、java.math.BigInteger
+-----------------------------------------------------------------------------------------------------------------------
+2、within
+用法
+within(类型表达式)：目标对象target的类型是否和within中指定的类型匹配
+
+表达式	描述
+within(com.javacode2018..*)	com.javacode2018包及子包下的任何方法执行
+within(com.javacode2018..IPointcutService+)	com.javacode2018包或所有子包下IPointcutService类型及子类型的任何方法
+within(com.javacode2018.Service1)	匹配类com.javacode2018.Service1中定义的所有方法，不包含其子类中的方法
+匹配原则
+target.getClass().equals(within表达式中指定的类型)
+
+案例看Demo2
+
+
+
+
+</body>
+</html>

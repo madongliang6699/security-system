@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+面试问题
+@Scope是做什么的？常见的用法有几种？
+@DependsOn是做什么的？常见的用法有几种？
+@ImportResource干什么的？通常用在什么地方？
+@Lazy做什么的，通常用在哪些地方？常见的用法有几种？
+
+==========================================================================================================
+@Scope：指定bean的作用域
+用法
+关于什么是bean的作用域，可以去看一下之前的一篇文章：Spring系列第6篇：http://itsoku.com/course/5/88
+
+@Scope用来配置bean的作用域，等效于bean xml中的bean元素中的scope属性。
+
+
+看一下其源码：
+@Target({ElementType.TYPE, ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface Scope {
+  @AliasFor("scopeName")
+  String value() default "";
+
+  @AliasFor("value")
+  String scopeName() default "";
+
+  ScopedProxyMode proxyMode() default ScopedProxyMode.DEFAULT;
+}
+-----------------------------------------------------------------------------------------------
+@Scope可以用在类上和方法上: 常见2种用法:
+和@Compontent一起使用在类上:
+@Component
+@Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)//@1
+public class ServiceA {
+}
+
+和@Bean一起标注在方法上:
+@Configurable
+public class MainConfig2 {
+  @Bean
+  @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+  public ServiceA serviceA() {
+    return new ServiceA();
+  }
+}
+
+
+
+===================================================================================================================
+@DependsOn：指定当前bean依赖的bean
+
+用法
+前面有篇文章中介绍了bean xml中depend-on的使用，建议先看一下：Spring系列第9篇：http://itsoku.com/course/5/91
+
+@DependsOn等效于bean xml中的bean元素中的depend-on属性。
+
+spring在创建bean的时候，如果bean之间没有依赖关系，那么spring容器很难保证bean实例创建的顺序，如果想确保容器在创建某些bean之前，需要先创建好一些其他的bean，
+可以通过@DependsOn来实现，@DependsOn可以指定当前bean依赖的bean，通过这个可以确保@DependsOn指定的bean在当前bean创建之前先创建好
+
+看一下其源码：
+
+@Target({ElementType.TYPE, ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface DependsOn {
+String[] value() default {};
+}
+可以用在任意类型和方法上。
+
+value：string类型的数组，用来指定当前bean需要依赖的bean名称，可以确保当前容器在创建被@DependsOn标注的bean之前，先将value指定的多个bean先创建好。
+
+常见2种用法
+和@Compontent一起使用在类上:
+@DependsOn({"service2", "service3"}) //@1
+@Component
+public class Service1 {
+  public Service1() {
+    System.out.println("create Service1");
+  }
+}
+@1：使用了@DependsOn，指定了2个bean：service2和service3，那么spring容器在创建上面这个service1的时候会先将@DependsOn中指定的2个bean先创建好
+
+
+和@Bean一起标注在方法上:
+@Configurable
+public class MainConfig4 {
+  @Bean
+  @DependsOn({"service2", "service3"})//@1
+  public Service1 service1() {
+    return new Service1();
+  }
+  @Bean
+  public Service2 service2() {
+    return new Service2();
+  }
+  @Bean
+  public Service3 service3() {
+    return new Service3();
+  }
+}
+上面是一个spring的配置类，类中3个方法定义了3个bean
+@1：这个地方使用了@DependsOn，表示service1这个bean创建之前，会先创建好service2和service3
+
+
+===================================================================================================================
+@ImportResource：配置类中导入bean定义的配置文件
+
+用法
+有些项目，前期可能采用xml的方式配置bean，后期可能想采用spring注解的方式来重构项目，但是有些老的模块可能还是xml的方式，
+spring为了方便在注解方式中兼容老的xml的方式，提供了@ImportResource注解来引入bean定义的配置文件。
+
+bean定义配置文件：目前我们主要介绍了xml的方式，还有一种properties文件的方式，以后我们会介绍，此时我们还是以引入bean xml来做说明。
+
+这里不多介绍了，应该用的不多
+
+
+
+
+</body>
+</html>

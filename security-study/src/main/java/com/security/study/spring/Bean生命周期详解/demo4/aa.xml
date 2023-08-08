@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
+
+
+<!--    通过xml定义3个具有父子关系的bean, lesson2相当于lesson1的儿子，lesson3相当于lesson1的孙子。-->
+
+    <bean id="lesson1" class="com.mdl.spring.Bean生命周期详解.demo4.LessonModel"/>
+
+
+    <bean id="lesson2" parent="lesson1">
+        <property name="name" value="spring高手系列"/>
+        <property name="lessonCount" value="100"/>
+    </bean>
+
+
+    <bean id="lesson3" parent="lesson2">
+        <property name="description" value="路人甲Java带你学spring，超越90%开发者!"/>
+    </bean>
+
+
+</beans>

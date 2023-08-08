@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+
+
+阶段5：Bean Class加载阶段
+=============================================================================================
+这个阶段就是将我们指定的bean的class名称转换为Class类型的对象。
+【疑问：这个阶段，应该就是讲我们配置的bean进行new成一个对象的过程吧？但是看下面阶段6讲的是实例化的过程，
+那这里的阶段5可能只是简单的加载成一个对象，但是没有进行设置属性值等操作吧】
+
+
+BeanDefinition中有个Object类型的字段： private volatile Object beanClass;
+用来表示bean的class对象（new出来的我们的bean对象），通常这个字段的值有2种类型，一种是bean对应的Class类型的对象，另一种是bean对应的Class的完整类名，
+第一种情况不需要解析，第二种情况：即这个字段是bean的类名的时候，就需要通过类加载器将其转换为一个Class对象。
+此时会对阶段4中合并产生的RootBeanDefinition中的beanClass进行解析，将bean的类名转换为Class对象，然后赋值给beanClass字段。
+【也就是说，beanClass这个属性是Object类型的，当这个属性的值是一个字符串（bean的完整类名）的时候，说明还没有把这个BeanDefinition进行Bean Class加载成一个对象，
+就需要去做加载的这个动作，当加载成对象之后，就把对象还赋值给beanClass属性，因为beanClass是Object类型的，这样就等于说当前的BeanDefinition已经被加载成对象了。】
+
+源码位置：
+org.springframework.beans.factory.support.AbstractBeanFactory#resolveBeanClass
+上面得到了Bean Class对象以及合并之后的BeanDefinition，下面就开始进入实例化这个对象的阶段了。
+
+Bean实例化分为3个阶段：前阶段、实例化阶段、后阶段；下一阶段详解介绍。
+
+
+</body>
+</html>

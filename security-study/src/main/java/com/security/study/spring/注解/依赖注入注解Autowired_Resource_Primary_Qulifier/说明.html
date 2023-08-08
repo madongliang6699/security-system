@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+http://itsoku.com/course/5/103
+=================================================================================================================
+
+
+先来看几个问题:
+通过注解的方式注入依赖对象，介绍一下你知道的几种方式
+@Autowired和@Resource有何区别
+说一下@Autowired查找候选者的过程
+说一下@Resource查找候选者的过程
+@Qulifier有哪些用法？
+@Qulifier加在类上面是干什么用的？
+@Primary是做什么的？
+泛型注入用过么？
+
+-----------------------------------------------------------------------------------------------
+本文内容
+介绍spring中通过注解实现依赖注入的所有方式
+@Autowired注解
+@Qualifier注解
+@Resource注解
+@Primary注解
+@Bean中注入的几种方式
+将指定类型的所有bean，注入到集合中
+将指定类型的所有bean，注入到map中
+注入泛型
+依赖注入源码方面的一些介绍
+
+=================================================================================================================
+@Autowired：注入依赖对象
+
+
+作用
+实现依赖注入，spring容器会对"bean中所有字段、方法进行遍历"，标注有@Autowired注解的，都会进行注入。
+
+    @Target({ElementType.CONSTRUCTOR, ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD, ElementType.ANNOTATION_TYPE})
+    @Retention(RetentionPolicy.RUNTIME)
+    @Documented
+    public @interface Autowired {
+        /**
+        * Declares whether the annotated dependency is required.
+        * Defaults to {@code true}.
+        */
+        boolean required() default true;
+    }
+
+    可以用在构造器、方法、方法参数、字段、注解上。
+    参数：
+    required：标注的对象是否必须注入，可能这个对象在容器中不存在，如果为true的时候，找不到匹配的候选者就会报错，为false的时候，找不到也没关系 。
+
+
+------------------------------------------------------------------------------------------------------------------------------------
+@Autowire查找候选者的过程
+
+看http://itsoku.com/course/5/103 的流程图。
+
+
+
+@Autowired查找候选者可以简化为下面这样：
+按类型找->通过限定符@Qualifier过滤->@Primary->@Priority->根据名称找（字段名称或者参数名称）
+概括为：先按类型找，然后按名称找
+
+
+
+</body>
+</html>

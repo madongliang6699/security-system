@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.security.study.myBatis.E_多种查询详解.demo1.OrderMapper">
+
+
+    <resultMap id="orderModelMap1" type="com.security.study.myBatis.E_多种查询详解.demo1.OrderModel">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="up_time" property="upTime"/>
+
+        <!--todo 下面这两行是重点，这个地方使用到了级联赋值，多级之间用.进行引用，此处我们只有一级，可以有很多级。-->
+        <result column="user_id" property="userModel.id"/>
+        <result column="name" property="userModel.name"/>
+    </resultMap>
+
+
+    <select id="getById1" resultMap="orderModelMap1">
+        <![CDATA[
+    SELECT
+        a.id,
+        a.user_id,
+        a.create_time,
+        a.up_time,
+        b.name
+    FROM
+        t_order a,
+        t_user b
+    WHERE
+        a.user_id = b.id
+    AND a.id = #{value}
+    ]]>
+    </select>
+
+
+</mapper>

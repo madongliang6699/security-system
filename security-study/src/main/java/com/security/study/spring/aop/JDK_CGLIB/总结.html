@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+本包的知识点总结于:
+Java充电社(www.itsoku.com 或者 公众号) 的spring教程系列:
+http://itsoku.com/course/5
+
+或者总结于: 路人甲Java 公众号
+
+感谢作者.
+
+CGLIB和Java动态代理的区别：
+  Java动态代理只能够对接口进行代理，不能对普通的类进行代理（因为所有生成的代理类的父类为Proxy，Java类继承机制不允许多重继承）；CGLIB能够代理普通类；
+  Java动态代理使用Java原生的反射API进行操作，在生成类上比较高效；CGLIB使用ASM框架直接对字节码进行操作，在类的执行过程中比较高效
+  代理的就介绍到这里，spring中很多地方会用到这块，所以大家一定要熟悉，欢迎大家留言交流
+
+</body>
+</html>

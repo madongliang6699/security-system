@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+阶段3：Spring Bean注册阶段
+
+=============================================================================================
+Bean注册接口：BeanDefinitionRegistry:
+bean注册阶段需要用到一个非常重要的接口：BeanDefinitionRegistry
+
+public interface BeanDefinitionRegistry extends AliasRegistry {
+/**
+* 注册一个新的bean定义
+* beanName：bean的名称
+* beanDefinition：bean定义信息
+*/
+void registerBeanDefinition(String beanName, BeanDefinition beanDefinition)
+throws BeanDefinitionStoreException;
+/**
+* 通过bean名称移除已注册的bean
+* beanName：bean名称
+*/
+void removeBeanDefinition(String beanName) throws NoSuchBeanDefinitionException;
+/**
+* 通过名称获取bean的定义信息
+* beanName：bean名称
+*/
+BeanDefinition getBeanDefinition(String beanName) throws NoSuchBeanDefinitionException;
+/**
+* 查看beanName是否注册过
+*/
+boolean containsBeanDefinition(String beanName);
+/**
+* 获取已经定义（注册）的bean名称列表
+*/
+String[] getBeanDefinitionNames();
+/**
+* 返回注册器中已注册的bean数量
+*/
+int getBeanDefinitionCount();
+/**
+* 确定给定的bean名称或者别名是否已在此注册表中使用
+* beanName：可以是bean名称或者bean的别名
+*/
+boolean isBeanNameInUse(String beanName);
+}
+
+别名注册接口：AliasRegistry
+BeanDefinitionRegistry接口继承了AliasRegistry接口，这个接口中定义了操作bean别名的一些方法，看一下其源码：
+public interface AliasRegistry {
+/**
+* 给name指定别名alias
+*/
+void registerAlias(String name, String alias);
+/**
+* 从此注册表中删除指定的别名
+*/
+void removeAlias(String alias);
+/**
+* 判断name是否作为别名已经被使用了
+*/
+boolean isAlias(String name);
+/**
+* 返回name对应的所有别名
+*/
+String[] getAliases(String name);
+}
+
+
+-------------------------------------------------------------------------------------------
+BeanDefinitionRegistry是唯一实现类：DefaultListableBeanFactory 【这个类不就是前面阶段案例中定义spring容器的类吗，还说这个类实现了注册器，原来就是这里的BeanDefinitionRegistry】
+
+spring中BeanDefinitionRegistry接口有一个唯一的实现类：
+org.springframework.beans.factory.support.DefaultListableBeanFactory
+大家可能看到有很多类也实现了BeanDefinitionRegistry接口，比如我们经常用到的AnnotationConfigApplicationContext，但实际上其内部是转发给了DefaultListableBeanFactory进行处理的，所以真正实现这个接口的类是DefaultListableBeanFactory。
+
+大家再回头看一下开头的几个案例，都使用的是DefaultListableBeanFactory作为bean注册器，此时你们应该可以理解为什么了。
+
+BeanDefinitionRegistry 和 AliasRegistry的使用看：
+案例：demo3
+是通过DefaultListableBeanFactory使用的，因为DefaultListableBeanFactory这个bean工厂，实现了他们，具有他们的功能。
+也就是说，这个DefaultListableBeanFactory应该是融合了很多功能，使得它既是一个注册器可以注册bean，也是一个bean的管理器，可以获取bean，和设置bean等。
+
+
+
+
+</body>
+</html>

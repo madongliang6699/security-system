@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+本包内容总结于: http://itsoku.com/course/5/118
+本文主要介绍 @EnableAspectJAutoProxy
+============================================================================================
+这是aop最后一篇文章了，本文带你深入理解@EnableAspectJAutoProxy，这篇文章可能会颠覆你以前所掌握的一些知识，让你醍醐灌顶，欣喜若狂！
+
+目前为止，上面的文章基本上都是硬编码的方式一个个为目标对象创建代理的，但是，我们使用spring的过程中，可能需要对大量bean创建代理，
+比如我们需拦截所有的service的方法，打印耗时日志，对大量service bean做权限校验，做事务处理等等，这些功能都可以通过aop的方式来实现，
+若采用硬编码的方式一个个创建，那是相当难受的事情。
+Spring中提供了批量的方式，为容器中符合条件的bean，自动创建代理对象，也就是我们本文要说的@EnableAspectJAutoProxy。
+
+==================================================================================================================
+@EnableAspectJAutoProxy可以自动为spring容器中符合条件的bean创建代理对象，@EnableAspectJAutoProxy需要结合@Aspect注解一起使用。
+用法比较简单，下面我们通过案例来看一下：demo1
+
+
+=====================================================================================================
+通知执行顺序
+
+@EnableAspectJAutoProxy 允许spring容器中通过Advisor 、@Aspect 来定义通知，当spring容器中存在多个Advisor、@Aspect时，
+组成的拦截器调用链顺序是什么样的呢？在介绍这个之前，我们需要先回顾一下aop中4种通知相关知识。
+spring aop中4种通知（Advice）：
+org.aopalliance.intercept.MethodInterceptor
+org.springframework.aop.MethodBeforeAdvice
+org.springframework.aop.AfterReturningAdvice
+org.springframework.aop.ThrowsAdvice
+所有的通知最终都需要转换为MethodInterceptor类型的通知，然后组成一个MethodInterceptor列表，我们称之为方法调用链或者拦截器链，
+上面列表中后面3通过下面的转换器将其包装为MethodInterceptor类型的通知：
+org.springframework.aop.MethodBeforeAdvice 转换成 org.springframework.aop.framework.adapter.MethodBeforeAdviceInterceptor（实现了MethodInterceptor，内部包装了一个MethodBeforeAdvice）
+org.springframework.aop.AfterReturningAdvice  转换成 org.springframework.aop.framework.adapter.AfterReturningAdviceInterceptor （同理）
+org.springframework.aop.ThrowsAdvice  转换成 org.springframework.aop.framework.adapter.ThrowsAdviceInterceptor （同理）
+--------------------------------------------------------------------------------------------
+下面我们再来看一下4种通知的用法和执行过程，以方便我们理解其执行顺序：
+
+第一个：
+org.aopalliance.intercept.MethodInterceptor（方法拦截器）：
+这个比较强大，可以在方法执行"前后"执行一些增强操作，其他类型的通知最终都会被包装为 MethodInterceptor 来执行。
+下面我们自定义一个MethodInterceptor：
+    class MyMethodInterceptor implements MethodInterceptor {
+        @Override
+        public Object invoke(MethodInvocation invocation) throws Throwable {
+            System.out.println("我是MethodInterceptor start");
+            Object result = invocation.proceed(); //调用invocation.proceed()执行下一个拦截器
+            System.out.println("我是MethodInterceptor end");
+
+            return result; //返回结果
+        }
+    }
+
+第二个：
+org.springframework.aop.MethodBeforeAdvice（方法前置通知）：
+方法前置通知，可以在方法之前定义增强操作。 下面我们自定义一个MethodBeforeAdvice:
+    class MyMethodBeforeAdvice implements MethodBeforeAdvice {
+        @Override
+        public void before(Method method, Object[] args, @Nullable Object target) throws Throwable {
+            System.out.println("我是MethodBeforeAdvice");
+        }
+    }
+MethodBeforeAdvice最终会被包装为MethodBeforeAdviceInterceptor类型，然后放到拦截器链中去执行，
+通过MethodBeforeAdviceInterceptor代码可以理解MethodBeforeAdvice的执行过程:
+    public class MethodBeforeAdviceInterceptor implements MethodInterceptor, BeforeAdvice, Serializable {
+
+        private final MethodBeforeAdvice advice; //内部持有一个MethodBeforeAdvice，就是包装了一层，像代理一样
+
+        public MethodBeforeAdviceInterceptor(MethodBeforeAdvice advice) {
+            this.advice = advice;
+        }
+
+        @Override
+        public Object invoke(MethodInvocation mi) throws Throwable {
+            //调用MethodBeforeAdvice的before方法，执行前置通知
+            this.advice.before(mi.getMethod(), mi.getArguments(), mi.getThis());
+            //执行下一个拦截器
+            return mi.proceed();
+        }
+    }
+
+第三个：
+org.springframework.aop.AfterReturningAdvice（方法返回通知）：方法返回通知，用来在方法执行完毕之后执行一些增强操作。
+下面我们自定义一个AfterReturningAdvice：
+    class MyAfterReturningAdvice implements AfterReturningAdvice {
+        @Override
+        public void afterReturning(@Nullable Object returnValue, Method method, Object[] args, @Nullable Object target) throws Throwable {
+            System.out.println("我是AfterReturningAdvice");
+        }
+    }
+AfterReturningAdvice最终会被包装为AfterReturningAdviceInterceptor类型，然后放到拦截器链中去执行，通过AfterReturningAdviceInterceptor源码
+可以理解AfterReturningAdvice的执行过程：
+public class AfterReturningAdviceInterceptor implements MethodInterceptor, AfterAdvice, Serializable {
+    private final AfterReturningAdvice advice; //内部持有一个AfterReturningAdvice，就是包装了一层，像代理一样
+
+    public AfterReturningAdviceInterceptor(AfterReturningAdvice advice) {
+        this.advice = advice;
+    }
+
+    @Override
+    public Object invoke(MethodInvocation mi) throws Throwable {
+        Object retVal = mi.proceed(); //执行下一个拦截器，可以获取目标方法的返回结果
+        this.advice.afterReturning(retVal, mi.getMethod(), mi.getArguments(), mi.getThis()); //调用方法返回通知的afterReturning方法，会传入目标方法的返回值等信息
+        return retVal;
+    }
+}
+
+
+第四个：
+org.springframework.aop.ThrowsAdvice（异常通知）：
+当目标方法发生异常时，可以通过 ThrowsAdvice 来指定需要回调的方法，我们在此可以记录一些异常信息，或者将异常信息发送到监控系统等。
+（这个可以给公司项目中自己的代码做一个，把自己的代码异常发送到一个单独的地方，方面查看）
+
+下面我们自定义一个ThrowsAdvice：
+
+/**
+* 用来定义异常通知
+* 方法名必须是afterThrowing，格式参考下面2种定义
+* 1. public void afterThrowing(Exception ex)
+* 2. public void afterThrowing(Method method, Object[] args, Object target, Exception ex)
+*/
+class MyThrowsAdvice implements ThrowsAdvice {
+    public void afterThrowing(Method method, Object[] args, Object target, Exception ex) {
+        System.out.println("我是ThrowsAdvice");
+    }
+}
+ThrowsAdvice最终会被包装为ThrowsAdviceInterceptor类型，然后放到拦截器链中去执行，通过ThrowsAdviceInterceptor代码可以理解ThrowsAdvice的执行过程，
+ThrowsAdviceInterceptor 构造参数传入一个自定义的 ThrowsAdvice 对象：
+    public class ThrowsAdviceInterceptor implements MethodInterceptor, AfterAdvice {
+
+        private final Object throwsAdvice;
+
+        public ThrowsAdviceInterceptor(Object throwsAdvice) {
+            this.throwsAdvice = throwsAdvice;
+        }
+
+        @Override
+        public Object invoke(MethodInvocation mi) throws Throwable {
+            try {
+                return mi.proceed();
+            } catch (Throwable ex) {
+                this.throwsAdvice.afterThrowing(。。。。); //调用 ThrowsAdvice 中的 afterThrowing 方法来处理异常
+                throw ex; //将异常继续往外抛
+            }
+        }
+    }
+
+-----------------------------------------------------------------------------------------------------------
+拦截器链执行过程:
+假如目标方法上面有好几个通知，调用目标方法执行，spring会将所有的通知转换得到一个MethodInterceptor列表，然后依次按照下面的方式执行，
+会先调用第一个拦截器的MethodInterceptor#invoke(MethodInvocation invocation)方法，会传递一个MethodInvocation类型的参数，
+在此方法中，我们可以调用MethodInvocation#processd方法去执行第二个拦截器，然后依次按照这样的过程执行，
+到了最后一个MethodInterceptor中，再次调用MethodInvocation#processd时，会调用目标方法。
+----------------------------------------------------------------------------------------------
+4种通知的执行顺序:
+为了测试上面的的4种通知的执行顺序，请看demo2。
+看了demo2的执行情况，有些顺序是确定的，比如前置通知的代码一定在业务代码和后置代码之执行，
+但是有的不确定，比如前置通知的代码和MyMethodInterceptor类中“我是MethodInterceptor start”，执行顺序就不好确定，因为和添加通知对象的先后有关系。
+
+===========================================================================================================================================
+上面是手动创建aop的执行顺序，那使用AspectJ的@EnableAspectJAutoProxy的方式，@Aspect注中的多个通知之间的执行顺序呢：
+
+当单个@Aspect中定义了多种类型的通知时，@EnableAspectJAutoProxy内部会对其进行排序，排序顺序如下:
+@AfterThrowing
+@AfterReturning
+@After
+@Around
+@Before
+
+但是执行结果是：
+@Around通知start
+我是前置通知,target:com.mdl.aop.Test_Aspect_EnableAspectJAutoProxy.demo1.UserService@4e67cfe1
+我是UserService
+@Around绕通知end
+@After通知!
+@AfterReturning通知!
+
+那到底AspectJ集成spring的注解形式的aop通知，执行顺序是怎么样的呢：看下一段
+===================================================================================================================
+@Aspect中5种通知回顾
+
+5种通知对应的Advice类
+@Aspect中通过5中注解来定义通知，这些注解最终都需要转换为Advice类去执行，转换关系如下：
+@AfterThrowing	  org.springframework.aop.aspectj.AspectJAfterThrowingAdvice
+@AfterReturning	  org.springframework.aop.aspectj.AspectJAfterReturningAdvice
+@After	          org.springframework.aop.aspectj.AspectJAfterAdvice
+@Around	          org.springframework.aop.aspectj.AspectJAroundAdvice
+@Before     	  org.springframework.aop.aspectj.AspectJMethodBeforeAdvice
+重点就在于右边的Advice类，当了解这些Advice的源码之后，他们的执行顺序大家就可以理解了，我们来看一下这些类的源码，重点看invoke方法.
+具体这几个类的源码可以在IDEA中自己看，也可以看一下本文章的链接
+
+==================================================================================================
+分析单个@Aspect中多个通知执行顺序
+
+我们给出的结论是，会按照下面的顺序执行：
+@AfterThrowing
+@AfterReturning
+@After
+@Around
+@Before
+
+那么,按照上面源码中的invoke方法逻辑，demo1的例子合并一下代码就是：
+先执行第1个通知@AfterThrowing，变成下面这样:
+try {
+    //执行下一个拦截器
+    return mi.proceed();
+} catch (Throwable ex) {
+    System.out.println("@AfterThrowing通知!");
+    //继续抛出异常
+    throw ex;
+}
+mi.processed()会执行第2个通知@AfterReturning，合并代码之后变成了下面这样
+
+try {
+    //执行下一个拦截器
+    Object retVal = mi.proceed();
+    System.out.println("@AfterReturning通知!");
+    return retVal;
+} catch (Throwable ex) {
+    System.out.println("@AfterThrowing通知!");
+    //继续抛出异常
+    throw ex;
+}
+继续mi.proceed()执行第3个通知@After，合并代码之后变成了下面这样
+
+try {
+    Object result = null;
+    try {
+        //执行下一个拦截器
+        result = mi.proceed();
+    } finally {
+        System.out.println("@After通知!");
+    }
+    System.out.println("@AfterReturning通知!");
+    return retVal;
+} catch (Throwable ex) {
+    System.out.println("@AfterThrowing通知!");
+    //继续抛出异常
+    throw ex;
+}
+继续mi.proceed()执行第4个通知@Around，变成了下面这样
+
+try {
+    Object result = null;
+    try {
+        System.out.println("@Around通知start");
+        result = joinPoint.proceed();
+        System.out.println("@Around绕通知end");
+        return result;
+    } finally {
+        System.out.println("@After通知!");
+    }
+    System.out.println("@AfterReturning通知!");
+    return retVal;
+} catch (Throwable ex) {
+    System.out.println("@AfterThrowing通知!");
+    //继续抛出异常
+    throw ex;
+}
+继续joinPoint.proceed()执行第5个通知@Before，变成了下面这样
+
+try {
+    Object result = null;
+    try {
+        System.out.println("@Around通知start");
+        System.out.println("@Before通知!");
+        result = mi.proceed();
+        System.out.println("@Around绕通知end");
+        return result;
+    } finally {
+        System.out.println("@After通知!");
+    }
+    System.out.println("@AfterReturning通知!");
+    return retVal;
+} catch (Throwable ex) {
+    System.out.println("@AfterThrowing通知!");
+    //继续抛出异常
+    throw ex;
+}
+继续joinPoint.proceed()会调用目标方法，变成了下面这样
+
+try {
+    Object result = null;
+    try {
+        System.out.println("@Around通知start");
+        System.out.println("@Before通知!");
+        result = // 通过反射调用目标方法; //@1
+        System.out.println("@Around绕通知end");
+        return result;
+    } finally {
+        System.out.println("@After通知!");
+    }
+    System.out.println("@AfterReturning通知!");
+    return retVal;
+} catch (Throwable ex) {
+    System.out.println("@AfterThrowing通知!");
+    //继续抛出异常
+    throw ex;
+}
+将上面的@1替换为目标方法的调用，就变成下面这样了
+
+try {
+    Object result = null;
+    try {
+        System.out.println("@Around通知start");
+        System.out.println("@Before通知!");
+        result = service4.say("路人");
+        System.out.println("@Around绕通知end");
+        return result;
+    } finally {
+        System.out.println("@After通知!");
+    }
+    System.out.println("@AfterReturning通知!");
+    return retVal;
+} catch (Throwable ex) {
+    System.out.println("@AfterThrowing通知!");
+    //继续抛出异常
+    throw ex;
+}
+所以最终输出
+
+@Around通知start
+@Before通知!
+@Around绕通知end
+@After通知!
+@AfterReturning通知!
+你好：路人
+
+**********************************************************
+****  因此，单个Aspect类中的通知，的执行顺序就是上面这样的。   ******
+**********************************************************
+
+
+===========================================================================================
+@EnableAspectJAutoProxy中为通知指定顺序 （为多个Aspect类指定顺序）
+
+@EnableAspectJAutoProxy用在spring环境中，可以通过@Aspect以及Advisor来定义多个通知，当spring容器中有多个@Aspect、Advisor时，他们的顺序是什么样的呢？
+我们先看一下如何为@Aspect、自定义Advisor指定顺序。
+
+第一：
+为@Aspect指定顺序：用@Order注解
+需要在@Aspect标注的类上使用@org.springframework.core.annotation.Order注解，值越小，通知的优先级越高。
+@Aspect
+@Order(1)
+public class AspectOrder1{}
+
+第二：
+自定义的Advisor通过org.springframework.core.Ordered接口来指定顺序，这个接口有个public int getOrder()方法，用来返回通知的顺序。
+spring为我们提供了一个Advisor类型的抽象类org.springframework.aop.support.AbstractPointcutAdvisor，这个类实现了Ordered接口，
+spring中大部分Advisor会是继承AbstractPointcutAdvisor，若需要自定义Advisor，也可以继承这个类，这个类的getOrder方法比较关键，来看一下
+public abstract class AbstractPointcutAdvisor implements PointcutAdvisor, Ordered, Serializable {
+    @Nullable
+    private Integer order;
+
+    public void setOrder(int order) {
+    this.order = order;
+    }
+
+    @Override
+    public int getOrder() {
+        //若当前Advisor指定了order，则直接返回
+        if (this.order != null) {
+            return this.order;
+        }
+        //获取当前类中配置的通知对象Advice
+        Advice advice = getAdvice();
+        //若advice实现了Ordered接口，这从advice中获取通知的顺序
+        if (advice instanceof Ordered) {
+            return ((Ordered) advice).getOrder();
+        }
+        //否则通知的优先级最低，Integer.MAX_VALUE
+        return Ordered.LOWEST_PRECEDENCE;
+    }
+}
+
+Spring为我们提供了一个默认的Advisor类：DefaultPointcutAdvisor，这个类就继承了AbstractPointcutAdvisor，
+通常我们可以直接使用DefaultPointcutAdvisor来自定义通知。
+===============================================================================================================
+多个@Aspect、Advisor排序规则
+
+排序规则：
+1、在spring容器中获取@Aspect、Advisor类型的所有bean，得到一个列表 list1
+2、对list1按照order的值升序排序，得到结果list2
+3、然后再对list2中@Aspect类型的bean内部的通知进行排序，规则
+@AfterThrowing
+@AfterReturning
+@After
+@Around
+@Before
+4、最后运行的时候会得到上面排序产生的方法调用链列表去执行。
+
+测试案例，看demo3. 执行结果：（为了可读性，做了缩进区分）
+MyAspect1 @Around通知start
+MyAspect1 @Before通知!
+    Advisor2 start
+        MyAspect2 @Around通知start
+        MyAspect2 @Before通知!
+            Advisor1 start
+            执行业务方法、、、、、、
+            Advisor1 end
+        MyAspect2 @Around绕通知end
+        MyAspect2 @After通知!
+        MyAspect2 @AfterReturning通知!
+    Advisor2 end
+MyAspect1 @Around绕通知end
+MyAspect1 @After通知!
+MyAspect1 @AfterReturning通知!
+==============================================================================================
+@EnableAspectJAutoProxy另外2个功能
+
+看该注解源码：
+public @interface EnableAspectJAutoProxy {
+    /**
+    * 是否基于类来创建代理，而不是基于接口来创建代理，当为true的时候会使用cglib来直接对目标类创建代理对象
+    * 默认为 false：即目标bean如果有接口的会采用jdk动态代理来创建代理对象，没有接口的目标bean，会采用cglib来创建代理对象
+    */
+    boolean proxyTargetClass() default false;
+
+    /**
+    * 是否需要将代理对象暴露在ThreadLocal中，当为true的时候，可以通过org.springframework.aop.framework.AopContext#currentProxy获取当前代理对象
+    */
+    boolean exposeProxy() default false;
+}
+
+===================================================================================================================
+@EnableAspectJAutoProxy原理
+
+@EnableAspectJAutoProxy会在spring容器中注册一个bean:
+org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator
+
+AnnotationAwareAspectJAutoProxyCreator是BeanPostProcessor类型的，BeanPostProcessor大家应该比较熟悉了，bean后置处理器，
+可以在bean声明周期中对bean进行操作，比如对bean生成代理等；而AnnotationAwareAspectJAutoProxyCreator就是对符合条件的bean，自动生成代理对象，
+源码就这里就不细说了，有兴趣的可以从postProcessAfterInitialization方法看，比较简单。
+
+(
+这么看下来，SpringBoot的注解使用的套路似乎没那么难：
+通过在启动类上加一个启动注解，这个注解自己可以定义一个，通过这个注解按照上面@EnableAspectJAutoProxy的套路，注册一个bean，这个bean里面的功能自己就可以随意定义了。
+这样就可以实现自己的一些功能，比如全局开启一个功能，这个功能的具体内容可以通过各种技术实现，比如通过定义各种注解，通过aop解析注解，通过其他各种机制，或者直接通过写代码，
+实现各种功能。
+
+为了实践上面说的的猜想，自己尝试编写了一个自己的小功能，就是模仿@EnableAspectJAutoProxy的，请看aaa文件夹。
+)
+
+</body>
+</html>

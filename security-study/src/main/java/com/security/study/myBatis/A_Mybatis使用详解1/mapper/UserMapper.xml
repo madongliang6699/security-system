@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.security.study.myBatis.A_Mybatis使用详解1.mapper.UserMapper">
+
+
+    <insert id="insertUser" parameterType="com.security.study.myBatis.A_Mybatis使用详解1.UserModel_0729">
+        <![CDATA[
+    INSERT INTO t_user (id,name,age,salary,sex) VALUES (#{id},#{name},#{age},#{salary},#{sex})
+     ]]>
+    </insert>
+
+    <select id="getUserList" resultType="com.security.study.myBatis.A_Mybatis使用详解1.UserModel_0729">
+        <![CDATA[
+    SELECT * FROM t_user
+    ]]>
+    </select>
+
+
+</mapper>

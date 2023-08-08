@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+
+
+阶段6：Bean实例化阶段
+=============================================================================================
+分2个小的阶段：
+Bean实例化前操作
+Bean实例化操作
+
+===========================================================================================
+Bean实例化前操作：
+
+先来看一下DefaultListableBeanFactory，这个类中有个非常非常重要的字段：
+private final List< BeanPostProcessor> beanPostProcessors = new CopyOnWriteArrayList<>();
+是一个BeanPostProcessor类型的集合
+
+BeanPostProcessor是一个接口，还有很多子接口，这些接口中提供了很多方法，spring在bean生命周期的不同阶段，
+会调用上面这个列表中的BeanPostProcessor中的一些方法，来对生命周期进行扩展，bean生命周期中的所有扩展点都是依靠这个
+集合中的BeanPostProcessor来实现的，所以如果大家想对bean的生命周期进行干预，这块一定要掌握好。
+
+注意：本文中很多以BeanPostProcessor结尾的，都实现了BeanPostProcessor接口，有些是直接实现的，有些是实现了它的子接口。
+
+Bean实例化之前会调用一段代码：（这个方法的名字意思：在实例化之前应用bean后处理器）
+@Nullable
+protected Object applyBeanPostProcessorsBeforeInstantiation(Class<?> beanClass, String beanName) {
+    for (BeanPostProcessor bp : getBeanPostProcessors()) {
+        if (bp instanceof InstantiationAwareBeanPostProcessor) {
+            InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) bp;
+            Object result = ibp.postProcessBeforeInstantiation(beanClass, beanName);
+            if (result != null) {
+                return result;
+            }
+        }
+    }
+    return null;
+}
+这段代码在bean实例化之前给开发者留了个口子，开发者自己可以在这个地方直接去创建一个对象作为bean实例，而跳过spring内部实例化bean的过程。
+【这里的“在bean实例化之前”是指每个bean的实例化之前都会调用这个方法吗，有多少个bean就调用这个方法多少次吗？】
+
+上面代码中轮询beanPostProcessors列表，如果类型是InstantiationAwareBeanPostProcessor，
+尝试调用InstantiationAwareBeanPostProcessor#postProcessBeforeInstantiation获取bean的实例对象，如果能够获取到，
+那么将返回值作为当前bean的实例，那么spring自带的实例化bean的过程就被跳过了。
+
+postProcessBeforeInstantiation方法如下：
+default Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName) throws BeansException {
+    return null;
+}
+这个地方给开发者提供了一个扩展点，允许开发者在这个方法中直接返回bean的一个实例。
+
+
+下面我们来个案例看一下：demo6 的 InstantiationAwareBeanPostProcessorTest
+
+
+小结：
+实际上，在实例化前阶段对bean的创建进行干预的情况，用的非常少，所以大部分bean的创建还会继续走下面的阶段。
+
+
+
+=================================================================================================================
+Bean实例化操作：
+
+这个过程可以干什么？
+这个过程会通过反射来调用bean的构造器来创建bean的实例。 具体需要使用哪个构造器，spring为开发者提供了一个接口，允许开发者自己来判断用哪个构造器。
+
+看一下这块的代码逻辑：
+for (BeanPostProcessor bp : getBeanPostProcessors()) {
+    if (bp instanceof SmartInstantiationAwareBeanPostProcessor) {
+        SmartInstantiationAwareBeanPostProcessor ibp = (SmartInstantiationAwareBeanPostProcessor) bp;
+        Constructor<?>[] ctors = ibp.determineCandidateConstructors(beanClass, beanName);
+        if (ctors != null) {
+            return ctors;
+        }
+    }
+}
+会调用SmartInstantiationAwareBeanPostProcessor接口的determineCandidateConstructors方法，这个方法会返回候选的构造器列表，
+也可以返回空，看一下这个方法的源码：
+@Nullable
+default Constructor<?>[] determineCandidateConstructors(Class<?> beanClass, String beanName) throws BeansException {
+    return null;
+}
+这个方法有个比较重要的实现类：
+org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor
+可以将@Autowired标注的方法作为候选构造器返回，有兴趣的可以去看一下代码。
+
+案例demo6 的 SmartInstantiationAwareBeanPostProcessorTest ： 自定义一个注解，当构造器被这个注解标注的时候，让spring自动选择使用这个构造器创建对象。
+
+============================================================================
+到目前为止bean实例化阶段结束了，继续进入后面的阶段。
+
+
+</body>
+</html>

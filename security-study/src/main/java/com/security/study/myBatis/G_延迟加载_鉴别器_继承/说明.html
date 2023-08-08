@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+============================================================================================================
+延迟加载
+延迟加载其实就是将数据加载时机推迟，比如推迟嵌套查询的执行时机，在mybatis中经常用到关联查询，但是并不是任何时候都需要立即返回关联查询结果。
+比如查询订单信息，并不一定需要及时返回订单对应的用户信息或者订单详情信息等，这种情况需要一种机制，
+当需要查看关联的数据时，再去执行对应的查询，返回需要的结果，这种需求在mybatis中可以使用延迟加载机制来实现。
+
+延迟加载2种设置方式：
+1、全局配置的方式
+2、sqlmap中配置的方式
+方式1中会对所有关联查询起效，而方式2只会对相关设置的查询起效。
+
+
+1、全局配置延迟加载
+mybatis配置文件中通过下面两个属性来控制延迟加载：
+<settings>
+    <!--打开延迟加载的开关  -->
+    <setting name="lazyLoadingEnabled" value="true"/>
+    <!-- 当为true的时候，调用任意延迟属性，会去加载所有延迟属性，如果为false，则调用某个属性的时候，只会加载指定的属性 -->
+    <setting name="aggressiveLazyLoading" value="false"/>
+</settings>
+lazyLoadingEnabled：这个属性比较好理解，是否开启延迟加载，默认为false，如果需要开启延迟加载，将其设置为true。
+aggressiveLazyLoading：当为true的时候，调用任意延迟属性，会去加载所有延迟属性，如果为false，则调用某个属性的时候，只会加载指定的属性
+
+
+2、sqlmap中设置延迟加载
+全局的方式会对所有的关联查询起效，影响范围比较大，mybatis也提供了在关联查询中进行设置的方式，只会对当前设置的关联查询起效。
+
+关联查询，一般我们使用association、collection，这两个元素都有个属性fetchType，通过这个属性可以指定关联查询的加载方式。
+
+fetchType值有2种，eager：立即加载；lazy：延迟加载。
+下面我们来实现一个需求：还是通过订单id查询订单信息，并获取关联的用户信息、订单详细列表，用户信息我们要求立即加载，而订单详情我们要求延迟加载。
+
+mapper xml如下
+<resultMap id="orderModelMap2" type="com.javacode2018.chat05.demo5.model.OrderModel">
+    <id column="id" property="id"/>
+    <result column="user_id" property="userId"/>
+    <result column="create_time" property="createTime"/>
+    <result column="up_time" property="upTime"/>
+    <!--  通过订单中user_id作为条件，查询下单人信息 -->
+    <association property="userModel" fetchType="eager" select="com.javacode2018.chat05.demo5.mapper.UserMapper.getById1" column="user_Id"/>
+    <!--  通过订单id作为条件，查询详情列表 -->
+    <collection property="orderDetailModelList" fetchType="lazy" select="com.javacode2018.chat05.demo5.mapper.OrderDetailMapper.getListByOrderId1" column="id"/>
+</resultMap>
+重点注意上面配置中association、collection这2个元素的fetchType属性，eager表示立即加载，lazy表示延迟加载。
+
+
+==========================================================================================================
+鉴别器(discriminator)
+有时候，一个数据库查询可能会返回多个不同的结果集（但总体上还是有一定的联系的），
+鉴别器（discriminator）元素就是被设计来应对这种情况的，鉴别器的概念很好理解——它很像 Java 语言中的 switch 语句。
+
+discriminator标签常用的两个属性如下：
+column：该属性用于设置要进行鉴别比较值的列。
+javaType：该属性用于指定列的类型，保证使用相同的java类型来比较值。
+
+discriminator标签可以有1个或多个case标签，case标签有一个比较重要的属性：
+value：该值为discriminator指定column用来匹配的值，当匹配的时候，结果会走这个case关联的映射。
+
+我们使用鉴别器实现一个功能：通过订单id查询订单信息，当传入的订单id为1的时候，获取订单信息及下单人信息；当传入的订单id为2的时候，
+获取订单信息、下单人信息、订单明细信息；其他情况默认只查询订单信息。
+实现如下：
+OrderMapper.xml
+<resultMap id="orderModelMap1" type="com.javacode2018.chat05.demo6.model.OrderModel">
+    <id column="id" property="id"/>
+    <result column="user_id" property="userId"/>
+    <result column="create_time" property="createTime"/>
+    <result column="up_time" property="upTime"/>
+    <!-- 鉴别器 -->
+    <discriminator javaType="int" column="id">
+        <case value="1">
+            <!--通过用户id查询用户信息-->
+            <association property="userModel" select="com.javacode2018.chat05.demo6.mapper.UserMapper.getById1" column="user_Id"/>
+        </case>
+        <case value="2">
+            <!--通过用户id查询用户信息-->
+            <association property="userModel" select="com.javacode2018.chat05.demo6.mapper.UserMapper.getById1" column="user_Id"/>
+            <!--通过订单id查询订单列表-->
+            <collection property="orderDetailModelList" select="com.javacode2018.chat05.demo6.mapper.OrderDetailMapper.getListByOrderId1" column="id"/>
+        </case>
+    </discriminator>
+</resultMap>
+<select id="getById1" resultMap="orderModelMap1">
+    <![CDATA[
+    SELECT
+    a.id ,
+    a.user_id,
+    a.create_time,
+    a.up_time
+    FROM
+    t_order a
+    WHERE
+    a.id = #{value}
+    ]]>
+</select>
+注意上面的discriminator，这部分是关键，discriminator内部的case会和每行查询结果中的id字段进行匹配，
+匹配成功了case内部的关联查询会被执行，未匹配上的，只会走discriminator外部默认配置的映射映射规则。
+
+
+
+==========================================================================================
+继承(extends)
+继承在java是三大特性之一，可以起到重用代码的作用，而mybatis也有继承的功能，和java中的继承的作用类似，主要在resultMap中使用，可以重用其他resultMap中配置的映射关系。
+
+用法
+<resultMap extends="被继承的resultMap的id"></resultMap>
+案例
+下面我们使用继承来对上面的鉴别器的案例改造一下，优化一下代码
+
+OrderMapper.xml
+<resultMap id="orderModelMap2" type="com.javacode2018.chat05.demo6.model.OrderModel">
+    <id column="id" property="id"/>
+    <result column="user_id" property="userId"/>
+    <result column="create_time" property="createTime"/>
+    <result column="up_time" property="upTime"/>
+    <!-- 鉴别器 -->
+    <discriminator javaType="int" column="id">
+        <case value="1" resultMap="orderModelMap3" />
+        <case value="2" resultMap="orderModelMap4" />
+    </discriminator>
+</resultMap>
+<resultMap id="orderModelMap3" type="com.javacode2018.chat05.demo6.model.OrderModel" extends="orderModelMap2">
+    <!--通过用户id查询用户信息-->
+    <association property="userModel" select="com.javacode2018.chat05.demo6.mapper.UserMapper.getById1" column="user_Id"/>
+</resultMap>
+<resultMap id="orderModelMap4" type="com.javacode2018.chat05.demo6.model.OrderModel" extends="orderModelMap3">
+    <!--通过订单id查询订单列表-->
+    <collection property="orderDetailModelList" select="com.javacode2018.chat05.demo6.mapper.OrderDetailMapper.getListByOrderId1" column="id"/>
+</resultMap>
+<select id="getById2" resultMap="orderModelMap2">
+    <![CDATA[
+    SELECT
+    a.id ,
+    a.user_id,
+    a.create_time,
+    a.up_time
+    FROM
+    t_order a
+    WHERE
+    a.id = #{value}
+    ]]>
+</select>
+重点在于上面两个extends属性，上面orderModelMap3继承了orderModelMap2中配置的映射关系（除鉴别器之外），自己又加入了一个association去查询用户信息；orderModelMap4继承了orderModelMap3，自己又加入了一个查询订单列表的collection元素。上面使用extends做到了代码重用，其实和下面这块代码写法效果一样：
+
+<resultMap id="orderModelMap2" type="com.javacode2018.chat05.demo6.model.OrderModel">
+    <id column="id" property="id"/>
+    <result column="user_id" property="userId"/>
+    <result column="create_time" property="createTime"/>
+    <result column="up_time" property="upTime"/>
+    <!-- 鉴别器 -->
+    <discriminator javaType="int" column="id">
+        <case value="1" resultMap="orderModelMap3" />
+        <case value="2" resultMap="orderModelMap4" />
+    </discriminator>
+</resultMap>
+<resultMap id="orderModelMap3" type="com.javacode2018.chat05.demo6.model.OrderModel">
+    <id column="id" property="id"/>
+    <result column="user_id" property="userId"/>
+    <result column="create_time" property="createTime"/>
+    <result column="up_time" property="upTime"/>
+    <!--通过用户id查询用户信息-->
+    <association property="userModel" select="com.javacode2018.chat05.demo6.mapper.UserMapper.getById1" column="user_Id"/>
+</resultMap>
+<resultMap id="orderModelMap4" type="com.javacode2018.chat05.demo6.model.OrderModel">
+    <id column="id" property="id"/>
+    <result column="user_id" property="userId"/>
+    <result column="create_time" property="createTime"/>
+    <result column="up_time" property="upTime"/>
+    <!--通过用户id查询用户信息-->
+    <association property="userModel" select="com.javacode2018.chat05.demo6.mapper.UserMapper.getById1" column="user_Id"/>
+    <!--通过订单id查询订单列表-->
+    <collection property="orderDetailModelList" select="com.javacode2018.chat05.demo6.mapper.OrderDetailMapper.getListByOrderId1" column="id"/>
+</resultMap>
+<select id="getById2" resultMap="orderModelMap2">
+    <![CDATA[
+    SELECT
+    a.id ,
+    a.user_id,
+    a.create_time,
+    a.up_time
+    FROM
+    t_order a
+    WHERE
+    a.id = #{value}
+    ]]>
+</select>
+
+</body>
+</html>
