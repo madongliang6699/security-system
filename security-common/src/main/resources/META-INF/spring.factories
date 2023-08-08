@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.mdl.common.config.CommonAutoConfiguration
+com.security.common.config.CommonAutoConfiguration
