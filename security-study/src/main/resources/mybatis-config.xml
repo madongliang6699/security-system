@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration> <!--configuration元, 这个是mybatis全局配置文件的根元素，每个配置文件只有一个-->
+    <!-- 环境配置，可以配置多个环境，比如dev环境的，pro环境的。 default="dev"用来指定使用哪一个环境。-->
+    <environments default="dev">
+        <!--environment用来对某个环境进行配置。 id：环境标识，唯一。这个元素下面有两个子元素：transactionManager和dataSource-->
+        <environment id="dev">
+            <!-- transactionManager元素：事务管理器工厂配置。
+             用来配置事务工厂的，有个type属性，type的值必须是org.apache.ibatis.transaction.TransactionFactory接口的实现类，
+             TransactionFactory看名字就知道是一个工厂，用来创建事务管理器org.apache.ibatis.transaction.Transaction对象的，
+             TransactionFactory接口默认有2个实现：【这两个实现是mybatis自带的实现，用来做事务控制】
+                org.apache.ibatis.transaction.managed.ManagedTransactionFactory
+                org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory
+            一般情况下我们使用org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory这个，mybatis和其他框架集成，
+            比如和spring集成，事务交由spring去控制，spring中有TransactionFactory接口的一个实现：
+            org.mybatis.spring.transaction.SpringManagedTransactionFactory，
+            有兴趣的朋友可以去研究一下，这个到时候讲到spring的使用会详细说。
+            【也就是说，如果使用mybatis的时候，想让事务由pring的事务控制机制来控制，那这里就配置spring的事务控制器SpringManagedTransactionFactory】
+             -->
+            <transactionManager type="org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory"/>
+            <!-- dataSource元素：数据源工厂配置，使用工厂来创建数据源 。
+            这个用来配置数据源的，type属性的值必须为接口org.apache.ibatis.datasource.DataSourceFactory的实现类，
+            DataSourceFactory也是一个工厂，用来创建数据源javax.sql.DataSource对象的，mybatis中这个接口默认有3个自带实现类：
+                org.apache.ibatis.datasource.jndi.JndiDataSourceFactory
+                org.apache.ibatis.datasource.pooled.PooledDataSourceFactory
+                org.apache.ibatis.datasource.unpooled.UnpooledDataSourceFactory
+            我们使用第2个org.apache.ibatis.datasource.pooled.PooledDataSourceFactory，这个用来创建一个数据库连接池类型的数据源，
+            可以实现数据库连接共用，减少连接重复创建销毁的时间。
+            -->
+            <dataSource type="org.apache.ibatis.datasource.pooled.PooledDataSourceFactory">
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://124.222.246.77:3306/javacode2018?characterEncoding=UTF-8"/>
+                <property name="username" value="root"/>
+                <property name="password" value="123987456Mdl"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <mappers>
+        <package name="com.mdl.myBatis.E_多种查询详解.demo1"/>
+    </mappers>
+</configuration>
