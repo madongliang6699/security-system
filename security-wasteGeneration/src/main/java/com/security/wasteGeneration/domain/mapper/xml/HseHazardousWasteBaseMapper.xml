@@ -1,0 +1,520 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- @author A -->
+<!-- @version v 0.1 -->
+<!-- @File HseHazardousWasteBaseMapper.xml -->
+<!-- @Desc 固废管理-危废基础信息管理 -->
+<!-- @DateTime 2023-07-12 10:16:32 -->
+<!-- @Encoding UTF-8 -->
+<!-- @Description Copyright (c) 2004-2023 All Rights Reserved. -->
+
+<mapper namespace="com.cybstar.base.secureBase.solidWaste.hazardousWaste.mapper.HseHazardousWasteBaseMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap"
+               type="com.cybstar.base.secureBase.solidWaste.hazardousWaste.entity.HseHazardousWasteBase">
+        <!-- 流水ID -->
+        <id column="sid" property="sid"/>
+        <!-- appId -->
+        <result column="app_id" property="appId"/>
+        <!-- 废物名称 -->
+        <result column="waste_name" property="wasteName"/>
+        <!-- 国家危险废物名录id -->
+        <result column="directory_id" property="directoryId"/>
+        <!-- 贮存量 -->
+        <result column="storage_quantity" property="storageQuantity"/>
+        <!-- 计量单位编码 -->
+        <result column="measurement_unit_code" property="measurementUnitCode"/>
+        <!-- 计量单位name -->
+        <result column="measurement_unit_name" property="measurementUnitName"/>
+        <!-- 贮存位置字典编码 -->
+        <result column="storage_position_code" property="storagePositionCode"/>
+        <!-- 贮存位置字典名称 -->
+        <result column="storage_position_name" property="storagePositionName"/>
+        <!-- 贮存位置字典类型 -->
+        <result column="storage_position_type" property="storagePositionType"/>
+        <!-- 负责人id -->
+        <result column="responsible_person_id" property="responsiblePersonId"/>
+        <!-- 负责人name -->
+        <result column="responsible_person_name" property="responsiblePersonName"/>
+        <!-- 附件 -->
+        <result column="file_id" property="fileId"/>
+        <!-- 备注 -->
+        <result column="remark" property="remark"/>
+        <!-- 修改者 -->
+        <result column="update_by" property="updateBy"/>
+        <!-- 更新时间 -->
+        <result column="update_time" property="updateTime"/>
+        <!-- 创建者 -->
+        <result column="create_by" property="createBy"/>
+        <!-- 创建时间 -->
+        <result column="create_time" property="createTime"/>
+        <!-- 租户id -->
+        <result column="tenant_id" property="tenantId"/>
+        <!-- 租户名称 -->
+        <result column="tenant_name" property="tenantName"/>
+        <!-- 删除标记 -->
+        <result column="del_flag" property="delFlag"/>
+    </resultMap>
+
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="sid"
+            parameterType="com.cybstar.base.secureBase.solidWaste.hazardousWaste.entity.HseHazardousWasteBase">
+
+        insert into hse_hazardous_waste_base (
+
+        <if test="sid != null ">
+            sid,
+        </if>
+        <if test="appId != null ">
+            app_id,
+        </if>
+        <if test="wasteName != null  and wasteName != ''">
+            waste_name,
+        </if>
+        <if test="directoryId != null  and directoryId != ''">
+            directory_id,
+        </if>
+        <if test="storageQuantity != null ">
+            storage_quantity,
+        </if>
+        <if test="measurementUnitCode != null  and measurementUnitCode != ''">
+            measurement_unit_code,
+        </if>
+        <if test="measurementUnitName != null  and measurementUnitName != ''">
+            measurement_unit_name,
+        </if>
+        <if test="storagePositionCode != null  and storagePositionCode != ''">
+            storage_position_code,
+        </if>
+        <if test="storagePositionName != null  and storagePositionName != ''">
+            storage_position_name,
+        </if>
+        <if test="storagePositionType != null  and storagePositionType != ''">
+            storage_position_type,
+        </if>
+        <if test="responsiblePersonId != null  and responsiblePersonId != ''">
+            responsible_person_id,
+        </if>
+        <if test="responsiblePersonName != null  and responsiblePersonName != ''">
+            responsible_person_name,
+        </if>
+        <if test="fileId != null  and fileId != ''">
+            file_id,
+        </if>
+        <if test="remark != null  and remark != ''">
+            remark,
+        </if>
+        <if test="updateBy != null  and updateBy != ''">
+            update_by,
+        </if>
+        <if test="updateTime != null ">
+            update_time,
+        </if>
+        <if test="createBy != null  and createBy != ''">
+            create_by,
+        </if>
+        <if test="createTime != null ">
+            create_time,
+        </if>
+        <if test="tenantId != null  and tenantId != ''">
+            tenant_id,
+        </if>
+        <if test="tenantName != null  and tenantName != ''">
+            tenant_name,
+        </if>
+        del_flag
+
+
+        ) values (
+
+        <if test="sid != null ">
+            #{sid},
+        </if>
+        <if test="appId != null ">
+            #{appId},
+        </if>
+        <if test="wasteName != null  and wasteName != ''">
+            #{wasteName},
+        </if>
+        <if test="directoryId != null  and directoryId != ''">
+            #{directoryId},
+        </if>
+        <if test="storageQuantity != null ">
+            #{storageQuantity},
+        </if>
+        <if test="measurementUnitCode != null  and measurementUnitCode != ''">
+            #{measurementUnitCode},
+        </if>
+        <if test="measurementUnitName != null  and measurementUnitName != ''">
+            #{measurementUnitName},
+        </if>
+        <if test="storagePositionCode != null  and storagePositionCode != ''">
+            #{storagePositionCode},
+        </if>
+        <if test="storagePositionName != null  and storagePositionName != ''">
+            #{storagePositionName},
+        </if>
+        <if test="storagePositionType != null  and storagePositionType != ''">
+            #{storagePositionType},
+        </if>
+        <if test="responsiblePersonId != null  and responsiblePersonId != ''">
+            #{responsiblePersonId},
+        </if>
+        <if test="responsiblePersonName != null  and responsiblePersonName != ''">
+            #{responsiblePersonName},
+        </if>
+        <if test="fileId != null  and fileId != ''">
+            #{fileId},
+        </if>
+        <if test="remark != null  and remark != ''">
+            #{remark},
+        </if>
+        <if test="updateBy != null  and updateBy != ''">
+            #{updateBy},
+        </if>
+        <if test="updateTime != null ">
+            #{updateTime},
+        </if>
+        <if test="createBy != null  and createBy != ''">
+            #{createBy},
+        </if>
+        <if test="createTime != null ">
+            #{createTime},
+        </if>
+        <if test="tenantId != null  and tenantId != ''">
+            #{tenantId},
+        </if>
+        <if test="tenantName != null  and tenantName != ''">
+            #{tenantName},
+        </if>
+        0
+
+        )
+    </insert>
+
+
+    <update id="deleteById" parameterType="Long">
+        update hse_hazardous_waste_base set del_flag = 1 where sid = #{sid}
+    </update>
+
+    <update id="deleteBatchIds" parameterType="java.util.ArrayList">
+        update hse_hazardous_waste_base set del_flag = 1 where sid in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="updateById"
+            parameterType="com.cybstar.base.secureBase.solidWaste.hazardousWaste.entity.HseHazardousWasteBase">
+        update hse_hazardous_waste_base
+        <set>
+            <if test="appId != null ">
+                app_id = #{appId},
+            </if>
+            <if test="wasteName != null and wasteName != ''">
+                waste_name = #{wasteName},
+            </if>
+            <if test="directoryId != null and directoryId != ''">
+                directory_id = #{directoryId},
+            </if>
+            <if test="storageQuantity != null ">
+                storage_quantity = #{storageQuantity},
+            </if>
+            <if test="measurementUnitCode != null and measurementUnitCode != ''">
+                measurement_unit_code = #{measurementUnitCode},
+            </if>
+            <if test="measurementUnitName != null and measurementUnitName != ''">
+                measurement_unit_name = #{measurementUnitName},
+            </if>
+            <if test="storagePositionCode != null and storagePositionCode != ''">
+                storage_position_code = #{storagePositionCode},
+            </if>
+            <if test="storagePositionName != null and storagePositionName != ''">
+                storage_position_name = #{storagePositionName},
+            </if>
+            <if test="storagePositionType != null and storagePositionType != ''">
+                storage_position_type = #{storagePositionType},
+            </if>
+            <if test="responsiblePersonId != null and responsiblePersonId != ''">
+                responsible_person_id = #{responsiblePersonId},
+            </if>
+            <if test="responsiblePersonName != null and responsiblePersonName != ''">
+                responsible_person_name = #{responsiblePersonName},
+            </if>
+            <if test="fileId != null and fileId != ''">
+                file_id = #{fileId},
+            </if>
+            <if test="remark != null and remark != ''">
+                remark = #{remark},
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                update_by = #{updateBy},
+            </if>
+            <if test="updateTime != null ">
+                update_time = #{updateTime},
+            </if>
+            <if test="createBy != null and createBy != ''">
+                create_by = #{createBy},
+            </if>
+            <if test="createTime != null ">
+                create_time = #{createTime},
+            </if>
+            <if test="tenantId != null and tenantId != ''">
+                tenant_id = #{tenantId},
+            </if>
+            <if test="tenantName != null and tenantName != ''">
+                tenant_name = #{tenantName},
+            </if>
+            <if test="delFlag != null ">
+                del_flag = #{delFlag},
+            </if>
+        </set>
+        where sid=#{sid}
+    </update>
+
+    <select id="selectById" resultMap="BaseResultMap" parameterType="Long">
+        select
+        sid,
+        app_id,
+        waste_name,
+        directory_id,
+        storage_quantity,
+        measurement_unit_code,
+        measurement_unit_name,
+        storage_position_code,
+        storage_position_name,
+        storage_position_type,
+        responsible_person_id,
+        responsible_person_name,
+        file_id,
+        remark,
+        update_by,
+        update_time,
+        create_by,
+        create_time,
+        tenant_id,
+        tenant_name,
+        del_flag
+        from hse_hazardous_waste_base
+        where sid = #{sid} and del_flag=0
+    </select>
+
+    <select id="selectBatchIds" resultMap="BaseResultMap" parameterType="java.util.ArrayList">
+        select
+        sid,
+        app_id,
+        waste_name,
+        directory_id,
+        storage_quantity,
+        measurement_unit_code,
+        measurement_unit_name,
+        storage_position_code,
+        storage_position_name,
+        storage_position_type,
+        responsible_person_id,
+        responsible_person_name,
+        file_id,
+        remark,
+        update_by,
+        update_time,
+        create_by,
+        create_time,
+        tenant_id,
+        tenant_name,
+        del_flag
+        from hse_hazardous_waste_base
+        where sid in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and del_flag=0
+    </select>
+
+    <select id="selectByEntity" resultMap="BaseResultMap"
+            parameterType="com.cybstar.base.secureBase.solidWaste.hazardousWaste.entity.HseHazardousWasteBase">
+        select
+        sid,
+        app_id,
+        waste_name,
+        directory_id,
+        storage_quantity,
+        measurement_unit_code,
+        measurement_unit_name,
+        storage_position_code,
+        storage_position_name,
+        storage_position_type,
+        responsible_person_id,
+        responsible_person_name,
+        file_id,
+        remark,
+        update_by,
+        update_time,
+        create_by,
+        create_time,
+        tenant_id,
+        tenant_name,
+        del_flag
+
+        from hse_hazardous_waste_base
+        where app_id = #{appId} and del_flag=0
+
+        <if test="sid != null ">
+            and sid = #{sid}
+        </if>
+        <if test="appId != null ">
+            and app_id = #{appId}
+        </if>
+        <if test="wasteName != null  and wasteName != ''">
+            and waste_name = #{wasteName}
+        </if>
+        <if test="directoryId != null  and directoryId != ''">
+            and directory_id = #{directoryId}
+        </if>
+        <if test="storageQuantity != null ">
+            and storage_quantity = #{storageQuantity}
+        </if>
+        <if test="measurementUnitCode != null  and measurementUnitCode != ''">
+            and measurement_unit_code = #{measurementUnitCode}
+        </if>
+        <if test="measurementUnitName != null  and measurementUnitName != ''">
+            and measurement_unit_name = #{measurementUnitName}
+        </if>
+        <if test="storagePositionCode != null  and storagePositionCode != ''">
+            and storage_position_code = #{storagePositionCode}
+        </if>
+        <if test="storagePositionName != null  and storagePositionName != ''">
+            and storage_position_name = #{storagePositionName}
+        </if>
+        <if test="storagePositionType != null  and storagePositionType != ''">
+            and storage_position_type = #{storagePositionType}
+        </if>
+        <if test="responsiblePersonId != null  and responsiblePersonId != ''">
+            and responsible_person_id = #{responsiblePersonId}
+        </if>
+        <if test="responsiblePersonName != null  and responsiblePersonName != ''">
+            and responsible_person_name = #{responsiblePersonName}
+        </if>
+        <if test="fileId != null  and fileId != ''">
+            and file_id = #{fileId}
+        </if>
+        <if test="remark != null  and remark != ''">
+            and remark = #{remark}
+        </if>
+        <if test="updateBy != null  and updateBy != ''">
+            and update_by = #{updateBy}
+        </if>
+        <if test="updateTime != null ">
+            and update_time = #{updateTime}
+        </if>
+        <if test="createBy != null  and createBy != ''">
+            and create_by = #{createBy}
+        </if>
+        <if test="createTime != null ">
+            and create_time = #{createTime}
+        </if>
+        <if test="tenantId != null  and tenantId != ''">
+            and tenant_id = #{tenantId}
+        </if>
+        <if test="tenantName != null  and tenantName != ''">
+            and tenant_name = #{tenantName}
+        </if>
+        <if test="delFlag != null ">
+            and del_flag = #{delFlag}
+        </if>
+
+
+    </select>
+
+    <select id="selectByKeyWord"
+            resultType="com.cybstar.base.secureBase.solidWaste.hazardousWaste.vo.HseHazardousWasteBaseVO"
+            parameterType="com.cybstar.base.secureBase.solidWaste.hazardousWaste.dto.HseHazardousWasteBaseDTO">
+        select
+        base.sid as sid,
+        base.app_id as appId,
+        base.waste_name as wasteName,
+        base.directory_id as directoryId,
+        base.storage_quantity as storageQuantity,
+        base.measurement_unit_code as measurementUnitCode,
+        base.measurement_unit_name as measurementUnitName,
+        base.storage_position_code as storagePositionCode,
+        base.storage_position_name as storagePositionName,
+        base.storage_position_type as storagePositionType,
+        base.responsible_person_id as responsiblePersonId,
+        base.responsible_person_name as responsiblePersonName,
+        base.file_id as fileId,
+        base.remark as remark,
+
+        directory.type as type,
+        directory.waste_code as wasteCode,
+        directory.name as name
+
+
+        from hse_hazardous_waste_base base
+        left join hse_hazardous_waste_directory directory
+        on base.directory_id = directory.sid
+
+
+        where base.app_id = #{appId} and base.del_flag = 0 and directory.app_id = #{appId} and directory.del_flag = 0
+
+        <if test="keyWord != null and keyWord != ''">
+            and (
+            base.waste_name like concat('%',#{keyWord},'%')
+            or base.storage_position_name like concat('%',#{keyWord},'%')
+            or base.responsible_person_name like concat('%',#{keyWord},'%')
+            or directory.name like concat('%',#{keyWord},'%')
+            or directory.waste_code like concat('%',#{keyWord},'%')
+            or directory.type like concat('%',#{keyWord},'%')
+            )
+        </if>
+
+
+        <if test="wasteName != null  and wasteName != ''">
+            and base.waste_name = #{wasteName}
+        </if>
+        <if test="directoryId != null  and directoryId != ''">
+            and base.directory_id = #{directoryId}
+        </if>
+        <if test="storageQuantity != null ">
+            and base.storage_quantity = #{storageQuantity}
+        </if>
+        <if test="measurementUnitCode != null  and measurementUnitCode != ''">
+            and base.measurement_unit_code = #{measurementUnitCode}
+        </if>
+        <if test="measurementUnitName != null  and measurementUnitName != ''">
+            and base.measurement_unit_name = #{measurementUnitName}
+        </if>
+        <if test="storagePositionCode != null  and storagePositionCode != ''">
+            and base.storage_position_code = #{storagePositionCode}
+        </if>
+        <if test="storagePositionName != null  and storagePositionName != ''">
+            and base.storage_position_name = #{storagePositionName}
+        </if>
+        <if test="storagePositionType != null  and storagePositionType != ''">
+            and base.storage_position_type = #{storagePositionType}
+        </if>
+        <if test="responsiblePersonId != null  and responsiblePersonId != ''">
+            and base.responsible_person_id = #{responsiblePersonId}
+        </if>
+        <if test="responsiblePersonName != null  and responsiblePersonName != ''">
+            and base.responsible_person_name = #{responsiblePersonName}
+        </if>
+        <if test="fileId != null  and fileId != ''">
+            and base.file_id = #{fileId}
+        </if>
+
+        <if test="searchStartDate != null">
+            and base.create_time >= #{searchStartDate}
+        </if>
+        <if test="searchEndDate != null">
+            and base.create_time &lt;= #{searchEndDate}
+        </if>
+
+        order by directory.type, directory.waste_code
+
+
+    </select>
+
+</mapper>
+

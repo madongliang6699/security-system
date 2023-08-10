@@ -1,0 +1,762 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- @author A -->
+<!-- @version v 0.1 -->
+<!-- @File HseHazardousWasteGenerationMapper.xml -->
+<!-- @Desc 固废管理-危废产生 -->
+<!-- @DateTime 2023-07-12 15:07:29 -->
+<!-- @Encoding UTF-8 -->
+<!-- @Description Copyright (c) 2004-2023 All Rights Reserved. -->
+
+<mapper namespace="com.cybstar.base.secureBase.solidWaste.hazardousWaste.mapper.HseHazardousWasteGenerationMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap"
+               type="com.cybstar.base.secureBase.solidWaste.hazardousWaste.entity.HseHazardousWasteGeneration">
+        <!-- 流水ID -->
+        <id column="sid" property="sid"/>
+        <!-- appId -->
+        <result column="app_id" property="appId"/>
+        <!-- 关联的废物id -->
+        <result column="waste_base_id" property="wasteBaseId"/>
+        <!-- 产生批次编码 -->
+        <result column="generation_code" property="generationCode"/>
+        <!-- 产生部门id -->
+        <result column="generation_org_id" property="generationOrgId"/>
+        <!-- 产生部门name -->
+        <result column="generation_org_name" property="generationOrgName"/>
+        <!-- 产生部门经办人id -->
+        <result column="org_person_id" property="orgPersonId"/>
+        <!-- 产生部门经办人name -->
+        <result column="org_person_name" property="orgPersonName"/>
+        <!-- 产生危险废物设施编码 -->
+        <result column="waste_position_code" property="wastePositionCode"/>
+        <!-- 产生危险废物设施名称 -->
+        <result column="waste_position_name" property="wastePositionName"/>
+        <!-- 容器/包装编码和类型code -->
+        <result column="container_code" property="containerCode"/>
+        <!-- 容器/包装编码和类型name -->
+        <result column="container_name" property="containerName"/>
+        <!-- 状态 -->
+        <result column="status" property="status"/>
+        <!-- 去向 -->
+        <result column="destination" property="destination"/>
+        <!-- 计量单位code -->
+        <result column="measurement_unit_code" property="measurementUnitCode"/>
+        <!-- 计量单位name -->
+        <result column="measurement_unit_name" property="measurementUnitName"/>
+        <!-- 容器/包装个数 -->
+        <result column="container_number" property="containerNumber"/>
+        <!-- 产生量/吨 -->
+        <result column="generation_quantity" property="generationQuantity"/>
+        <!-- 产生时间 -->
+        <result column="generation_time" property="generationTime"/>
+        <!-- 附件 -->
+        <result column="file_id" property="fileId"/>
+        <!-- 编号年份标记 -->
+        <result column="year_tag" property="yearTag"/>
+        <!-- 每个标记的最大序号 -->
+        <result column="serial_number" property="serialNumber"/>
+        <!-- 备注 -->
+        <result column="remark" property="remark"/>
+        <!-- 修改者 -->
+        <result column="update_by" property="updateBy"/>
+        <!-- 更新时间 -->
+        <result column="update_time" property="updateTime"/>
+        <!-- 创建者 -->
+        <result column="create_by" property="createBy"/>
+        <!-- 创建时间 -->
+        <result column="create_time" property="createTime"/>
+        <!-- 租户id -->
+        <result column="tenant_id" property="tenantId"/>
+        <!-- 租户名称 -->
+        <result column="tenant_name" property="tenantName"/>
+        <!-- 删除标记 -->
+        <result column="del_flag" property="delFlag"/>
+    </resultMap>
+
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="sid"
+            parameterType="com.cybstar.base.secureBase.solidWaste.hazardousWaste.entity.HseHazardousWasteGeneration">
+
+        insert into hse_hazardous_waste_generation (
+
+        <if test="sid != null ">
+            sid,
+        </if>
+        <if test="appId != null ">
+            app_id,
+        </if>
+        <if test="wasteBaseId != null  and wasteBaseId != ''">
+            waste_base_id,
+        </if>
+        <if test="generationCode != null  and generationCode != ''">
+            generation_code,
+        </if>
+        <if test="generationOrgId != null  and generationOrgId != ''">
+            generation_org_id,
+        </if>
+        <if test="generationOrgName != null  and generationOrgName != ''">
+            generation_org_name,
+        </if>
+        <if test="orgPersonId != null  and orgPersonId != ''">
+            org_person_id,
+        </if>
+        <if test="orgPersonName != null  and orgPersonName != ''">
+            org_person_name,
+        </if>
+        <if test="wastePositionCode != null  and wastePositionCode != ''">
+            waste_position_code,
+        </if>
+        <if test="wastePositionName != null  and wastePositionName != ''">
+            waste_position_name,
+        </if>
+        <if test="containerCode != null  and containerCode != ''">
+            container_code,
+        </if>
+        <if test="containerName != null  and containerName != ''">
+            container_name,
+        </if>
+        <if test="status != null  and status != ''">
+            status,
+        </if>
+        <if test="destination != null  and destination != ''">
+            destination,
+        </if>
+        <if test="measurementUnitCode != null  and measurementUnitCode != ''">
+            measurement_unit_code,
+        </if>
+        <if test="measurementUnitName != null  and measurementUnitName != ''">
+            measurement_unit_name,
+        </if>
+        <if test="containerNumber != null ">
+            container_number,
+        </if>
+        <if test="generationQuantity != null ">
+            generation_quantity,
+        </if>
+        <if test="generationTime != null ">
+            generation_time,
+        </if>
+        <if test="fileId != null  and fileId != ''">
+            file_id,
+        </if>
+        <if test="yearTag != null  and yearTag != ''">
+            year_tag,
+        </if>
+        <if test="serialNumber != null ">
+            serial_number,
+        </if>
+        <if test="remark != null  and remark != ''">
+            remark,
+        </if>
+        <if test="updateBy != null  and updateBy != ''">
+            update_by,
+        </if>
+        <if test="updateTime != null ">
+            update_time,
+        </if>
+        <if test="createBy != null  and createBy != ''">
+            create_by,
+        </if>
+        <if test="createTime != null ">
+            create_time,
+        </if>
+        <if test="tenantId != null  and tenantId != ''">
+            tenant_id,
+        </if>
+        <if test="tenantName != null  and tenantName != ''">
+            tenant_name,
+        </if>
+        del_flag
+
+
+        ) values (
+
+        <if test="sid != null ">
+            #{sid},
+        </if>
+        <if test="appId != null ">
+            #{appId},
+        </if>
+        <if test="wasteBaseId != null  and wasteBaseId != ''">
+            #{wasteBaseId},
+        </if>
+        <if test="generationCode != null  and generationCode != ''">
+            #{generationCode},
+        </if>
+        <if test="generationOrgId != null  and generationOrgId != ''">
+            #{generationOrgId},
+        </if>
+        <if test="generationOrgName != null  and generationOrgName != ''">
+            #{generationOrgName},
+        </if>
+        <if test="orgPersonId != null  and orgPersonId != ''">
+            #{orgPersonId},
+        </if>
+        <if test="orgPersonName != null  and orgPersonName != ''">
+            #{orgPersonName},
+        </if>
+        <if test="wastePositionCode != null  and wastePositionCode != ''">
+            #{wastePositionCode},
+        </if>
+        <if test="wastePositionName != null  and wastePositionName != ''">
+            #{wastePositionName},
+        </if>
+        <if test="containerCode != null  and containerCode != ''">
+            #{containerCode},
+        </if>
+        <if test="containerName != null  and containerName != ''">
+            #{containerName},
+        </if>
+        <if test="status != null  and status != ''">
+            #{status},
+        </if>
+        <if test="destination != null  and destination != ''">
+            #{destination},
+        </if>
+        <if test="measurementUnitCode != null  and measurementUnitCode != ''">
+            #{measurementUnitCode},
+        </if>
+        <if test="measurementUnitName != null  and measurementUnitName != ''">
+            #{measurementUnitName},
+        </if>
+        <if test="containerNumber != null ">
+            #{containerNumber},
+        </if>
+        <if test="generationQuantity != null ">
+            #{generationQuantity},
+        </if>
+        <if test="generationTime != null ">
+            #{generationTime},
+        </if>
+        <if test="fileId != null  and fileId != ''">
+            #{fileId},
+        </if>
+        <if test="yearTag != null  and yearTag != ''">
+            #{yearTag},
+        </if>
+        <if test="serialNumber != null ">
+            #{serialNumber},
+        </if>
+        <if test="remark != null  and remark != ''">
+            #{remark},
+        </if>
+        <if test="updateBy != null  and updateBy != ''">
+            #{updateBy},
+        </if>
+        <if test="updateTime != null ">
+            #{updateTime},
+        </if>
+        <if test="createBy != null  and createBy != ''">
+            #{createBy},
+        </if>
+        <if test="createTime != null ">
+            #{createTime},
+        </if>
+        <if test="tenantId != null  and tenantId != ''">
+            #{tenantId},
+        </if>
+        <if test="tenantName != null  and tenantName != ''">
+            #{tenantName},
+        </if>
+        0
+
+        )
+    </insert>
+
+
+    <update id="deleteById" parameterType="Long">
+        update hse_hazardous_waste_generation set del_flag = 1 where sid = #{sid}
+    </update>
+
+    <update id="deleteBatchIds" parameterType="java.util.ArrayList">
+        update hse_hazardous_waste_generation set del_flag = 1 where sid in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="updateById"
+            parameterType="com.cybstar.base.secureBase.solidWaste.hazardousWaste.entity.HseHazardousWasteGeneration">
+        update hse_hazardous_waste_generation
+        <set>
+            <if test="appId != null ">
+                app_id = #{appId},
+            </if>
+            <if test="wasteBaseId != null and wasteBaseId != ''">
+                waste_base_id = #{wasteBaseId},
+            </if>
+            <if test="generationCode != null and generationCode != ''">
+                generation_code = #{generationCode},
+            </if>
+            <if test="generationOrgId != null and generationOrgId != ''">
+                generation_org_id = #{generationOrgId},
+            </if>
+            <if test="generationOrgName != null and generationOrgName != ''">
+                generation_org_name = #{generationOrgName},
+            </if>
+            <if test="orgPersonId != null and orgPersonId != ''">
+                org_person_id = #{orgPersonId},
+            </if>
+            <if test="orgPersonName != null and orgPersonName != ''">
+                org_person_name = #{orgPersonName},
+            </if>
+            <if test="wastePositionCode != null and wastePositionCode != ''">
+                waste_position_code = #{wastePositionCode},
+            </if>
+            <if test="wastePositionName != null and wastePositionName != ''">
+                waste_position_name = #{wastePositionName},
+            </if>
+            <if test="containerCode != null and containerCode != ''">
+                container_code = #{containerCode},
+            </if>
+            <if test="containerName != null and containerName != ''">
+                container_name = #{containerName},
+            </if>
+            <if test="status != null and status != ''">
+                status = #{status},
+            </if>
+            <if test="destination != null and destination != ''">
+                destination = #{destination},
+            </if>
+            <if test="measurementUnitCode != null and measurementUnitCode != ''">
+                measurement_unit_code = #{measurementUnitCode},
+            </if>
+            <if test="measurementUnitName != null and measurementUnitName != ''">
+                measurement_unit_name = #{measurementUnitName},
+            </if>
+            <if test="containerNumber != null ">
+                container_number = #{containerNumber},
+            </if>
+            <if test="generationQuantity != null ">
+                generation_quantity = #{generationQuantity},
+            </if>
+            <if test="generationTime != null ">
+                generation_time = #{generationTime},
+            </if>
+            <if test="fileId != null and fileId != ''">
+                file_id = #{fileId},
+            </if>
+            <if test="yearTag != null and yearTag != ''">
+                year_tag = #{yearTag},
+            </if>
+            <if test="serialNumber != null ">
+                serial_number = #{serialNumber},
+            </if>
+            <if test="remark != null and remark != ''">
+                remark = #{remark},
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                update_by = #{updateBy},
+            </if>
+            <if test="updateTime != null ">
+                update_time = #{updateTime},
+            </if>
+            <if test="createBy != null and createBy != ''">
+                create_by = #{createBy},
+            </if>
+            <if test="createTime != null ">
+                create_time = #{createTime},
+            </if>
+            <if test="tenantId != null and tenantId != ''">
+                tenant_id = #{tenantId},
+            </if>
+            <if test="tenantName != null and tenantName != ''">
+                tenant_name = #{tenantName},
+            </if>
+            <if test="delFlag != null ">
+                del_flag = #{delFlag},
+            </if>
+        </set>
+        where sid=#{sid}
+    </update>
+
+    <select id="selectById" resultMap="BaseResultMap" parameterType="Long">
+        select
+        sid,
+        app_id,
+        waste_base_id,
+        generation_code,
+        generation_org_id,
+        generation_org_name,
+        org_person_id,
+        org_person_name,
+        waste_position_code,
+        waste_position_name,
+        container_code,
+        container_name,
+        status,
+        destination,
+        measurement_unit_code,
+        measurement_unit_name,
+        container_number,
+        generation_quantity,
+        generation_time,
+        file_id,
+        year_tag,
+        serial_number,
+        remark,
+        update_by,
+        update_time,
+        create_by,
+        create_time,
+        tenant_id,
+        tenant_name,
+        del_flag
+        from hse_hazardous_waste_generation
+        where sid = #{sid} and del_flag=0
+    </select>
+
+    <select id="selectBatchIds" resultMap="BaseResultMap" parameterType="java.util.ArrayList">
+        select
+        sid,
+        app_id,
+        waste_base_id,
+        generation_code,
+        generation_org_id,
+        generation_org_name,
+        org_person_id,
+        org_person_name,
+        waste_position_code,
+        waste_position_name,
+        container_code,
+        container_name,
+        status,
+        destination,
+        measurement_unit_code,
+        measurement_unit_name,
+        container_number,
+        generation_quantity,
+        generation_time,
+        file_id,
+        year_tag,
+        serial_number,
+        remark,
+        update_by,
+        update_time,
+        create_by,
+        create_time,
+        tenant_id,
+        tenant_name,
+        del_flag
+        from hse_hazardous_waste_generation
+        where sid in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and del_flag=0
+    </select>
+
+    <select id="selectByEntity" resultMap="BaseResultMap"
+            parameterType="com.cybstar.base.secureBase.solidWaste.hazardousWaste.entity.HseHazardousWasteGeneration">
+        select
+        sid,
+        app_id,
+        waste_base_id,
+        generation_code,
+        generation_org_id,
+        generation_org_name,
+        org_person_id,
+        org_person_name,
+        waste_position_code,
+        waste_position_name,
+        container_code,
+        container_name,
+        status,
+        destination,
+        measurement_unit_code,
+        measurement_unit_name,
+        container_number,
+        generation_quantity,
+        generation_time,
+        file_id,
+        year_tag,
+        serial_number,
+        remark,
+        update_by,
+        update_time,
+        create_by,
+        create_time,
+        tenant_id,
+        tenant_name,
+        del_flag
+
+        from hse_hazardous_waste_generation
+        where app_id = #{appId} and del_flag=0
+
+        <if test="sid != null ">
+            and sid = #{sid}
+        </if>
+        <if test="appId != null ">
+            and app_id = #{appId}
+        </if>
+        <if test="wasteBaseId != null  and wasteBaseId != ''">
+            and waste_base_id = #{wasteBaseId}
+        </if>
+        <if test="generationCode != null  and generationCode != ''">
+            and generation_code = #{generationCode}
+        </if>
+        <if test="generationOrgId != null  and generationOrgId != ''">
+            and generation_org_id = #{generationOrgId}
+        </if>
+        <if test="generationOrgName != null  and generationOrgName != ''">
+            and generation_org_name = #{generationOrgName}
+        </if>
+        <if test="orgPersonId != null  and orgPersonId != ''">
+            and org_person_id = #{orgPersonId}
+        </if>
+        <if test="orgPersonName != null  and orgPersonName != ''">
+            and org_person_name = #{orgPersonName}
+        </if>
+        <if test="wastePositionCode != null  and wastePositionCode != ''">
+            and waste_position_code = #{wastePositionCode}
+        </if>
+        <if test="wastePositionName != null  and wastePositionName != ''">
+            and waste_position_name = #{wastePositionName}
+        </if>
+        <if test="containerCode != null  and containerCode != ''">
+            and container_code = #{containerCode}
+        </if>
+        <if test="containerName != null  and containerName != ''">
+            and container_name = #{containerName}
+        </if>
+        <if test="status != null  and status != ''">
+            and status = #{status}
+        </if>
+        <if test="destination != null  and destination != ''">
+            and destination = #{destination}
+        </if>
+        <if test="measurementUnitCode != null  and measurementUnitCode != ''">
+            and measurement_unit_code = #{measurementUnitCode}
+        </if>
+        <if test="measurementUnitName != null  and measurementUnitName != ''">
+            and measurement_unit_name = #{measurementUnitName}
+        </if>
+        <if test="containerNumber != null ">
+            and container_number = #{containerNumber}
+        </if>
+        <if test="generationQuantity != null ">
+            and generation_quantity = #{generationQuantity}
+        </if>
+        <if test="generationTime != null ">
+            and generation_time = #{generationTime}
+        </if>
+        <if test="fileId != null  and fileId != ''">
+            and file_id = #{fileId}
+        </if>
+        <if test="yearTag != null  and yearTag != ''">
+            and year_tag = #{yearTag}
+        </if>
+        <if test="serialNumber != null ">
+            and serial_number = #{serialNumber}
+        </if>
+        <if test="remark != null  and remark != ''">
+            and remark = #{remark}
+        </if>
+        <if test="updateBy != null  and updateBy != ''">
+            and update_by = #{updateBy}
+        </if>
+        <if test="updateTime != null ">
+            and update_time = #{updateTime}
+        </if>
+        <if test="createBy != null  and createBy != ''">
+            and create_by = #{createBy}
+        </if>
+        <if test="createTime != null ">
+            and create_time = #{createTime}
+        </if>
+        <if test="tenantId != null  and tenantId != ''">
+            and tenant_id = #{tenantId}
+        </if>
+        <if test="tenantName != null  and tenantName != ''">
+            and tenant_name = #{tenantName}
+        </if>
+        <if test="delFlag != null ">
+            and del_flag = #{delFlag}
+        </if>
+
+
+    </select>
+
+    <select id="selectByKeyWord"
+            resultType="com.cybstar.base.secureBase.solidWaste.hazardousWaste.vo.HseHazardousWasteGenerationVO"
+            parameterType="com.cybstar.base.secureBase.solidWaste.hazardousWaste.dto.HseHazardousWasteGenerationDTO">
+        select
+        generation.sid as sid,
+        generation.app_id as appId,
+        generation.waste_base_id as wasteBaseId,
+        generation.generation_code as generationCode,
+        generation.generation_org_id as generationOrgId,
+        generation.generation_org_name as generationOrgName,
+        generation.org_person_id as orgPersonId,
+        generation.org_person_name as orgPersonName,
+        generation.waste_position_code as wastePositionCode,
+        generation.waste_position_name as wastePositionName,
+        generation.container_code as containerCode,
+        generation.container_name as containerName,
+        generation.status as status,
+        generation.destination as destination,
+        generation.measurement_unit_code as measurementUnitCode,
+        generation.measurement_unit_name as measurementUnitName,
+        generation.container_number as containerNumber,
+        generation.generation_quantity as generationQuantity,
+        generation.generation_time as generationTime,
+        generation.file_id as fileId,
+        generation.year_tag as yearTag,
+        generation.serial_number as serialNumber,
+        generation.remark as remark,
+        generation.update_by as updateBy,
+        generation.update_time as updateTime,
+        generation.create_by as createBy,
+        generation.create_time as createTime,
+        generation.tenant_id as tenantId,
+        generation.tenant_name as tenantName,
+        generation.del_flag as delFlag,
+
+        base.waste_name as wasteBaseName,
+        directory.waste_code as wasteCode,
+        directory.name as wasteName,
+        directory.type as wasteType
+
+        from hse_hazardous_waste_generation generation
+        left join hse_hazardous_waste_base base on base.sid = generation.waste_base_id
+        left join hse_hazardous_waste_directory directory on base.directory_id = directory.sid
+
+        where generation.app_id = #{appId} and generation.del_flag = 0
+            and base.app_id = #{appId} and base.del_flag = 0
+            and directory.app_id = #{appId} and directory.del_flag = 0
+
+        <if test="keyWord != null and keyWord != ''">
+            and (
+                generation.generation_code like concat('%',#{keyWord},'%')
+                or generation.org_person_name like concat('%',#{keyWord},'%')
+                or base.waste_name like concat('%',#{keyWord},'%')
+                or directory.waste_code like concat('%',#{keyWord},'%')
+            )
+        </if>
+
+
+        <if test="wasteBaseId != null  and wasteBaseId != ''">
+            and generation.waste_base_id = #{wasteBaseId}
+        </if>
+        <if test="generationCode != null  and generationCode != ''">
+            and generation.generation_code = #{generationCode}
+        </if>
+        <if test="generationOrgId != null  and generationOrgId != ''">
+            and generation.generation_org_id = #{generationOrgId}
+        </if>
+        <if test="generationOrgName != null  and generationOrgName != ''">
+            and generation.generation_org_name = #{generationOrgName}
+        </if>
+        <if test="orgPersonId != null  and orgPersonId != ''">
+            and generation.org_person_id = #{orgPersonId}
+        </if>
+        <if test="orgPersonName != null  and orgPersonName != ''">
+            and generation.org_person_name = #{orgPersonName}
+        </if>
+        <if test="wastePositionCode != null  and wastePositionCode != ''">
+            and generation.waste_position_code = #{wastePositionCode}
+        </if>
+        <if test="wastePositionName != null  and wastePositionName != ''">
+            and generation.waste_position_name = #{wastePositionName}
+        </if>
+        <if test="containerCode != null  and containerCode != ''">
+            and generation.container_code = #{containerCode}
+        </if>
+        <if test="containerName != null  and containerName != ''">
+            and generation.container_name = #{containerName}
+        </if>
+        <if test="status != null  and status != ''">
+            and generation.status = #{status}
+        </if>
+        <if test="destination != null  and destination != ''">
+            and generation.destination = #{destination}
+        </if>
+        <if test="measurementUnitCode != null  and measurementUnitCode != ''">
+            and generation.measurement_unit_code = #{measurementUnitCode}
+        </if>
+        <if test="measurementUnitName != null  and measurementUnitName != ''">
+            and generation.measurement_unit_name = #{measurementUnitName}
+        </if>
+        <if test="containerNumber != null ">
+            and generation.container_number = #{containerNumber}
+        </if>
+        <if test="generationQuantity != null ">
+            and generation.generation_quantity = #{generationQuantity}
+        </if>
+        <if test="generationTime != null ">
+            and generation.generation_time = #{generationTime}
+        </if>
+        <if test="fileId != null  and fileId != ''">
+            and generation.file_id = #{fileId}
+        </if>
+        <if test="yearTag != null  and yearTag != ''">
+            and generation.year_tag = #{yearTag}
+        </if>
+        <if test="serialNumber != null ">
+            and generation.serial_number = #{serialNumber}
+        </if>
+
+        <if test="searchStartDate != null">
+            and generation.generation_time >= #{searchStartDate}
+        </if>
+        <if test="searchEndDate != null">
+            and generation.generation_time &lt;= #{searchEndDate}
+        </if>
+
+        order by generation.create_time desc
+
+
+    </select>
+
+
+    <select id="selectLastOneForGenerationYear"
+            resultMap="BaseResultMap"
+            parameterType="com.cybstar.base.secureBase.solidWaste.hazardousWaste.dto.HseHazardousWasteGenerationDTO">
+
+        select
+        sid,
+        app_id,
+        waste_base_id,
+        generation_code,
+        generation_org_id,
+        generation_org_name,
+        org_person_id,
+        org_person_name,
+        waste_position_code,
+        waste_position_name,
+        container_code,
+        container_name,
+        status,
+        destination,
+        measurement_unit_code,
+        measurement_unit_name,
+        container_number,
+        generation_quantity,
+        generation_time,
+        file_id,
+        year_tag,
+        serial_number,
+        remark,
+        update_by,
+        update_time,
+        create_by,
+        create_time,
+        tenant_id,
+        tenant_name,
+        del_flag
+
+        from hse_hazardous_waste_generation
+        where app_id = #{appId}   <!-- and del_flag=0 -->
+
+        and year_tag = #{yearTag}
+
+        order by serial_number desc
+        limit 1;
+
+    </select>
+
+</mapper>
+

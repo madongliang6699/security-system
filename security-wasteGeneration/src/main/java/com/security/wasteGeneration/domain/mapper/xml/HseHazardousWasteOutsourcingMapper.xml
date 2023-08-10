@@ -1,0 +1,859 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- @author A -->
+<!-- @version v 0.1 -->
+<!-- @File HseHazardousWasteOutsourcingMapper.xml -->
+<!-- @Desc 固废处理-危废委外利用处置 -->
+<!-- @DateTime 2023-07-18 11:04:20 -->
+<!-- @Encoding UTF-8 -->
+<!-- @Description Copyright (c) 2004-2023 All Rights Reserved. -->
+
+<mapper namespace="com.cybstar.base.secureBase.solidWaste.hazardousWaste.mapper.HseHazardousWasteOutsourcingMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap"
+               type="com.cybstar.base.secureBase.solidWaste.hazardousWaste.entity.HseHazardousWasteOutsourcing">
+        <!-- 流水ID -->
+        <id column="sid" property="sid"/>
+        <!-- appId -->
+        <result column="app_id" property="appId"/>
+        <!-- 备注 -->
+        <result column="remark" property="remark"/>
+        <!-- 创建者 -->
+        <result column="create_by" property="createBy"/>
+        <!-- 创建时间 -->
+        <result column="create_time" property="createTime"/>
+        <!-- 修改者 -->
+        <result column="update_by" property="updateBy"/>
+        <!-- 更新时间 -->
+        <result column="update_time" property="updateTime"/>
+        <!-- 删除标记 -->
+        <result column="del_flag" property="delFlag"/>
+        <!-- 租户id -->
+        <result column="tenant_id" property="tenantId"/>
+        <!-- 租户名称 -->
+        <result column="tenant_name" property="tenantName"/>
+        <!-- 委外类型code -->
+        <result column="outsourcing_type_code" property="outsourcingTypeCode"/>
+        <!-- 委外类型name -->
+        <result column="outsourcing_type_name" property="outsourcingTypeName"/>
+        <!-- 关联的废物id -->
+        <result column="waste_base_id" property="wasteBaseId"/>
+        <!-- 来源：1-产生，2-出库 -->
+        <result column="source" property="source"/>
+        <!-- 出厂时间 -->
+        <result column="delivery_time" property="deliveryTime"/>
+        <!-- 委外利用/处置编码 -->
+        <result column="disposal_code" property="disposalCode"/>
+        <!-- 委外利用/处置量 -->
+        <result column="disposal_volume" property="disposalVolume"/>
+        <!-- 容器/包装编码和类型code -->
+        <result column="packaging_and_type_code" property="packagingAndTypeCode"/>
+        <!-- 容器/包装编码和类型name -->
+        <result column="packaging_and_type_name" property="packagingAndTypeName"/>
+        <!-- 容器包装个数 -->
+        <result column="number_of_packages" property="numberOfPackages"/>
+        <!-- 利用处置方式code -->
+        <result column="disposal_method_code" property="disposalMethodCode"/>
+        <!-- 利用处置方式name -->
+        <result column="disposal_method_name" property="disposalMethodName"/>
+        <!-- 接收单位类型id -->
+        <result column="receiving_unit_type_id" property="receivingUnitTypeId"/>
+        <!-- 接收单位类型name -->
+        <result column="receiving_unit_type_name" property="receivingUnitTypeName"/>
+        <!-- 单位名称id -->
+        <result column="unit_id" property="unitId"/>
+        <!-- 单位名称name -->
+        <result column="unit_name" property="unitName"/>
+        <!-- 出口核准通知编单号 -->
+        <result column="export_document_number" property="exportDocumentNumber"/>
+        <!-- 许可证编码 -->
+        <result column="license_code" property="licenseCode"/>
+        <!-- 关联的产生/出库ids -->
+        <result column="generation_outbound_Ids" property="generationOutboundIds"/>
+        <!-- 产生/出库批次编码 -->
+        <result column="generation_outbound_batch_encoding" property="generationOutboundBatchEncoding"/>
+        <!-- 编号年份标记 -->
+        <result column="year_tag" property="yearTag"/>
+        <!-- 每个标记的最大序号 -->
+        <result column="serial_number" property="serialNumber"/>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="sid"
+            parameterType="com.cybstar.base.secureBase.solidWaste.hazardousWaste.entity.HseHazardousWasteOutsourcing"
+            databaseId="mysql">
+        insert into hse_hazardous_waste_outsourcing (
+        <if test="sid != null ">
+            sid,
+        </if>
+        <if test="appId != null ">
+            app_id,
+        </if>
+        <if test="remark != null  and remark != ''">
+            remark,
+        </if>
+        <if test="createBy != null  and createBy != ''">
+            create_by,
+        </if>
+        create_time,
+        <if test="updateBy != null  and updateBy != ''">
+            update_by,
+        </if>
+        update_time,
+        del_flag,
+        <if test="tenantId != null  and tenantId != ''">
+            tenant_id,
+        </if>
+        <if test="tenantName != null  and tenantName != ''">
+            tenant_name,
+        </if>
+        <if test="outsourcingTypeCode != null  and outsourcingTypeCode != ''">
+            outsourcing_type_code,
+        </if>
+        <if test="outsourcingTypeName != null  and outsourcingTypeName != ''">
+            outsourcing_type_name,
+        </if>
+        <if test="wasteBaseId != null  and wasteBaseId != ''">
+            waste_base_id,
+        </if>
+        <if test="source != null ">
+            source,
+        </if>
+        <if test="deliveryTime != null ">
+            delivery_time,
+        </if>
+        <if test="disposalCode != null  and disposalCode != ''">
+            disposal_code,
+        </if>
+        <if test="disposalVolume != null ">
+            disposal_volume,
+        </if>
+        <if test="packagingAndTypeCode != null  and packagingAndTypeCode != ''">
+            packaging_and_type_code,
+        </if>
+        <if test="packagingAndTypeName != null  and packagingAndTypeName != ''">
+            packaging_and_type_name,
+        </if>
+        <if test="numberOfPackages != null  and numberOfPackages != ''">
+            number_of_packages,
+        </if>
+        <if test="disposalMethodCode != null  and disposalMethodCode != ''">
+            disposal_method_code,
+        </if>
+        <if test="disposalMethodName != null  and disposalMethodName != ''">
+            disposal_method_name,
+        </if>
+        <if test="receivingUnitTypeId != null  and receivingUnitTypeId != ''">
+            receiving_unit_type_id,
+        </if>
+        <if test="receivingUnitTypeName != null  and receivingUnitTypeName != ''">
+            receiving_unit_type_name,
+        </if>
+        <if test="unitId != null  and unitId != ''">
+            unit_id,
+        </if>
+        <if test="unitName != null  and unitName != ''">
+            unit_name,
+        </if>
+        <if test="exportDocumentNumber != null  and exportDocumentNumber != ''">
+            export_document_number,
+        </if>
+        <if test="licenseCode != null  and licenseCode != ''">
+            license_code,
+        </if>
+        <if test="generationOutboundIds != null  and generationOutboundIds != ''">
+            generation_outbound_Ids,
+        </if>
+        <if test="generationOutboundBatchEncoding != null  and generationOutboundBatchEncoding != ''">
+            generation_outbound_batch_encoding,
+        </if>
+        <if test="yearTag != null  and yearTag != ''">
+            year_tag,
+        </if>
+        <if test="serialNumber != null ">
+            serial_number
+        </if>
+        ) values (
+        <if test="sid != null ">
+            #{sid},
+        </if>
+        <if test="appId != null ">
+            #{appId},
+        </if>
+        <if test="remark != null  and remark != ''">
+            #{remark},
+        </if>
+        <if test="createBy != null  and createBy != ''">
+            #{createBy},
+        </if>
+        sysdate(),
+        <if test="updateBy != null  and updateBy != ''">
+            #{updateBy},
+        </if>
+        sysdate(),
+        0,
+        <if test="tenantId != null  and tenantId != ''">
+            #{tenantId},
+        </if>
+        <if test="tenantName != null  and tenantName != ''">
+            #{tenantName},
+        </if>
+        <if test="outsourcingTypeCode != null  and outsourcingTypeCode != ''">
+            #{outsourcingTypeCode},
+        </if>
+        <if test="outsourcingTypeName != null  and outsourcingTypeName != ''">
+            #{outsourcingTypeName},
+        </if>
+        <if test="wasteBaseId != null  and wasteBaseId != ''">
+            #{wasteBaseId},
+        </if>
+        <if test="source != null ">
+            #{source},
+        </if>
+        <if test="deliveryTime != null ">
+            #{deliveryTime},
+        </if>
+        <if test="disposalCode != null  and disposalCode != ''">
+            #{disposalCode},
+        </if>
+        <if test="disposalVolume != null ">
+            #{disposalVolume},
+        </if>
+        <if test="packagingAndTypeCode != null  and packagingAndTypeCode != ''">
+            #{packagingAndTypeCode},
+        </if>
+        <if test="packagingAndTypeName != null  and packagingAndTypeName != ''">
+            #{packagingAndTypeName},
+        </if>
+        <if test="numberOfPackages != null  and numberOfPackages != ''">
+            #{numberOfPackages},
+        </if>
+        <if test="disposalMethodCode != null  and disposalMethodCode != ''">
+            #{disposalMethodCode},
+        </if>
+        <if test="disposalMethodName != null  and disposalMethodName != ''">
+            #{disposalMethodName},
+        </if>
+        <if test="receivingUnitTypeId != null  and receivingUnitTypeId != ''">
+            #{receivingUnitTypeId},
+        </if>
+        <if test="receivingUnitTypeName != null  and receivingUnitTypeName != ''">
+            #{receivingUnitTypeName},
+        </if>
+        <if test="unitId != null  and unitId != ''">
+            #{unitId},
+        </if>
+        <if test="unitName != null  and unitName != ''">
+            #{unitName},
+        </if>
+        <if test="exportDocumentNumber != null  and exportDocumentNumber != ''">
+            #{exportDocumentNumber},
+        </if>
+        <if test="licenseCode != null  and licenseCode != ''">
+            #{licenseCode},
+        </if>
+        <if test="generationOutboundIds != null  and generationOutboundIds != ''">
+            #{generationOutboundIds},
+        </if>
+        <if test="generationOutboundBatchEncoding != null  and generationOutboundBatchEncoding != ''">
+            #{generationOutboundBatchEncoding},
+        </if>
+        <if test="yearTag != null  and yearTag != ''">
+            #{yearTag},
+        </if>
+        <if test="serialNumber != null ">
+            #{serialNumber}
+        </if>
+        )
+    </insert>
+
+    <insert id="insertList" useGeneratedKeys="false"
+            parameterType="com.cybstar.base.secureBase.solidWaste.hazardousWaste.entity.HseHazardousWasteOutsourcing"
+            databaseId="mysql">
+        insert into hse_hazardous_waste_outsourcing (
+        sid,
+        app_id,
+        remark,
+        create_by,
+        create_time,
+        update_by,
+        update_time,
+        del_flag,
+        tenant_id,
+        tenant_name,
+        outsourcing_type_code,
+        outsourcing_type_name,
+        waste_base_id,
+        source,
+        delivery_time,
+        disposal_code,
+        disposal_volume,
+        packaging_and_type_code,
+        packaging_and_type_name,
+        number_of_packages,
+        disposal_method_code,
+        disposal_method_name,
+        receiving_unit_type_id,
+        receiving_unit_type_name,
+        unit_id,
+        unit_name,
+        export_document_number,
+        license_code,
+        generation_outbound_Ids,
+        generation_outbound_batch_encoding,
+        year_tag,
+        serial_number
+        ) values
+        <foreach collection="entityList" item="item" separator=",">
+            (
+            #{item.sid},
+            #{item.appId},
+            #{item.remark},
+            #{item.createBy},
+            sysdate(),
+            #{item.updateBy},
+            sysdate(),
+            0,
+            #{item.tenantId},
+            #{item.tenantName},
+            #{item.outsourcingTypeCode},
+            #{item.outsourcingTypeName},
+            #{item.wasteBaseId},
+            #{item.source},
+            #{item.deliveryTime},
+            #{item.disposalCode},
+            #{item.disposalVolume},
+            #{item.packagingAndTypeCode},
+            #{item.packagingAndTypeName},
+            #{item.numberOfPackages},
+            #{item.disposalMethodCode},
+            #{item.disposalMethodName},
+            #{item.receivingUnitTypeId},
+            #{item.receivingUnitTypeName},
+            #{item.unitId},
+            #{item.unitName},
+            #{item.exportDocumentNumber},
+            #{item.licenseCode},
+            #{item.generationOutboundIds},
+            #{item.generationOutboundBatchEncoding},
+            #{item.yearTag},
+            #{item.serialNumber}
+            )
+        </foreach>
+    </insert>
+
+    <update id="deleteById"
+            parameterType="com.cybstar.base.secureBase.solidWaste.hazardousWaste.entity.HseHazardousWasteOutsourcing">
+        update hse_hazardous_waste_outsourcing
+        set del_flag = 1
+        where sid = #{sid}
+    </update>
+
+    <update id="deleteBatchIds" parameterType="java.util.ArrayList">
+        update hse_hazardous_waste_outsourcing set del_flag = 1 where sid in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="updateById"
+            parameterType="com.cybstar.base.secureBase.solidWaste.hazardousWaste.entity.HseHazardousWasteOutsourcing">
+        update hse_hazardous_waste_outsourcing
+        <set>
+            <if test="appId != null ">
+                app_id = #{appId},
+            </if>
+            <if test="remark != null and remark != ''">
+                remark = #{remark},
+            </if>
+            <if test="createBy != null and createBy != ''">
+                create_by = #{createBy},
+            </if>
+            <if test="createTime != null ">
+                create_time = #{createTime},
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                update_by = #{updateBy},
+            </if>
+            <if test="updateTime != null ">
+                update_time = #{updateTime},
+            </if>
+            <if test="delFlag != null ">
+                del_flag = #{delFlag},
+            </if>
+            <if test="tenantId != null and tenantId != ''">
+                tenant_id = #{tenantId},
+            </if>
+            <if test="tenantName != null and tenantName != ''">
+                tenant_name = #{tenantName},
+            </if>
+            <if test="outsourcingTypeCode != null and outsourcingTypeCode != ''">
+                outsourcing_type_code = #{outsourcingTypeCode},
+            </if>
+            <if test="outsourcingTypeName != null and outsourcingTypeName != ''">
+                outsourcing_type_name = #{outsourcingTypeName},
+            </if>
+            <if test="wasteBaseId != null and wasteBaseId != ''">
+                waste_base_id = #{wasteBaseId},
+            </if>
+            <if test="source != null ">
+                source = #{source},
+            </if>
+            <if test="deliveryTime != null ">
+                delivery_time = #{deliveryTime},
+            </if>
+            <if test="disposalCode != null and disposalCode != ''">
+                disposal_code = #{disposalCode},
+            </if>
+            <if test="disposalVolume != null ">
+                disposal_volume = #{disposalVolume},
+            </if>
+            <if test="packagingAndTypeCode != null and packagingAndTypeCode != ''">
+                packaging_and_type_code = #{packagingAndTypeCode},
+            </if>
+            <if test="packagingAndTypeName != null and packagingAndTypeName != ''">
+                packaging_and_type_name = #{packagingAndTypeName},
+            </if>
+            <if test="numberOfPackages != null and numberOfPackages != ''">
+                number_of_packages = #{numberOfPackages},
+            </if>
+            <if test="disposalMethodCode != null and disposalMethodCode != ''">
+                disposal_method_code = #{disposalMethodCode},
+            </if>
+            <if test="disposalMethodName != null and disposalMethodName != ''">
+                disposal_method_name = #{disposalMethodName},
+            </if>
+            <if test="receivingUnitTypeId != null and receivingUnitTypeId != ''">
+                receiving_unit_type_id = #{receivingUnitTypeId},
+            </if>
+            <if test="receivingUnitTypeName != null and receivingUnitTypeName != ''">
+                receiving_unit_type_name = #{receivingUnitTypeName},
+            </if>
+            <if test="unitId != null">
+                unit_id = #{unitId},
+            </if>
+            <if test="unitName != null and unitName != ''">
+                unit_name = #{unitName},
+            </if>
+            <if test="exportDocumentNumber != null">
+                export_document_number = #{exportDocumentNumber},
+            </if>
+            <if test="licenseCode != null">
+                license_code = #{licenseCode},
+            </if>
+            <if test="generationOutboundIds != null and generationOutboundIds != ''">
+                generation_outbound_Ids = #{generationOutboundIds},
+            </if>
+            <if test="generationOutboundBatchEncoding != null and generationOutboundBatchEncoding != ''">
+                generation_outbound_batch_encoding = #{generationOutboundBatchEncoding},
+            </if>
+            <if test="yearTag != null and yearTag != ''">
+                year_tag = #{yearTag},
+            </if>
+            <if test="serialNumber != null ">
+                serial_number = #{serialNumber},
+            </if>
+        </set>
+        where sid=#{sid}
+    </update>
+
+    <select id="selectById" resultMap="BaseResultMap"
+            parameterType="com.cybstar.base.secureBase.solidWaste.hazardousWaste.entity.HseHazardousWasteOutsourcing">
+        select sid,
+               app_id,
+               remark,
+               create_by,
+               create_time,
+               update_by,
+               update_time,
+               del_flag,
+               tenant_id,
+               tenant_name,
+               outsourcing_type_code,
+               outsourcing_type_name,
+               waste_base_id,
+               source,
+               delivery_time,
+               disposal_code,
+               disposal_volume,
+               packaging_and_type_code,
+               packaging_and_type_name,
+               number_of_packages,
+               disposal_method_code,
+               disposal_method_name,
+               receiving_unit_type_id,
+               receiving_unit_type_name,
+               unit_id,
+               unit_name,
+               export_document_number,
+               license_code,
+               generation_outbound_Ids,
+               generation_outbound_batch_encoding,
+               year_tag,
+               serial_number
+        from hse_hazardous_waste_outsourcing
+        where sid = #{sid}
+          and del_flag = 0
+    </select>
+
+    <select id="selectBatchIds" resultMap="BaseResultMap" parameterType="java.util.ArrayList">
+        select
+        sid,
+        app_id,
+        remark,
+        create_by,
+        create_time,
+        update_by,
+        update_time,
+        del_flag,
+        tenant_id,
+        tenant_name,
+        outsourcing_type_code,
+        outsourcing_type_name,
+        waste_base_id,
+        source,
+        delivery_time,
+        disposal_code,
+        disposal_volume,
+        packaging_and_type_code,
+        packaging_and_type_name,
+        number_of_packages,
+        disposal_method_code,
+        disposal_method_name,
+        receiving_unit_type_id,
+        receiving_unit_type_name,
+        unit_id,
+        unit_name,
+        export_document_number,
+        license_code,
+        generation_outbound_Ids,
+        generation_outbound_batch_encoding,
+        year_tag,
+        serial_number
+        from hse_hazardous_waste_outsourcing
+        where sid in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and del_flag=0
+    </select>
+
+    <select id="selectByAppId" resultMap="BaseResultMap"
+            parameterType="com.cybstar.base.secureBase.solidWaste.hazardousWaste.dto.HseHazardousWasteOutsourcingDTO">
+        select sid,
+               app_id,
+               remark,
+               create_by,
+               create_time,
+               update_by,
+               update_time,
+               del_flag,
+               tenant_id,
+               tenant_name,
+               outsourcing_type_code,
+               outsourcing_type_name,
+               waste_base_id,
+               source,
+               delivery_time,
+               disposal_code,
+               disposal_volume,
+               packaging_and_type_code,
+               packaging_and_type_name,
+               number_of_packages,
+               disposal_method_code,
+               disposal_method_name,
+               receiving_unit_type_id,
+               receiving_unit_type_name,
+               unit_id,
+               unit_name,
+               export_document_number,
+               license_code,
+               generation_outbound_Ids,
+               generation_outbound_batch_encoding,
+               year_tag,
+               serial_number
+        from hse_hazardous_waste_outsourcing
+        where app_id = #{appId}
+          and del_flag = 0
+    </select>
+
+    <select id="selectByEntity" resultMap="BaseResultMap"
+            parameterType="com.cybstar.base.secureBase.solidWaste.hazardousWaste.entity.HseHazardousWasteOutsourcing">
+        select
+        sid,
+        app_id,
+        remark,
+        create_by,
+        create_time,
+        update_by,
+        update_time,
+        del_flag,
+        tenant_id,
+        tenant_name,
+        outsourcing_type_code,
+        outsourcing_type_name,
+        waste_base_id,
+        source,
+        delivery_time,
+        disposal_code,
+        disposal_volume,
+        packaging_and_type_code,
+        packaging_and_type_name,
+        number_of_packages,
+        disposal_method_code,
+        disposal_method_name,
+        receiving_unit_type_id,
+        receiving_unit_type_name,
+        unit_id,
+        unit_name,
+        export_document_number,
+        license_code,
+        generation_outbound_Ids,
+        generation_outbound_batch_encoding,
+        year_tag,
+        serial_number
+        from hse_hazardous_waste_outsourcing
+        where app_id = #{appId} and del_flag=0
+        <if test="sid != null ">
+            and sid = #{sid}
+        </if>
+        <if test="appId != null ">
+            and app_id = #{appId}
+        </if>
+        <if test="remark != null  and remark != ''">
+            and remark = #{remark}
+        </if>
+        <if test="createBy != null  and createBy != ''">
+            and create_by = #{createBy}
+        </if>
+        <if test="createTime != null ">
+            and create_time = #{createTime}
+        </if>
+        <if test="updateBy != null  and updateBy != ''">
+            and update_by = #{updateBy}
+        </if>
+        <if test="updateTime != null ">
+            and update_time = #{updateTime}
+        </if>
+        <if test="delFlag != null ">
+            and del_flag = #{delFlag}
+        </if>
+        <if test="tenantId != null  and tenantId != ''">
+            and tenant_id = #{tenantId}
+        </if>
+        <if test="tenantName != null  and tenantName != ''">
+            and tenant_name = #{tenantName}
+        </if>
+        <if test="outsourcingTypeCode != null  and outsourcingTypeCode != ''">
+            and outsourcing_type_code = #{outsourcingTypeCode}
+        </if>
+        <if test="outsourcingTypeName != null  and outsourcingTypeName != ''">
+            and outsourcing_type_name = #{outsourcingTypeName}
+        </if>
+        <if test="wasteBaseId != null  and wasteBaseId != ''">
+            and waste_base_id = #{wasteBaseId}
+        </if>
+        <if test="source != null ">
+            and source = #{source}
+        </if>
+        <if test="deliveryTime != null ">
+            and delivery_time = #{deliveryTime}
+        </if>
+        <if test="disposalCode != null  and disposalCode != ''">
+            and disposal_code = #{disposalCode}
+        </if>
+        <if test="disposalVolume != null ">
+            and disposal_volume = #{disposalVolume}
+        </if>
+        <if test="packagingAndTypeCode != null  and packagingAndTypeCode != ''">
+            and packaging_and_type_code = #{packagingAndTypeCode}
+        </if>
+        <if test="packagingAndTypeName != null  and packagingAndTypeName != ''">
+            and packaging_and_type_name = #{packagingAndTypeName}
+        </if>
+        <if test="numberOfPackages != null  and numberOfPackages != ''">
+            and number_of_packages = #{numberOfPackages}
+        </if>
+        <if test="disposalMethodCode != null  and disposalMethodCode != ''">
+            and disposal_method_code = #{disposalMethodCode}
+        </if>
+        <if test="disposalMethodName != null  and disposalMethodName != ''">
+            and disposal_method_name = #{disposalMethodName}
+        </if>
+        <if test="receivingUnitTypeId != null  and receivingUnitTypeId != ''">
+            and receiving_unit_type_id = #{receivingUnitTypeId}
+        </if>
+        <if test="receivingUnitTypeName != null  and receivingUnitTypeName != ''">
+            and receiving_unit_type_name = #{receivingUnitTypeName}
+        </if>
+        <if test="unitId != null  and unitId != ''">
+            and unit_id = #{unitId}
+        </if>
+        <if test="unitName != null  and unitName != ''">
+            and unit_name = #{unitName}
+        </if>
+        <if test="exportDocumentNumber != null  and exportDocumentNumber != ''">
+            and export_document_number = #{exportDocumentNumber}
+        </if>
+        <if test="licenseCode != null  and licenseCode != ''">
+            and license_code = #{licenseCode}
+        </if>
+        <if test="generationOutboundIds != null  and generationOutboundIds != ''">
+            and generation_outbound_Ids = #{generationOutboundIds}
+        </if>
+        <if test="generationOutboundBatchEncoding != null  and generationOutboundBatchEncoding != ''">
+            and generation_outbound_batch_encoding = #{generationOutboundBatchEncoding}
+        </if>
+        <if test="yearTag != null  and yearTag != ''">
+            and year_tag = #{yearTag}
+        </if>
+        <if test="serialNumber != null ">
+            and serial_number = #{serialNumber}
+        </if>
+    </select>
+
+    <select id="selectPageByKeyWord" resultMap="BaseResultMap"
+            parameterType="com.cybstar.base.secureBase.solidWaste.hazardousWaste.dto.HseHazardousWasteOutsourcingDTO"
+            databaseId="mysql">
+        select
+        o.sid,
+        o.app_id,
+        o.remark,
+        o.create_by,
+        o.create_time,
+        o.update_by,
+        o.update_time,
+        o.del_flag,
+        o.tenant_id,
+        o.tenant_name,
+        o.outsourcing_type_code,
+        o.outsourcing_type_name,
+        o.waste_base_id,
+        o.source,
+        o.delivery_time,
+        o.disposal_code,
+        o.disposal_volume,
+        o.packaging_and_type_code,
+        o.packaging_and_type_name,
+        o.number_of_packages,
+        o.disposal_method_code,
+        o.disposal_method_name,
+        o.receiving_unit_type_id,
+        o.receiving_unit_type_name,
+        o.unit_id,
+        o.unit_name,
+        o.export_document_number,
+        o.license_code,
+        o.generation_outbound_Ids,
+        o.generation_outbound_batch_encoding,
+        o.year_tag,
+        o.serial_number
+        from hse_hazardous_waste_outsourcing o
+        <if test="keyWord != null and keyWord != ''">
+            left join hse_hazardous_waste_base base on base.sid = o.waste_base_id
+            left join hse_hazardous_waste_directory directory on base.directory_id = directory.sid
+        </if>
+        <where>
+            <if test="sids != null and sids.size()>0">
+                and o.sid in
+                <foreach collection="sids" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="keyWord != null and keyWord != ''">
+                and (
+                o.disposal_code like concat('%',#{keyWord},'%')
+                or base.waste_name like concat('%',#{keyWord},'%')
+                or directory.waste_code like concat('%',#{keyWord},'%')
+                )
+            </if>
+            <if test="outsourcingTypeCode != null and outsourcingTypeCode != ''">
+                and o.outsourcing_type_code = #{outsourcingTypeCode}
+            </if>
+            <if test="wasteBaseId != null and wasteBaseId != ''">
+                and o.waste_base_id = #{wasteBaseId}
+            </if>
+            <if test="disposalCode != null and disposalCode != ''">
+                and o.disposal_code = #{disposalCode}
+            </if>
+            <if test="source != null">
+                and o.source = #{source}
+            </if>
+            <if test="packagingAndTypeCode != null and packagingAndTypeCode != ''">
+                and o.packaging_and_type_code = #{packagingAndTypeCode}
+            </if>
+            <if test="disposalMethodCode != null and disposalMethodCode != ''">
+                and o.disposal_method_code = #{disposalMethodCode}
+            </if>
+            <if test="receivingUnitTypeId != null and receivingUnitTypeId != ''">
+                and o.receiving_unit_type_id = #{receivingUnitTypeId}
+            </if>
+            <if test="unitId != null and unitId != ''">
+                and o.unit_id = #{unitId}
+            </if>
+            <if test="unitName != null and unitName != ''">
+                and o.unit_name = #{unitName}
+            </if>
+            <if test="exportDocumentNumber != null and exportDocumentNumber != ''">
+                and o.export_document_number = #{exportDocumentNumber}
+            </if>
+            <if test="licenseCode != null and licenseCode != ''">
+                and o.license_code = #{licenseCode}
+            </if>
+            <if test="yearTag != null and yearTag != ''">
+                and o.year_tag = #{yearTag}
+            </if>
+            <if test="serialNumber != null">
+                and o.serial_number = #{serialNumber}
+            </if>
+            <if test="searchStartDate != null and searchEndDate!= null">
+                and o.delivery_time >= #{searchStartDate} and delivery_time &lt;= #{searchEndDate}
+            </if>
+            and o.del_flag = 0 and o.app_id = #{appId}
+        </where>
+    </select>
+
+    <select id="selectLastOneForYear" resultMap="BaseResultMap"
+            parameterType="com.cybstar.base.secureBase.solidWaste.hazardousWaste.dto.HseHazardousWasteOutsourcingDTO"
+            databaseId="mysql">
+        select sid,
+        app_id,
+        remark,
+        create_by,
+        create_time,
+        update_by,
+        update_time,
+        del_flag,
+        tenant_id,
+        tenant_name,
+        outsourcing_type_code,
+        outsourcing_type_name,
+        waste_base_id,
+        source,
+        delivery_time,
+        disposal_code,
+        disposal_volume,
+        packaging_and_type_code,
+        packaging_and_type_name,
+        number_of_packages,
+        disposal_method_code,
+        disposal_method_name,
+        receiving_unit_type_id,
+        receiving_unit_type_name,
+        unit_id,
+        unit_name,
+        export_document_number,
+        license_code,
+        generation_outbound_Ids,
+        generation_outbound_batch_encoding,
+        year_tag,
+        serial_number
+        from hse_hazardous_waste_outsourcing
+        where app_id = #{appId}   <!-- and del_flag=0 -->
+        and year_tag = #{yearTag}
+        and outsourcing_type_code = #{outsourcingTypeCode}
+        order by serial_number desc
+        limit 1;
+    </select>
+</mapper>

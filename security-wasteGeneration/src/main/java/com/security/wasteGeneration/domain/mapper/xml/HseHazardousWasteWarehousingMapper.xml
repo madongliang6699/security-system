@@ -1,0 +1,891 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- @author A -->
+<!-- @version v 0.1 -->
+<!-- @File HseHazardousWasteWarehousingMapper.xml -->
+<!-- @Desc 固废管理-危废入库 -->
+<!-- @DateTime 2023-07-14 10:31:25 -->
+<!-- @Encoding UTF-8 -->
+<!-- @Description Copyright (c) 2004-2023 All Rights Reserved. -->
+
+<mapper namespace="com.cybstar.base.secureBase.solidWaste.hazardousWaste.mapper.HseHazardousWasteWarehousingMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap"
+               type="com.cybstar.base.secureBase.solidWaste.hazardousWaste.entity.HseHazardousWasteWarehousing">
+        <!-- 流水ID -->
+        <id column="sid" property="sid"/>
+        <!-- appId -->
+        <result column="app_id" property="appId"/>
+        <!-- 关联的废物id -->
+        <result column="waste_base_id" property="wasteBaseId"/>
+        <!-- 关联的产生ids -->
+        <result column="generation_ids" property="generationIds"/>
+        <!-- 入库批次编码 -->
+        <result column="warehousing_code" property="warehousingCode"/>
+        <!-- 运送部门id -->
+        <result column="transport_org_id" property="transportOrgId"/>
+        <!-- 运送部门name -->
+        <result column="transport_org_name" property="transportOrgName"/>
+        <!-- 运送部门经办人id -->
+        <result column="transport_person_id" property="transportPersonId"/>
+        <!-- 运送部门经办人name -->
+        <result column="transport_person_name" property="transportPersonName"/>
+        <!-- 贮存部门id -->
+        <result column="storage_org_id" property="storageOrgId"/>
+        <!-- 贮存部门name -->
+        <result column="storage_org_name" property="storageOrgName"/>
+        <!-- 贮存部门经办人id -->
+        <result column="storage_person_id" property="storagePersonId"/>
+        <!-- 贮存部门经办人name -->
+        <result column="storage_person_name" property="storagePersonName"/>
+        <!-- 贮存设施字典编码 -->
+        <result column="storage_position_code" property="storagePositionCode"/>
+        <!-- 贮存设施字典名称 -->
+        <result column="storage_position_name" property="storagePositionName"/>
+        <!-- 贮存设施字典类型 -->
+        <result column="storage_position_type" property="storagePositionType"/>
+        <!-- 容器/包装编码和类型code -->
+        <result column="container_code" property="containerCode"/>
+        <!-- 容器/包装编码和类型name -->
+        <result column="container_name" property="containerName"/>
+        <!-- 状态(0未出库;1部分出库;2已出库) -->
+        <result column="status" property="status"/>
+        <!-- 计量单位code -->
+        <result column="measurement_unit_code" property="measurementUnitCode"/>
+        <!-- 计量单位name -->
+        <result column="measurement_unit_name" property="measurementUnitName"/>
+        <!-- 容器/包装个数 -->
+        <result column="container_number" property="containerNumber"/>
+        <!-- 入库量 -->
+        <result column="warehousing_quantity" property="warehousingQuantity"/>
+        <!-- 剩余量 -->
+        <result column="residue_quantity" property="residueQuantity"/>
+        <!-- 入库时间 -->
+        <result column="warehousing_time" property="warehousingTime"/>
+        <!-- 产生批次编码 -->
+        <result column="generation_codes" property="generationCodes"/>
+        <!-- 附件 -->
+        <result column="file_id" property="fileId"/>
+        <!-- 编号年份标记 -->
+        <result column="year_tag" property="yearTag"/>
+        <!-- 每个标记的最大序号 -->
+        <result column="serial_number" property="serialNumber"/>
+        <!-- 备注 -->
+        <result column="remark" property="remark"/>
+        <!-- 修改者 -->
+        <result column="update_by" property="updateBy"/>
+        <!-- 更新时间 -->
+        <result column="update_time" property="updateTime"/>
+        <!-- 创建者 -->
+        <result column="create_by" property="createBy"/>
+        <!-- 创建时间 -->
+        <result column="create_time" property="createTime"/>
+        <!-- 租户id -->
+        <result column="tenant_id" property="tenantId"/>
+        <!-- 租户名称 -->
+        <result column="tenant_name" property="tenantName"/>
+        <!-- 删除标记 -->
+        <result column="del_flag" property="delFlag"/>
+    </resultMap>
+
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="sid"
+            parameterType="com.cybstar.base.secureBase.solidWaste.hazardousWaste.entity.HseHazardousWasteWarehousing">
+
+        insert into hse_hazardous_waste_warehousing (
+
+        <if test="sid != null ">
+            sid,
+        </if>
+        <if test="appId != null ">
+            app_id,
+        </if>
+        <if test="wasteBaseId != null  and wasteBaseId != ''">
+            waste_base_id,
+        </if>
+        <if test="generationIds != null  and generationIds != ''">
+            generation_ids,
+        </if>
+        <if test="warehousingCode != null  and warehousingCode != ''">
+            warehousing_code,
+        </if>
+        <if test="transportOrgId != null  and transportOrgId != ''">
+            transport_org_id,
+        </if>
+        <if test="transportOrgName != null  and transportOrgName != ''">
+            transport_org_name,
+        </if>
+        <if test="transportPersonId != null  and transportPersonId != ''">
+            transport_person_id,
+        </if>
+        <if test="transportPersonName != null  and transportPersonName != ''">
+            transport_person_name,
+        </if>
+        <if test="storageOrgId != null  and storageOrgId != ''">
+            storage_org_id,
+        </if>
+        <if test="storageOrgName != null  and storageOrgName != ''">
+            storage_org_name,
+        </if>
+        <if test="storagePersonId != null  and storagePersonId != ''">
+            storage_person_id,
+        </if>
+        <if test="storagePersonName != null  and storagePersonName != ''">
+            storage_person_name,
+        </if>
+        <if test="storagePositionCode != null  and storagePositionCode != ''">
+            storage_position_code,
+        </if>
+        <if test="storagePositionName != null  and storagePositionName != ''">
+            storage_position_name,
+        </if>
+        <if test="storagePositionType != null  and storagePositionType != ''">
+            storage_position_type,
+        </if>
+        <if test="containerCode != null  and containerCode != ''">
+            container_code,
+        </if>
+        <if test="containerName != null  and containerName != ''">
+            container_name,
+        </if>
+        <if test="status != null  and status != ''">
+            status,
+        </if>
+        <if test="measurementUnitCode != null  and measurementUnitCode != ''">
+            measurement_unit_code,
+        </if>
+        <if test="measurementUnitName != null  and measurementUnitName != ''">
+            measurement_unit_name,
+        </if>
+        <if test="containerNumber != null ">
+            container_number,
+        </if>
+        <if test="warehousingQuantity != null ">
+            warehousing_quantity,
+        </if>
+        <if test="residueQuantity != null ">
+            residue_quantity,
+        </if>
+        <if test="warehousingTime != null ">
+            warehousing_time,
+        </if>
+        <if test="generationCodes != null  and generationCodes != ''">
+            generation_codes,
+        </if>
+        <if test="fileId != null  and fileId != ''">
+            file_id,
+        </if>
+        <if test="yearTag != null  and yearTag != ''">
+            year_tag,
+        </if>
+        <if test="serialNumber != null ">
+            serial_number,
+        </if>
+        <if test="remark != null  and remark != ''">
+            remark,
+        </if>
+        <if test="updateBy != null  and updateBy != ''">
+            update_by,
+        </if>
+        <if test="updateTime != null ">
+            update_time,
+        </if>
+        <if test="createBy != null  and createBy != ''">
+            create_by,
+        </if>
+        <if test="createTime != null ">
+            create_time,
+        </if>
+        <if test="tenantId != null  and tenantId != ''">
+            tenant_id,
+        </if>
+        <if test="tenantName != null  and tenantName != ''">
+            tenant_name,
+        </if>
+        del_flag
+
+
+        ) values (
+
+        <if test="sid != null ">
+            #{sid},
+        </if>
+        <if test="appId != null ">
+            #{appId},
+        </if>
+        <if test="wasteBaseId != null  and wasteBaseId != ''">
+            #{wasteBaseId},
+        </if>
+        <if test="generationIds != null  and generationIds != ''">
+            #{generationIds},
+        </if>
+        <if test="warehousingCode != null  and warehousingCode != ''">
+            #{warehousingCode},
+        </if>
+        <if test="transportOrgId != null  and transportOrgId != ''">
+            #{transportOrgId},
+        </if>
+        <if test="transportOrgName != null  and transportOrgName != ''">
+            #{transportOrgName},
+        </if>
+        <if test="transportPersonId != null  and transportPersonId != ''">
+            #{transportPersonId},
+        </if>
+        <if test="transportPersonName != null  and transportPersonName != ''">
+            #{transportPersonName},
+        </if>
+        <if test="storageOrgId != null  and storageOrgId != ''">
+            #{storageOrgId},
+        </if>
+        <if test="storageOrgName != null  and storageOrgName != ''">
+            #{storageOrgName},
+        </if>
+        <if test="storagePersonId != null  and storagePersonId != ''">
+            #{storagePersonId},
+        </if>
+        <if test="storagePersonName != null  and storagePersonName != ''">
+            #{storagePersonName},
+        </if>
+        <if test="storagePositionCode != null  and storagePositionCode != ''">
+            #{storagePositionCode},
+        </if>
+        <if test="storagePositionName != null  and storagePositionName != ''">
+            #{storagePositionName},
+        </if>
+        <if test="storagePositionType != null  and storagePositionType != ''">
+            #{storagePositionType},
+        </if>
+        <if test="containerCode != null  and containerCode != ''">
+            #{containerCode},
+        </if>
+        <if test="containerName != null  and containerName != ''">
+            #{containerName},
+        </if>
+        <if test="status != null  and status != ''">
+            #{status},
+        </if>
+        <if test="measurementUnitCode != null  and measurementUnitCode != ''">
+            #{measurementUnitCode},
+        </if>
+        <if test="measurementUnitName != null  and measurementUnitName != ''">
+            #{measurementUnitName},
+        </if>
+        <if test="containerNumber != null ">
+            #{containerNumber},
+        </if>
+        <if test="warehousingQuantity != null ">
+            #{warehousingQuantity},
+        </if>
+        <if test="residueQuantity != null ">
+            #{residueQuantity},
+        </if>
+        <if test="warehousingTime != null ">
+            #{warehousingTime},
+        </if>
+        <if test="generationCodes != null  and generationCodes != ''">
+            #{generationCodes},
+        </if>
+        <if test="fileId != null  and fileId != ''">
+            #{fileId},
+        </if>
+        <if test="yearTag != null  and yearTag != ''">
+            #{yearTag},
+        </if>
+        <if test="serialNumber != null ">
+            #{serialNumber},
+        </if>
+        <if test="remark != null  and remark != ''">
+            #{remark},
+        </if>
+        <if test="updateBy != null  and updateBy != ''">
+            #{updateBy},
+        </if>
+        <if test="updateTime != null ">
+            #{updateTime},
+        </if>
+        <if test="createBy != null  and createBy != ''">
+            #{createBy},
+        </if>
+        <if test="createTime != null ">
+            #{createTime},
+        </if>
+        <if test="tenantId != null  and tenantId != ''">
+            #{tenantId},
+        </if>
+        <if test="tenantName != null  and tenantName != ''">
+            #{tenantName},
+        </if>
+        0
+
+        )
+    </insert>
+
+
+    <update id="deleteById" parameterType="Long">
+        update hse_hazardous_waste_warehousing set del_flag = 1 where sid = #{sid}
+    </update>
+
+    <update id="deleteBatchIds" parameterType="java.util.ArrayList">
+        update hse_hazardous_waste_warehousing set del_flag = 1 where sid in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="updateById"
+            parameterType="com.cybstar.base.secureBase.solidWaste.hazardousWaste.entity.HseHazardousWasteWarehousing">
+        update hse_hazardous_waste_warehousing
+        <set>
+            <if test="appId != null ">
+                app_id = #{appId},
+            </if>
+            <if test="wasteBaseId != null and wasteBaseId != ''">
+                waste_base_id = #{wasteBaseId},
+            </if>
+            <if test="generationIds != null and generationIds != ''">
+                generation_ids = #{generationIds},
+            </if>
+            <if test="warehousingCode != null and warehousingCode != ''">
+                warehousing_code = #{warehousingCode},
+            </if>
+            <if test="transportOrgId != null and transportOrgId != ''">
+                transport_org_id = #{transportOrgId},
+            </if>
+            <if test="transportOrgName != null and transportOrgName != ''">
+                transport_org_name = #{transportOrgName},
+            </if>
+            <if test="transportPersonId != null and transportPersonId != ''">
+                transport_person_id = #{transportPersonId},
+            </if>
+            <if test="transportPersonName != null and transportPersonName != ''">
+                transport_person_name = #{transportPersonName},
+            </if>
+            <if test="storageOrgId != null and storageOrgId != ''">
+                storage_org_id = #{storageOrgId},
+            </if>
+            <if test="storageOrgName != null and storageOrgName != ''">
+                storage_org_name = #{storageOrgName},
+            </if>
+            <if test="storagePersonId != null and storagePersonId != ''">
+                storage_person_id = #{storagePersonId},
+            </if>
+            <if test="storagePersonName != null and storagePersonName != ''">
+                storage_person_name = #{storagePersonName},
+            </if>
+            <if test="storagePositionCode != null and storagePositionCode != ''">
+                storage_position_code = #{storagePositionCode},
+            </if>
+            <if test="storagePositionName != null and storagePositionName != ''">
+                storage_position_name = #{storagePositionName},
+            </if>
+            <if test="storagePositionType != null and storagePositionType != ''">
+                storage_position_type = #{storagePositionType},
+            </if>
+            <if test="containerCode != null and containerCode != ''">
+                container_code = #{containerCode},
+            </if>
+            <if test="containerName != null and containerName != ''">
+                container_name = #{containerName},
+            </if>
+            <if test="status != null and status != ''">
+                status = #{status},
+            </if>
+            <if test="measurementUnitCode != null and measurementUnitCode != ''">
+                measurement_unit_code = #{measurementUnitCode},
+            </if>
+            <if test="measurementUnitName != null and measurementUnitName != ''">
+                measurement_unit_name = #{measurementUnitName},
+            </if>
+            <if test="containerNumber != null ">
+                container_number = #{containerNumber},
+            </if>
+            <if test="warehousingQuantity != null ">
+                warehousing_quantity = #{warehousingQuantity},
+            </if>
+            <if test="residueQuantity != null ">
+                residue_quantity = #{residueQuantity},
+            </if>
+            <if test="warehousingTime != null ">
+                warehousing_time = #{warehousingTime},
+            </if>
+            <if test="generationCodes != null and generationCodes != ''">
+                generation_codes = #{generationCodes},
+            </if>
+            <if test="fileId != null and fileId != ''">
+                file_id = #{fileId},
+            </if>
+            <if test="yearTag != null and yearTag != ''">
+                year_tag = #{yearTag},
+            </if>
+            <if test="serialNumber != null ">
+                serial_number = #{serialNumber},
+            </if>
+            <if test="remark != null and remark != ''">
+                remark = #{remark},
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                update_by = #{updateBy},
+            </if>
+            <if test="updateTime != null ">
+                update_time = #{updateTime},
+            </if>
+            <if test="createBy != null and createBy != ''">
+                create_by = #{createBy},
+            </if>
+            <if test="createTime != null ">
+                create_time = #{createTime},
+            </if>
+            <if test="tenantId != null and tenantId != ''">
+                tenant_id = #{tenantId},
+            </if>
+            <if test="tenantName != null and tenantName != ''">
+                tenant_name = #{tenantName},
+            </if>
+            <if test="delFlag != null ">
+                del_flag = #{delFlag},
+            </if>
+        </set>
+        where sid=#{sid}
+    </update>
+
+    <select id="selectById" resultMap="BaseResultMap" parameterType="Long">
+        select
+        sid,
+        app_id,
+        waste_base_id,
+        generation_ids,
+        warehousing_code,
+        transport_org_id,
+        transport_org_name,
+        transport_person_id,
+        transport_person_name,
+        storage_org_id,
+        storage_org_name,
+        storage_person_id,
+        storage_person_name,
+        storage_position_code,
+        storage_position_name,
+        storage_position_type,
+        container_code,
+        container_name,
+        status,
+        measurement_unit_code,
+        measurement_unit_name,
+        container_number,
+        warehousing_quantity,
+        residue_quantity,
+        warehousing_time,
+        generation_codes,
+        file_id,
+        year_tag,
+        serial_number,
+        remark,
+        update_by,
+        update_time,
+        create_by,
+        create_time,
+        tenant_id,
+        tenant_name,
+        del_flag
+        from hse_hazardous_waste_warehousing
+        where sid = #{sid} and del_flag=0
+    </select>
+
+    <select id="selectBatchIds" resultMap="BaseResultMap" parameterType="java.util.ArrayList">
+        select
+        sid,
+        app_id,
+        waste_base_id,
+        generation_ids,
+        warehousing_code,
+        transport_org_id,
+        transport_org_name,
+        transport_person_id,
+        transport_person_name,
+        storage_org_id,
+        storage_org_name,
+        storage_person_id,
+        storage_person_name,
+        storage_position_code,
+        storage_position_name,
+        storage_position_type,
+        container_code,
+        container_name,
+        status,
+        measurement_unit_code,
+        measurement_unit_name,
+        container_number,
+        warehousing_quantity,
+        residue_quantity,
+        warehousing_time,
+        generation_codes,
+        file_id,
+        year_tag,
+        serial_number,
+        remark,
+        update_by,
+        update_time,
+        create_by,
+        create_time,
+        tenant_id,
+        tenant_name,
+        del_flag
+        from hse_hazardous_waste_warehousing
+        where sid in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and del_flag=0
+    </select>
+
+    <select id="selectByEntity" resultMap="BaseResultMap"
+            parameterType="com.cybstar.base.secureBase.solidWaste.hazardousWaste.dto.HseHazardousWasteWarehousingDTO">
+        select
+        sid,
+        app_id,
+        waste_base_id,
+        generation_ids,
+        warehousing_code,
+        transport_org_id,
+        transport_org_name,
+        transport_person_id,
+        transport_person_name,
+        storage_org_id,
+        storage_org_name,
+        storage_person_id,
+        storage_person_name,
+        storage_position_code,
+        storage_position_name,
+        storage_position_type,
+        container_code,
+        container_name,
+        status,
+        measurement_unit_code,
+        measurement_unit_name,
+        container_number,
+        warehousing_quantity,
+        residue_quantity,
+        warehousing_time,
+        generation_codes,
+        file_id,
+        year_tag,
+        serial_number,
+        remark,
+        update_by,
+        update_time,
+        create_by,
+        create_time,
+        tenant_id,
+        tenant_name,
+        del_flag
+
+        from hse_hazardous_waste_warehousing
+        where app_id = #{appId} and del_flag=0
+
+        <if test="sid != null ">
+            and sid = #{sid}
+        </if>
+        <if test="appId != null ">
+            and app_id = #{appId}
+        </if>
+        <if test="wasteBaseId != null  and wasteBaseId != ''">
+            and waste_base_id = #{wasteBaseId}
+        </if>
+        <if test="generationIds != null  and generationIds != ''">
+            and generation_ids = #{generationIds}
+        </if>
+        <if test="warehousingCode != null  and warehousingCode != ''">
+            and warehousing_code = #{warehousingCode}
+        </if>
+        <if test="transportOrgId != null  and transportOrgId != ''">
+            and transport_org_id = #{transportOrgId}
+        </if>
+        <if test="transportOrgName != null  and transportOrgName != ''">
+            and transport_org_name = #{transportOrgName}
+        </if>
+        <if test="transportPersonId != null  and transportPersonId != ''">
+            and transport_person_id = #{transportPersonId}
+        </if>
+        <if test="transportPersonName != null  and transportPersonName != ''">
+            and transport_person_name = #{transportPersonName}
+        </if>
+        <if test="storageOrgId != null  and storageOrgId != ''">
+            and storage_org_id = #{storageOrgId}
+        </if>
+        <if test="storageOrgName != null  and storageOrgName != ''">
+            and storage_org_name = #{storageOrgName}
+        </if>
+        <if test="storagePersonId != null  and storagePersonId != ''">
+            and storage_person_id = #{storagePersonId}
+        </if>
+        <if test="storagePersonName != null  and storagePersonName != ''">
+            and storage_person_name = #{storagePersonName}
+        </if>
+        <if test="storagePositionCode != null  and storagePositionCode != ''">
+            and storage_position_code = #{storagePositionCode}
+        </if>
+        <if test="storagePositionName != null  and storagePositionName != ''">
+            and storage_position_name = #{storagePositionName}
+        </if>
+        <if test="storagePositionType != null  and storagePositionType != ''">
+            and storage_position_type = #{storagePositionType}
+        </if>
+        <if test="containerCode != null  and containerCode != ''">
+            and container_code = #{containerCode}
+        </if>
+        <if test="containerName != null  and containerName != ''">
+            and container_name = #{containerName}
+        </if>
+        <if test="status != null  and status != ''">
+            and status = #{status}
+        </if>
+        <if test="measurementUnitCode != null  and measurementUnitCode != ''">
+            and measurement_unit_code = #{measurementUnitCode}
+        </if>
+        <if test="measurementUnitName != null  and measurementUnitName != ''">
+            and measurement_unit_name = #{measurementUnitName}
+        </if>
+        <if test="containerNumber != null ">
+            and container_number = #{containerNumber}
+        </if>
+        <if test="warehousingQuantity != null ">
+            and warehousing_quantity = #{warehousingQuantity}
+        </if>
+        <if test="residueQuantity != null ">
+            and residue_quantity = #{residueQuantity}
+        </if>
+        <if test="warehousingTime != null ">
+            and warehousing_time = #{warehousingTime}
+        </if>
+        <if test="generationCodes != null  and generationCodes != ''">
+            and generation_codes = #{generationCodes}
+        </if>
+        <if test="fileId != null  and fileId != ''">
+            and file_id = #{fileId}
+        </if>
+        <if test="yearTag != null  and yearTag != ''">
+            and year_tag = #{yearTag}
+        </if>
+        <if test="serialNumber != null ">
+            and serial_number = #{serialNumber}
+        </if>
+
+
+
+    </select>
+
+    <select id="selectByKeyWord"
+            resultType="com.cybstar.base.secureBase.solidWaste.hazardousWaste.vo.HseHazardousWasteWarehousingVO"
+            parameterType="com.cybstar.base.secureBase.solidWaste.hazardousWaste.dto.HseHazardousWasteWarehousingDTO">
+        select
+        warehousing.sid,
+        warehousing.app_id as appId,
+        warehousing.waste_base_id as wasteBaseId,
+        warehousing.generation_ids as generationIds,
+        warehousing.warehousing_code as warehousingCode,
+        warehousing.transport_org_id as transportOrgId,
+        warehousing.transport_org_name as transportOrgName,
+        warehousing.transport_person_id as transportPersonId,
+        warehousing.transport_person_name as transportPersonName,
+        warehousing.storage_org_id as storageOrgId,
+        warehousing.storage_org_name as storageOrgName,
+        warehousing.storage_person_id as storagePersonId,
+        warehousing.storage_person_name as storagePersonName,
+        warehousing.storage_position_code as storagePositionCode,
+        warehousing.storage_position_name as storagePositionName,
+        warehousing.storage_position_type as storagePositionType,
+        warehousing.container_code as containerCode,
+        warehousing.container_name as containerName,
+        warehousing.status,
+        warehousing.measurement_unit_code as measurementUnitCode,
+        warehousing.measurement_unit_name as measurementUnitName,
+        warehousing.container_number as containerNumber,
+        warehousing.warehousing_quantity as warehousingQuantity,
+        warehousing.residue_quantity as residueQuantity,
+        warehousing.warehousing_time as warehousingTime,
+        warehousing.generation_codes as generationCodes,
+        warehousing.file_id as fileId,
+        warehousing.year_tag,
+        warehousing.serial_number,
+        warehousing.remark,
+        warehousing.update_by,
+        warehousing.update_time,
+        warehousing.create_by,
+        warehousing.create_time,
+        warehousing.tenant_id,
+        warehousing.tenant_name,
+        warehousing.del_flag,
+
+        base.waste_name as wasteBaseName,
+        directory.waste_code as wasteCode,
+        directory.name as wasteName,
+        directory.type as wasteType
+
+        from hse_hazardous_waste_warehousing warehousing
+        left join hse_hazardous_waste_base base on base.sid = warehousing.waste_base_id
+        left join hse_hazardous_waste_directory directory on base.directory_id = directory.sid
+
+        where warehousing.app_id = #{appId} and warehousing.del_flag = 0
+        and base.app_id = #{appId} and base.del_flag = 0
+        and directory.app_id = #{appId} and directory.del_flag = 0
+
+        <if test="keyWord != null and keyWord != ''">
+            and (
+            warehousing.warehousing_code like concat('%',#{keyWord},'%')
+            or warehousing.storage_person_name like concat('%',#{keyWord},'%')
+            or base.waste_name like concat('%',#{keyWord},'%')
+            or directory.waste_code like concat('%',#{keyWord},'%')
+            )
+        </if>
+
+
+        <if test="wasteBaseId != null  and wasteBaseId != ''">
+            and warehousing.waste_base_id = #{wasteBaseId}
+        </if>
+        <if test="generationIds != null  and generationIds != ''">
+            and warehousing.generation_ids = #{generationIds}
+        </if>
+        <if test="warehousingCode != null  and warehousingCode != ''">
+            and warehousing.warehousing_code = #{warehousingCode}
+        </if>
+        <if test="transportOrgId != null  and transportOrgId != ''">
+            and warehousing.transport_org_id = #{transportOrgId}
+        </if>
+        <if test="transportOrgName != null  and transportOrgName != ''">
+            and warehousing.transport_org_name = #{transportOrgName}
+        </if>
+        <if test="transportPersonId != null  and transportPersonId != ''">
+            and warehousing.transport_person_id = #{transportPersonId}
+        </if>
+        <if test="transportPersonName != null  and transportPersonName != ''">
+            and warehousing.transport_person_name = #{transportPersonName}
+        </if>
+        <if test="storageOrgId != null  and storageOrgId != ''">
+            and warehousing.storage_org_id = #{storageOrgId}
+        </if>
+        <if test="storageOrgName != null  and storageOrgName != ''">
+            and warehousing.storage_org_name = #{storageOrgName}
+        </if>
+        <if test="storagePersonId != null  and storagePersonId != ''">
+            and warehousing.storage_person_id = #{storagePersonId}
+        </if>
+        <if test="storagePersonName != null  and storagePersonName != ''">
+            and warehousing.storage_person_name = #{storagePersonName}
+        </if>
+        <if test="storagePositionCode != null  and storagePositionCode != ''">
+            and warehousing.storage_position_code = #{storagePositionCode}
+        </if>
+        <if test="storagePositionName != null  and storagePositionName != ''">
+            and warehousing.storage_position_name = #{storagePositionName}
+        </if>
+        <if test="storagePositionType != null  and storagePositionType != ''">
+            and warehousing.storage_position_type = #{storagePositionType}
+        </if>
+        <if test="containerCode != null  and containerCode != ''">
+            and warehousing.container_code = #{containerCode}
+        </if>
+        <if test="containerName != null  and containerName != ''">
+            and warehousing.container_name = #{containerName}
+        </if>
+        <if test="status != null  and status != ''">
+            and warehousing.status = #{status}
+        </if>
+        <if test="measurementUnitCode != null  and measurementUnitCode != ''">
+            and warehousing.measurement_unit_code = #{measurementUnitCode}
+        </if>
+        <if test="measurementUnitName != null  and measurementUnitName != ''">
+            and warehousing.measurement_unit_name = #{measurementUnitName}
+        </if>
+        <if test="containerNumber != null ">
+            and warehousing.container_number = #{containerNumber}
+        </if>
+        <if test="warehousingQuantity != null ">
+            and warehousing.warehousing_quantity = #{warehousingQuantity}
+        </if>
+        <if test="residueQuantity != null ">
+            and warehousing.residue_quantity = #{residueQuantity}
+        </if>
+        <if test="warehousingTime != null ">
+            and warehousing.warehousing_time = #{warehousingTime}
+        </if>
+        <if test="generationCodes != null  and generationCodes != ''">
+            and warehousing.generation_codes = #{generationCodes}
+        </if>
+        <if test="fileId != null  and fileId != ''">
+            and warehousing.file_id = #{fileId}
+        </if>
+        <if test="yearTag != null  and yearTag != ''">
+            and warehousing.year_tag = #{yearTag}
+        </if>
+        <if test="serialNumber != null ">
+            and warehousing.serial_number = #{serialNumber}
+        </if>
+
+
+        <if test="searchStartDate != null">
+            and warehousing.warehousing_time >= #{searchStartDate}
+        </if>
+        <if test="searchEndDate != null">
+            and warehousing.warehousing_time &lt;= #{searchEndDate}
+        </if>
+
+        order by warehousing.create_time desc
+    </select>
+
+
+    <select id="selectLastOneForYear"
+            resultMap="BaseResultMap"
+            parameterType="com.cybstar.base.secureBase.solidWaste.hazardousWaste.dto.HseHazardousWasteWarehousingDTO">
+
+        select
+        sid,
+        app_id,
+        waste_base_id,
+        generation_ids,
+        warehousing_code,
+        transport_org_id,
+        transport_org_name,
+        transport_person_id,
+        transport_person_name,
+        storage_org_id,
+        storage_org_name,
+        storage_person_id,
+        storage_person_name,
+        storage_position_code,
+        storage_position_name,
+        storage_position_type,
+        container_code,
+        container_name,
+        status,
+        measurement_unit_code,
+        measurement_unit_name,
+        container_number,
+        warehousing_quantity,
+        residue_quantity,
+        warehousing_time,
+        generation_codes,
+        file_id,
+        year_tag,
+        serial_number,
+        remark,
+        update_by,
+        update_time,
+        create_by,
+        create_time,
+        tenant_id,
+        tenant_name,
+        del_flag
+
+        from hse_hazardous_waste_warehousing
+        where app_id = #{appId}   <!-- and del_flag=0 -->
+
+        and year_tag = #{yearTag}
+
+        order by serial_number desc
+        limit 1;
+    </select>
+
+</mapper>
+
