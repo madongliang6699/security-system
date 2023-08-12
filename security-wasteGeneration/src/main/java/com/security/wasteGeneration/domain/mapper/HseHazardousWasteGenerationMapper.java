@@ -1,8 +1,7 @@
 package com.security.wasteGeneration.domain.mapper;
 
-import com.cybstar.base.secureBase.solidWaste.hazardousWaste.dto.HseHazardousWasteGenerationDTO;
-import com.cybstar.base.secureBase.solidWaste.hazardousWaste.entity.HseHazardousWasteGeneration;
-import com.cybstar.base.secureBase.solidWaste.hazardousWaste.vo.HseHazardousWasteGenerationVO;
+import com.security.wasteGeneration.domain.dto.HseHazardousWasteGenerationDTO;
+import com.security.wasteGeneration.domain.entity.HseHazardousWasteGeneration;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -26,6 +25,7 @@ public interface HseHazardousWasteGenerationMapper {
      * </p>
      *
      * @param entity 实体对象
+     *
      * @return 影响行数
      */
     Integer insert(HseHazardousWasteGeneration entity);
@@ -37,6 +37,7 @@ public interface HseHazardousWasteGenerationMapper {
      * </p>
      *
      * @param entity 实体对象
+     *
      * @return 影响行数
      */
     Integer deleteById(Long sid);
@@ -47,29 +48,10 @@ public interface HseHazardousWasteGenerationMapper {
      * </p>
      *
      * @param idList 主键ID列表
+     *
      * @return 影响行数
      */
     Integer deleteBatchIds(List idList);
-    
-    /**
-     * <p>
-     * 根据 ID 修改
-     * </p>
-     *
-     * @param entity 实体对象
-     * @return 影响行数
-     */
-    Integer updateById(HseHazardousWasteGeneration entity);
-    
-    /**
-     * <p>
-     * 根据 ID 查询
-     * </p>
-     *
-     * @param entity 实体对象
-     * @return T
-     */
-    HseHazardousWasteGeneration selectById(Long sid);
     
     /**
      * <p>
@@ -77,6 +59,7 @@ public interface HseHazardousWasteGenerationMapper {
      * </p>
      *
      * @param idList 主键ID列表
+     *
      * @return 固废管理-危废产生对象集合
      */
     List<HseHazardousWasteGeneration> selectBatchIds(List idList);
@@ -88,26 +71,9 @@ public interface HseHazardousWasteGenerationMapper {
      * </p>
      *
      * @param entity 实体对象
+     *
      * @return 固废管理-危废产生对象集合
      */
-    List<HseHazardousWasteGeneration> selectByEntity(HseHazardousWasteGeneration entity);
+    List<HseHazardousWasteGeneration> selectByEntity(HseHazardousWasteGenerationDTO dto);
     
-    
-    /**
-     * <p>
-     * 根据 关键字 查询
-     * </p>
-     *
-     * @param dto 实体对象
-     * @return 固废管理-危废产生对象集合
-     */
-    List<HseHazardousWasteGenerationVO> selectByKeyWord(HseHazardousWasteGenerationDTO dto);
-    
-    /**
-     * 根据产生时间参数的年份，查询出当年最新的一条数据
-     *
-     * @param dto
-     * @return
-     */
-    HseHazardousWasteGeneration selectLastOneForGenerationYear(HseHazardousWasteGenerationDTO dto);
 }

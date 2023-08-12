@@ -1,10 +1,6 @@
-package com.security.wasteGeneration.domain.entity;
+package com.security.wasteWarehousing.domain;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.cybstar.base.CybEntityBase;
-import com.cybstar.base.secureBase.solidWaste.hazardousWaste.dto.HseHazardousWasteOutboundDTO;
-import com.cybstar.base.secureBase.solidWaste.hazardousWaste.vo.HseHazardousWasteOutboundVO;
-import org.springframework.beans.BeanUtils;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
@@ -12,42 +8,226 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * 固废管理-危废出库实体类
- * {"sid":"流水ID","appId":"appId","wasteBaseId":"关联的废物id","warehousingIds":"关联的入库ids","outboundCode":"出库批次编码","outboundTime":"出库时间","outboundQuantity":"出库量","transportOrgId":"运送部门id","transportOrgName":"运送部门name","transportPersonId":"运送部门经办人id","transportPersonName":"运送部门经办人name","outboundOrgId":"出库部门id","outboundOrgName":"出库部门name","outboundPersonId":"出库部门经办人id","outboundPersonName":"出库部门经办人name","storagePositionCode":"贮存设施字典编码","storagePositionName":"贮存设施字典名称","storagePositionType":"贮存设施字典类型","containerCode":"容器/包装编码和类型code","containerName":"容器/包装编码和类型name","status":"状态(0待处置;1已处置)","measurementUnitCode":"计量单位code","measurementUnitName":"计量单位name","containerNumber":"容器/包装个数","warehousingCodes":"入库批次编码","destinationOrgId":"去向单位id","destinationOrgName":"去向单位name","fileId":"附件","yearTag":"编号年份标记","serialNumber":"每个标记的最大序号","remark":"备注","updateBy":"修改者","updateTime":"更新时间","createBy":"创建者","createTime":"创建时间","tenantId":"租户id","tenantName":"租户名称","delFlag":"删除标记"}
+ * 固废管理-危废入库实体类
+ * {"sid":"流水ID","appId":"appId","wasteBaseId":"关联的废物id","generationIds":"关联的产生ids","warehousingCode":"入库批次编码","transportOrgId":"运送部门id","transportOrgName":"运送部门name","transportPersonId":"运送部门经办人id","transportPersonName":"运送部门经办人name","storageOrgId":"贮存部门id","storageOrgName":"贮存部门name","storagePersonId":"贮存部门经办人id","storagePersonName":"贮存部门经办人name","storagePositionCode":"贮存设施字典编码","storagePositionName":"贮存设施字典名称","storagePositionType":"贮存设施字典类型","containerCode":"容器/包装编码和类型code","containerName":"容器/包装编码和类型name","status":"状态(0未出库;1部分出库;2已出库)","measurementUnitCode":"计量单位code","measurementUnitName":"计量单位name","containerNumber":"容器/包装个数","warehousingQuantity":"入库量","residueQuantity":"剩余量","warehousingTime":"入库时间","generationCodes":"产生批次编码","fileId":"附件","yearTag":"编号年份标记","serialNumber":"每个标记的最大序号","remark":"备注","updateBy":"修改者","updateTime":"更新时间","createBy":"创建者","createTime":"创建时间","tenantId":"租户id","tenantName":"租户名称","delFlag":"删除标记"}
  *
  * @author A
  * @version v 0.1
- * @File HseHazardousWasteOutbound.java
- * @Desc 固废管理-危废出库
- * @DateTime 2023-07-17 15:08:57
+ * @File HseHazardousWasteWarehousing.java
+ * @Desc 固废管理-危废入库
+ * @DateTime 2023-07-14 10:31:05
  * @Encoding UTF-8
  * @Description Copyright (c) 2004-2023 All Rights Reserved.
  */
-public class HseHazardousWasteOutbound extends CybEntityBase<HseHazardousWasteOutbound, HseHazardousWasteOutboundDTO, HseHazardousWasteOutboundVO> implements Serializable {
+public class HseHazardousWasteWarehousing  implements Serializable {
     
     private static final long serialVersionUID = 1L;
+    
+    
+    /**
+     * 流水ID
+     */
+    private Long sid;
+    
+    /**
+     * 应用ID
+     */
+    private Integer appId;
+    
+    
+    /**
+     * 备注信息
+     */
+    private String remark;
+    
+    /**
+     * 创建者
+     */
+    private String createBy;
+    
+    /**
+     * 创建时间
+     */
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date createTime;
+    
+    /**
+     * 修改者
+     */
+    private String updateBy;
+    
+    /**
+     * 修改时间
+     */
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date updateTime;
+    
+    /**
+     * 删除标记
+     */
+    private Integer delFlag;
+    
+    /**
+     * 获取流水ID
+     *
+     * @return 流水ID
+     */
+    public Long getSid() {
+        return sid;
+    }
+    
+    /**
+     * 设置流水ID
+     *
+     * @param sid 流水ID
+     */
+    public void setSid(Long sid) {
+        this.sid = sid;
+    }
+    
+    /**
+     * 获取应用ID
+     *
+     * @return 应用ID
+     */
+    public Integer getAppId() {
+        return appId;
+    }
+    
+    /**
+     * 设置应用ID
+     *
+     * @param appId 应用ID
+     */
+    public void setAppId(Integer appId) {
+        this.appId = appId;
+    }
+    
+    /**
+     * 获取备注信息
+     *
+     * @return 备注信息
+     */
+    public String getRemark() {
+        return remark;
+    }
+    
+    /**
+     * 设置备注信息
+     *
+     * @param remark 备注信息
+     */
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+    
+    /**
+     * 获取创建者
+     *
+     * @return 创建者
+     */
+    public String getCreateBy() {
+        return createBy;
+    }
+    
+    /**
+     * 设置创建者
+     *
+     * @param createBy 创建者
+     */
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+    
+    /**
+     * 获取创建时间
+     *
+     * @return 创建时间
+     */
+    public Date getCreateTime() {
+        return createTime;
+    }
+    
+    /**
+     * 设置创建时间
+     *
+     * @param createTime 创建时间
+     */
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+    
+    /**
+     * 获取修改者
+     *
+     * @return 修改者
+     */
+    public String getUpdateBy() {
+        return updateBy;
+    }
+    
+    /**
+     * 设置修改者
+     *
+     * @param updateBy 修改者
+     */
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy;
+    }
+    
+    /**
+     * 获取修改时间
+     *
+     * @return 修改时间
+     */
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+    
+    /**
+     * 设置修改时间
+     *
+     * @param updateTime 修改时间
+     */
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+    
+    /**
+     * 获取删除标记
+     *
+     * @return 删除标记
+     */
+    public Integer getDelFlag() {
+        return delFlag;
+    }
+    
+    /**
+     * 设置删除标记
+     *
+     * @param delFlag 删除标记
+     */
+    public void setDelFlag(Integer delFlag) {
+        this.delFlag = delFlag;
+    }
+    
+    
+    
+    
     /**
      * 关联的废物id
      */
     private String wasteBaseId;
     /**
-     * 关联的入库ids
+     * 关联的产生ids
      */
-    private String warehousingIds;
+    private String generationIds;
     /**
-     * 出库批次编码
+     * 入库批次编码
      */
-    private String outboundCode;
-    /**
-     * 出库时间
-     */
-    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date outboundTime;
-    /**
-     * 出库量
-     */
-    private BigDecimal outboundQuantity;
+    private String warehousingCode;
     /**
      * 运送部门id
      */
@@ -65,21 +245,21 @@ public class HseHazardousWasteOutbound extends CybEntityBase<HseHazardousWasteOu
      */
     private String transportPersonName;
     /**
-     * 出库部门id
+     * 贮存部门id
      */
-    private String outboundOrgId;
+    private String storageOrgId;
     /**
-     * 出库部门name
+     * 贮存部门name
      */
-    private String outboundOrgName;
+    private String storageOrgName;
     /**
-     * 出库部门经办人id
+     * 贮存部门经办人id
      */
-    private String outboundPersonId;
+    private String storagePersonId;
     /**
-     * 出库部门经办人name
+     * 贮存部门经办人name
      */
-    private String outboundPersonName;
+    private String storagePersonName;
     /**
      * 贮存设施字典编码
      */
@@ -101,7 +281,7 @@ public class HseHazardousWasteOutbound extends CybEntityBase<HseHazardousWasteOu
      */
     private String containerName;
     /**
-     * 状态(0待处置;1已处置)
+     * 状态(0未出库;1部分出库;2已出库)
      */
     private String status;
     /**
@@ -117,17 +297,23 @@ public class HseHazardousWasteOutbound extends CybEntityBase<HseHazardousWasteOu
      */
     private Integer containerNumber;
     /**
-     * 入库批次编码
+     * 入库量
      */
-    private String warehousingCodes;
+    private BigDecimal warehousingQuantity;
     /**
-     * 去向单位id
+     * 剩余量
      */
-    private String destinationOrgId;
+    private BigDecimal residueQuantity;
     /**
-     * 去向单位name
+     * 入库时间
      */
-    private String destinationOrgName;
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date warehousingTime;
+    /**
+     * 产生批次编码
+     */
+    private String generationCodes;
     /**
      * 附件
      */
@@ -169,75 +355,39 @@ public class HseHazardousWasteOutbound extends CybEntityBase<HseHazardousWasteOu
     }
     
     /**
-     * 获取关联的入库ids
+     * 获取关联的产生ids
      *
-     * @return 关联的入库ids
+     * @return 关联的产生ids
      */
-    public String getWarehousingIds() {
-        return warehousingIds;
+    public String getGenerationIds() {
+        return generationIds;
     }
     
     /**
-     * 设置关联的入库ids
+     * 设置关联的产生ids
      *
-     * @param warehousingIds 关联的入库ids
+     * @param generationIds 关联的产生ids
      */
-    public void setWarehousingIds(String warehousingIds) {
-        this.warehousingIds = warehousingIds;
+    public void setGenerationIds(String generationIds) {
+        this.generationIds = generationIds;
     }
     
     /**
-     * 获取出库批次编码
+     * 获取入库批次编码
      *
-     * @return 出库批次编码
+     * @return 入库批次编码
      */
-    public String getOutboundCode() {
-        return outboundCode;
+    public String getWarehousingCode() {
+        return warehousingCode;
     }
     
     /**
-     * 设置出库批次编码
+     * 设置入库批次编码
      *
-     * @param outboundCode 出库批次编码
+     * @param warehousingCode 入库批次编码
      */
-    public void setOutboundCode(String outboundCode) {
-        this.outboundCode = outboundCode;
-    }
-    
-    /**
-     * 获取出库时间
-     *
-     * @return 出库时间
-     */
-    public Date getOutboundTime() {
-        return outboundTime;
-    }
-    
-    /**
-     * 设置出库时间
-     *
-     * @param outboundTime 出库时间
-     */
-    public void setOutboundTime(Date outboundTime) {
-        this.outboundTime = outboundTime;
-    }
-    
-    /**
-     * 获取出库量
-     *
-     * @return 出库量
-     */
-    public BigDecimal getOutboundQuantity() {
-        return outboundQuantity;
-    }
-    
-    /**
-     * 设置出库量
-     *
-     * @param outboundQuantity 出库量
-     */
-    public void setOutboundQuantity(BigDecimal outboundQuantity) {
-        this.outboundQuantity = outboundQuantity;
+    public void setWarehousingCode(String warehousingCode) {
+        this.warehousingCode = warehousingCode;
     }
     
     /**
@@ -313,75 +463,75 @@ public class HseHazardousWasteOutbound extends CybEntityBase<HseHazardousWasteOu
     }
     
     /**
-     * 获取出库部门id
+     * 获取贮存部门id
      *
-     * @return 出库部门id
+     * @return 贮存部门id
      */
-    public String getOutboundOrgId() {
-        return outboundOrgId;
+    public String getStorageOrgId() {
+        return storageOrgId;
     }
     
     /**
-     * 设置出库部门id
+     * 设置贮存部门id
      *
-     * @param outboundOrgId 出库部门id
+     * @param storageOrgId 贮存部门id
      */
-    public void setOutboundOrgId(String outboundOrgId) {
-        this.outboundOrgId = outboundOrgId;
+    public void setStorageOrgId(String storageOrgId) {
+        this.storageOrgId = storageOrgId;
     }
     
     /**
-     * 获取出库部门name
+     * 获取贮存部门name
      *
-     * @return 出库部门name
+     * @return 贮存部门name
      */
-    public String getOutboundOrgName() {
-        return outboundOrgName;
+    public String getStorageOrgName() {
+        return storageOrgName;
     }
     
     /**
-     * 设置出库部门name
+     * 设置贮存部门name
      *
-     * @param outboundOrgName 出库部门name
+     * @param storageOrgName 贮存部门name
      */
-    public void setOutboundOrgName(String outboundOrgName) {
-        this.outboundOrgName = outboundOrgName;
+    public void setStorageOrgName(String storageOrgName) {
+        this.storageOrgName = storageOrgName;
     }
     
     /**
-     * 获取出库部门经办人id
+     * 获取贮存部门经办人id
      *
-     * @return 出库部门经办人id
+     * @return 贮存部门经办人id
      */
-    public String getOutboundPersonId() {
-        return outboundPersonId;
+    public String getStoragePersonId() {
+        return storagePersonId;
     }
     
     /**
-     * 设置出库部门经办人id
+     * 设置贮存部门经办人id
      *
-     * @param outboundPersonId 出库部门经办人id
+     * @param storagePersonId 贮存部门经办人id
      */
-    public void setOutboundPersonId(String outboundPersonId) {
-        this.outboundPersonId = outboundPersonId;
+    public void setStoragePersonId(String storagePersonId) {
+        this.storagePersonId = storagePersonId;
     }
     
     /**
-     * 获取出库部门经办人name
+     * 获取贮存部门经办人name
      *
-     * @return 出库部门经办人name
+     * @return 贮存部门经办人name
      */
-    public String getOutboundPersonName() {
-        return outboundPersonName;
+    public String getStoragePersonName() {
+        return storagePersonName;
     }
     
     /**
-     * 设置出库部门经办人name
+     * 设置贮存部门经办人name
      *
-     * @param outboundPersonName 出库部门经办人name
+     * @param storagePersonName 贮存部门经办人name
      */
-    public void setOutboundPersonName(String outboundPersonName) {
-        this.outboundPersonName = outboundPersonName;
+    public void setStoragePersonName(String storagePersonName) {
+        this.storagePersonName = storagePersonName;
     }
     
     /**
@@ -475,18 +625,18 @@ public class HseHazardousWasteOutbound extends CybEntityBase<HseHazardousWasteOu
     }
     
     /**
-     * 获取状态(0待处置;1已处置)
+     * 获取状态(0未出库;1部分出库;2已出库)
      *
-     * @return 状态(0待处置 ; 1已处置)
+     * @return 状态(0未出库 ; 1部分出库 ; 2已出库)
      */
     public String getStatus() {
         return status;
     }
     
     /**
-     * 设置状态(0待处置;1已处置)
+     * 设置状态(0未出库;1部分出库;2已出库)
      *
-     * @param status 状态(0待处置;1已处置)
+     * @param status 状态(0未出库;1部分出库;2已出库)
      */
     public void setStatus(String status) {
         this.status = status;
@@ -547,57 +697,75 @@ public class HseHazardousWasteOutbound extends CybEntityBase<HseHazardousWasteOu
     }
     
     /**
-     * 获取入库批次编码
+     * 获取入库量
      *
-     * @return 入库批次编码
+     * @return 入库量
      */
-    public String getWarehousingCodes() {
-        return warehousingCodes;
+    public BigDecimal getWarehousingQuantity() {
+        return warehousingQuantity;
     }
     
     /**
-     * 设置入库批次编码
+     * 设置入库量
      *
-     * @param warehousingCodes 入库批次编码
+     * @param warehousingQuantity 入库量
      */
-    public void setWarehousingCodes(String warehousingCodes) {
-        this.warehousingCodes = warehousingCodes;
+    public void setWarehousingQuantity(BigDecimal warehousingQuantity) {
+        this.warehousingQuantity = warehousingQuantity;
     }
     
     /**
-     * 获取去向单位id
+     * 获取剩余量
      *
-     * @return 去向单位id
+     * @return 剩余量
      */
-    public String getDestinationOrgId() {
-        return destinationOrgId;
+    public BigDecimal getResidueQuantity() {
+        return residueQuantity;
     }
     
     /**
-     * 设置去向单位id
+     * 设置剩余量
      *
-     * @param destinationOrgId 去向单位id
+     * @param residueQuantity 剩余量
      */
-    public void setDestinationOrgId(String destinationOrgId) {
-        this.destinationOrgId = destinationOrgId;
+    public void setResidueQuantity(BigDecimal residueQuantity) {
+        this.residueQuantity = residueQuantity;
     }
     
     /**
-     * 获取去向单位name
+     * 获取入库时间
      *
-     * @return 去向单位name
+     * @return 入库时间
      */
-    public String getDestinationOrgName() {
-        return destinationOrgName;
+    public Date getWarehousingTime() {
+        return warehousingTime;
     }
     
     /**
-     * 设置去向单位name
+     * 设置入库时间
      *
-     * @param destinationOrgName 去向单位name
+     * @param warehousingTime 入库时间
      */
-    public void setDestinationOrgName(String destinationOrgName) {
-        this.destinationOrgName = destinationOrgName;
+    public void setWarehousingTime(Date warehousingTime) {
+        this.warehousingTime = warehousingTime;
+    }
+    
+    /**
+     * 获取产生批次编码
+     *
+     * @return 产生批次编码
+     */
+    public String getGenerationCodes() {
+        return generationCodes;
+    }
+    
+    /**
+     * 设置产生批次编码
+     *
+     * @param generationCodes 产生批次编码
+     */
+    public void setGenerationCodes(String generationCodes) {
+        this.generationCodes = generationCodes;
     }
     
     /**
@@ -690,71 +858,4 @@ public class HseHazardousWasteOutbound extends CybEntityBase<HseHazardousWasteOu
         this.tenantName = tenantName;
     }
     
-    /**
-     * 转换成固废管理-危废出库VO对象
-     *
-     * @return 固废管理-危废出库VO对象
-     */
-    @Override
-    protected HseHazardousWasteOutboundVO convertToVo() {
-        HseHazardousWasteOutboundVO hseHazardousWasteOutboundVO = new HseHazardousWasteOutboundVO();
-        BeanUtils.copyProperties(this, hseHazardousWasteOutboundVO);
-        return hseHazardousWasteOutboundVO;
-    }
-    
-    /**
-     * 转换成固废管理-危废出库DTO对象
-     *
-     * @return 固废管理-危废出库DTO对象
-     */
-    @Override
-    protected HseHazardousWasteOutboundDTO convertToDto() {
-        HseHazardousWasteOutboundDTO hseHazardousWasteOutboundDTO = new HseHazardousWasteOutboundDTO();
-        BeanUtils.copyProperties(this, hseHazardousWasteOutboundDTO);
-        return hseHazardousWasteOutboundDTO;
-    }
-    
-    @Override
-    public String toString() {
-        return "HseHazardousWasteOutbound{" +
-                
-                "appId='" + super.getAppId() + "\'," +
-                "wasteBaseId='" + wasteBaseId + "\'," +
-                "warehousingIds='" + warehousingIds + "\'," +
-                "outboundCode='" + outboundCode + "\'," +
-                "outboundTime='" + outboundTime + "\'," +
-                "outboundQuantity='" + outboundQuantity + "\'," +
-                "transportOrgId='" + transportOrgId + "\'," +
-                "transportOrgName='" + transportOrgName + "\'," +
-                "transportPersonId='" + transportPersonId + "\'," +
-                "transportPersonName='" + transportPersonName + "\'," +
-                "outboundOrgId='" + outboundOrgId + "\'," +
-                "outboundOrgName='" + outboundOrgName + "\'," +
-                "outboundPersonId='" + outboundPersonId + "\'," +
-                "outboundPersonName='" + outboundPersonName + "\'," +
-                "storagePositionCode='" + storagePositionCode + "\'," +
-                "storagePositionName='" + storagePositionName + "\'," +
-                "storagePositionType='" + storagePositionType + "\'," +
-                "containerCode='" + containerCode + "\'," +
-                "containerName='" + containerName + "\'," +
-                "status='" + status + "\'," +
-                "measurementUnitCode='" + measurementUnitCode + "\'," +
-                "measurementUnitName='" + measurementUnitName + "\'," +
-                "containerNumber='" + containerNumber + "\'," +
-                "warehousingCodes='" + warehousingCodes + "\'," +
-                "destinationOrgId='" + destinationOrgId + "\'," +
-                "destinationOrgName='" + destinationOrgName + "\'," +
-                "fileId='" + fileId + "\'," +
-                "yearTag='" + yearTag + "\'," +
-                "serialNumber='" + serialNumber + "\'," +
-                "tenantId='" + tenantId + "\'," +
-                "tenantName='" + tenantName + "\'," +
-                "remark='" + super.getRemark() + "\'," +
-                "createBy='" + super.getCreateBy() + "\'," +
-                "createTime='" + super.getCreateTime() + "\'," +
-                "updateBy='" + super.getUpdateBy() + "\'," +
-                "updateTime='" + super.getUpdateTime() + "\'," +
-                "delFlag='" + super.getDelFlag() + "\'" +
-                '}';
-    }
 }

@@ -1,10 +1,6 @@
-package com.security.wasteGeneration.domain.vo;
+package com.security.wasteWarehousing.domain;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.cybstar.base.CybVoBase;
-import com.cybstar.base.secureBase.solidWaste.hazardousWaste.dto.HseHazardousWasteWarehousingDTO;
-import com.cybstar.base.secureBase.solidWaste.hazardousWaste.entity.HseHazardousWasteWarehousing;
-import org.springframework.beans.BeanUtils;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
@@ -12,65 +8,212 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * 固废管理-危废入库实体展示类
+ * 固废管理-危废入库实体交互类
  * {"sid":"流水ID","appId":"appId","wasteBaseId":"关联的废物id","generationIds":"关联的产生ids","warehousingCode":"入库批次编码","transportOrgId":"运送部门id","transportOrgName":"运送部门name","transportPersonId":"运送部门经办人id","transportPersonName":"运送部门经办人name","storageOrgId":"贮存部门id","storageOrgName":"贮存部门name","storagePersonId":"贮存部门经办人id","storagePersonName":"贮存部门经办人name","storagePositionCode":"贮存设施字典编码","storagePositionName":"贮存设施字典名称","storagePositionType":"贮存设施字典类型","containerCode":"容器/包装编码和类型code","containerName":"容器/包装编码和类型name","status":"状态(0未出库;1部分出库;2已出库)","measurementUnitCode":"计量单位code","measurementUnitName":"计量单位name","containerNumber":"容器/包装个数","warehousingQuantity":"入库量","residueQuantity":"剩余量","warehousingTime":"入库时间","generationCodes":"产生批次编码","fileId":"附件","yearTag":"编号年份标记","serialNumber":"每个标记的最大序号","remark":"备注","updateBy":"修改者","updateTime":"更新时间","createBy":"创建者","createTime":"创建时间","tenantId":"租户id","tenantName":"租户名称","delFlag":"删除标记"}
  *
  * @author A
  * @version v 0.1
- * @File HseHazardousWasteWarehousingVO.java
+ * @File HseHazardousWasteWarehousingDTO.java
  * @Desc 固废管理-危废入库
- * @DateTime 2023-07-14 10:33:14
+ * @DateTime 2023-07-14 10:30:25
  * @Encoding UTF-8
  * @Description Copyright (c) 2004-2023 All Rights Reserved.
  */
-public class HseHazardousWasteWarehousingVO extends CybVoBase<HseHazardousWasteWarehousing, HseHazardousWasteWarehousingDTO, HseHazardousWasteWarehousingVO> implements Serializable {
+public class HseHazardousWasteWarehousingDTO implements Serializable {
     
     private static final long serialVersionUID = 1L;
     
     
-    //=================返回给前端的 临时属性=== 开始=======================================================================================
     
-    //关联的废物name
-    private String wasteBaseName;
-    //关联的废物编码
-    private String wasteCode;
-    //关联的国家危险废物名录名称
-    private String wasteName;
-    //关联的国家危险废物名录类别
-    private String wasteType;
+    /**
+     * 流水ID
+     */
+    private Long sid;
     
-    public String getWasteName() {
-        return wasteName;
+    /**
+     * 应用ID
+     */
+    private Integer appId;
+    
+    
+    /**
+     * 备注信息
+     */
+    private String remark;
+    
+    /**
+     * 创建者
+     */
+    private String createBy;
+    
+    /**
+     * 创建时间
+     */
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date createTime;
+    
+    /**
+     * 修改者
+     */
+    private String updateBy;
+    
+    /**
+     * 修改时间
+     */
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date updateTime;
+    
+    /**
+     * 删除标记
+     */
+    private Integer delFlag;
+    
+    /**
+     * 获取流水ID
+     *
+     * @return 流水ID
+     */
+    public Long getSid() {
+        return sid;
     }
     
-    public void setWasteName(String wasteName) {
-        this.wasteName = wasteName;
+    /**
+     * 设置流水ID
+     *
+     * @param sid 流水ID
+     */
+    public void setSid(Long sid) {
+        this.sid = sid;
     }
     
-    public String getWasteType() {
-        return wasteType;
+    /**
+     * 获取应用ID
+     *
+     * @return 应用ID
+     */
+    public Integer getAppId() {
+        return appId;
     }
     
-    public void setWasteType(String wasteType) {
-        this.wasteType = wasteType;
+    /**
+     * 设置应用ID
+     *
+     * @param appId 应用ID
+     */
+    public void setAppId(Integer appId) {
+        this.appId = appId;
     }
     
-    public String getWasteBaseName() {
-        return wasteBaseName;
+    /**
+     * 获取备注信息
+     *
+     * @return 备注信息
+     */
+    public String getRemark() {
+        return remark;
     }
     
-    public void setWasteBaseName(String wasteBaseName) {
-        this.wasteBaseName = wasteBaseName;
+    /**
+     * 设置备注信息
+     *
+     * @param remark 备注信息
+     */
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
     
-    public String getWasteCode() {
-        return wasteCode;
+    /**
+     * 获取创建者
+     *
+     * @return 创建者
+     */
+    public String getCreateBy() {
+        return createBy;
     }
     
-    public void setWasteCode(String wasteCode) {
-        this.wasteCode = wasteCode;
+    /**
+     * 设置创建者
+     *
+     * @param createBy 创建者
+     */
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
     }
-    //====================返回给前端的 临时属性=== 结束==================================================================================
+    
+    /**
+     * 获取创建时间
+     *
+     * @return 创建时间
+     */
+    public Date getCreateTime() {
+        return createTime;
+    }
+    
+    /**
+     * 设置创建时间
+     *
+     * @param createTime 创建时间
+     */
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+    
+    /**
+     * 获取修改者
+     *
+     * @return 修改者
+     */
+    public String getUpdateBy() {
+        return updateBy;
+    }
+    
+    /**
+     * 设置修改者
+     *
+     * @param updateBy 修改者
+     */
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy;
+    }
+    
+    /**
+     * 获取修改时间
+     *
+     * @return 修改时间
+     */
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+    
+    /**
+     * 设置修改时间
+     *
+     * @param updateTime 修改时间
+     */
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+    
+    /**
+     * 获取删除标记
+     *
+     * @return 删除标记
+     */
+    public Integer getDelFlag() {
+        return delFlag;
+    }
+    
+    /**
+     * 设置删除标记
+     *
+     * @param delFlag 删除标记
+     */
+    public void setDelFlag(Integer delFlag) {
+        this.delFlag = delFlag;
+    }
+    
     
     
     
@@ -188,8 +331,8 @@ public class HseHazardousWasteWarehousingVO extends CybVoBase<HseHazardousWasteW
     /**
      * 入库时间
      */
-    @JSONField(format = "yyyy-MM-dd HH:mm")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date warehousingTime;
     
     /**
@@ -201,6 +344,26 @@ public class HseHazardousWasteWarehousingVO extends CybVoBase<HseHazardousWasteW
      * 附件
      */
     private String fileId;
+    
+    /**
+     * 编号年份标记
+     */
+    private String yearTag;
+    
+    /**
+     * 每个标记的最大序号
+     */
+    private Integer serialNumber;
+    
+    /**
+     * 租户id
+     */
+    private String tenantId;
+    
+    /**
+     * 租户名称
+     */
+    private String tenantName;
     
     
     /**
@@ -222,6 +385,17 @@ public class HseHazardousWasteWarehousingVO extends CybVoBase<HseHazardousWasteW
     }
     
     /**
+     * 设置关联的废物id
+     *
+     * @param wasteBaseId 关联的废物id
+     */
+    public HseHazardousWasteWarehousingDTO wasteBaseId(String wasteBaseId) {
+        this.wasteBaseId = wasteBaseId;
+        return this;
+    }
+    
+    
+    /**
      * 获取关联的产生ids
      *
      * @return 关联的产生ids
@@ -238,6 +412,17 @@ public class HseHazardousWasteWarehousingVO extends CybVoBase<HseHazardousWasteW
     public void setGenerationIds(String generationIds) {
         this.generationIds = generationIds;
     }
+    
+    /**
+     * 设置关联的产生ids
+     *
+     * @param generationIds 关联的产生ids
+     */
+    public HseHazardousWasteWarehousingDTO generationIds(String generationIds) {
+        this.generationIds = generationIds;
+        return this;
+    }
+    
     
     /**
      * 获取入库批次编码
@@ -258,6 +443,17 @@ public class HseHazardousWasteWarehousingVO extends CybVoBase<HseHazardousWasteW
     }
     
     /**
+     * 设置入库批次编码
+     *
+     * @param warehousingCode 入库批次编码
+     */
+    public HseHazardousWasteWarehousingDTO warehousingCode(String warehousingCode) {
+        this.warehousingCode = warehousingCode;
+        return this;
+    }
+    
+    
+    /**
      * 获取运送部门id
      *
      * @return 运送部门id
@@ -274,6 +470,17 @@ public class HseHazardousWasteWarehousingVO extends CybVoBase<HseHazardousWasteW
     public void setTransportOrgId(String transportOrgId) {
         this.transportOrgId = transportOrgId;
     }
+    
+    /**
+     * 设置运送部门id
+     *
+     * @param transportOrgId 运送部门id
+     */
+    public HseHazardousWasteWarehousingDTO transportOrgId(String transportOrgId) {
+        this.transportOrgId = transportOrgId;
+        return this;
+    }
+    
     
     /**
      * 获取运送部门name
@@ -294,6 +501,17 @@ public class HseHazardousWasteWarehousingVO extends CybVoBase<HseHazardousWasteW
     }
     
     /**
+     * 设置运送部门name
+     *
+     * @param transportOrgName 运送部门name
+     */
+    public HseHazardousWasteWarehousingDTO transportOrgName(String transportOrgName) {
+        this.transportOrgName = transportOrgName;
+        return this;
+    }
+    
+    
+    /**
      * 获取运送部门经办人id
      *
      * @return 运送部门经办人id
@@ -310,6 +528,17 @@ public class HseHazardousWasteWarehousingVO extends CybVoBase<HseHazardousWasteW
     public void setTransportPersonId(String transportPersonId) {
         this.transportPersonId = transportPersonId;
     }
+    
+    /**
+     * 设置运送部门经办人id
+     *
+     * @param transportPersonId 运送部门经办人id
+     */
+    public HseHazardousWasteWarehousingDTO transportPersonId(String transportPersonId) {
+        this.transportPersonId = transportPersonId;
+        return this;
+    }
+    
     
     /**
      * 获取运送部门经办人name
@@ -330,6 +559,17 @@ public class HseHazardousWasteWarehousingVO extends CybVoBase<HseHazardousWasteW
     }
     
     /**
+     * 设置运送部门经办人name
+     *
+     * @param transportPersonName 运送部门经办人name
+     */
+    public HseHazardousWasteWarehousingDTO transportPersonName(String transportPersonName) {
+        this.transportPersonName = transportPersonName;
+        return this;
+    }
+    
+    
+    /**
      * 获取贮存部门id
      *
      * @return 贮存部门id
@@ -346,6 +586,17 @@ public class HseHazardousWasteWarehousingVO extends CybVoBase<HseHazardousWasteW
     public void setStorageOrgId(String storageOrgId) {
         this.storageOrgId = storageOrgId;
     }
+    
+    /**
+     * 设置贮存部门id
+     *
+     * @param storageOrgId 贮存部门id
+     */
+    public HseHazardousWasteWarehousingDTO storageOrgId(String storageOrgId) {
+        this.storageOrgId = storageOrgId;
+        return this;
+    }
+    
     
     /**
      * 获取贮存部门name
@@ -366,6 +617,17 @@ public class HseHazardousWasteWarehousingVO extends CybVoBase<HseHazardousWasteW
     }
     
     /**
+     * 设置贮存部门name
+     *
+     * @param storageOrgName 贮存部门name
+     */
+    public HseHazardousWasteWarehousingDTO storageOrgName(String storageOrgName) {
+        this.storageOrgName = storageOrgName;
+        return this;
+    }
+    
+    
+    /**
      * 获取贮存部门经办人id
      *
      * @return 贮存部门经办人id
@@ -382,6 +644,17 @@ public class HseHazardousWasteWarehousingVO extends CybVoBase<HseHazardousWasteW
     public void setStoragePersonId(String storagePersonId) {
         this.storagePersonId = storagePersonId;
     }
+    
+    /**
+     * 设置贮存部门经办人id
+     *
+     * @param storagePersonId 贮存部门经办人id
+     */
+    public HseHazardousWasteWarehousingDTO storagePersonId(String storagePersonId) {
+        this.storagePersonId = storagePersonId;
+        return this;
+    }
+    
     
     /**
      * 获取贮存部门经办人name
@@ -402,6 +675,17 @@ public class HseHazardousWasteWarehousingVO extends CybVoBase<HseHazardousWasteW
     }
     
     /**
+     * 设置贮存部门经办人name
+     *
+     * @param storagePersonName 贮存部门经办人name
+     */
+    public HseHazardousWasteWarehousingDTO storagePersonName(String storagePersonName) {
+        this.storagePersonName = storagePersonName;
+        return this;
+    }
+    
+    
+    /**
      * 获取贮存设施字典编码
      *
      * @return 贮存设施字典编码
@@ -418,6 +702,17 @@ public class HseHazardousWasteWarehousingVO extends CybVoBase<HseHazardousWasteW
     public void setStoragePositionCode(String storagePositionCode) {
         this.storagePositionCode = storagePositionCode;
     }
+    
+    /**
+     * 设置贮存设施字典编码
+     *
+     * @param storagePositionCode 贮存设施字典编码
+     */
+    public HseHazardousWasteWarehousingDTO storagePositionCode(String storagePositionCode) {
+        this.storagePositionCode = storagePositionCode;
+        return this;
+    }
+    
     
     /**
      * 获取贮存设施字典名称
@@ -438,6 +733,17 @@ public class HseHazardousWasteWarehousingVO extends CybVoBase<HseHazardousWasteW
     }
     
     /**
+     * 设置贮存设施字典名称
+     *
+     * @param storagePositionName 贮存设施字典名称
+     */
+    public HseHazardousWasteWarehousingDTO storagePositionName(String storagePositionName) {
+        this.storagePositionName = storagePositionName;
+        return this;
+    }
+    
+    
+    /**
      * 获取贮存设施字典类型
      *
      * @return 贮存设施字典类型
@@ -454,6 +760,17 @@ public class HseHazardousWasteWarehousingVO extends CybVoBase<HseHazardousWasteW
     public void setStoragePositionType(String storagePositionType) {
         this.storagePositionType = storagePositionType;
     }
+    
+    /**
+     * 设置贮存设施字典类型
+     *
+     * @param storagePositionType 贮存设施字典类型
+     */
+    public HseHazardousWasteWarehousingDTO storagePositionType(String storagePositionType) {
+        this.storagePositionType = storagePositionType;
+        return this;
+    }
+    
     
     /**
      * 获取容器/包装编码和类型code
@@ -474,6 +791,17 @@ public class HseHazardousWasteWarehousingVO extends CybVoBase<HseHazardousWasteW
     }
     
     /**
+     * 设置容器/包装编码和类型code
+     *
+     * @param containerCode 容器/包装编码和类型code
+     */
+    public HseHazardousWasteWarehousingDTO containerCode(String containerCode) {
+        this.containerCode = containerCode;
+        return this;
+    }
+    
+    
+    /**
      * 获取容器/包装编码和类型name
      *
      * @return 容器/包装编码和类型name
@@ -490,6 +818,17 @@ public class HseHazardousWasteWarehousingVO extends CybVoBase<HseHazardousWasteW
     public void setContainerName(String containerName) {
         this.containerName = containerName;
     }
+    
+    /**
+     * 设置容器/包装编码和类型name
+     *
+     * @param containerName 容器/包装编码和类型name
+     */
+    public HseHazardousWasteWarehousingDTO containerName(String containerName) {
+        this.containerName = containerName;
+        return this;
+    }
+    
     
     /**
      * 获取状态(0未出库;1部分出库;2已出库)
@@ -510,6 +849,17 @@ public class HseHazardousWasteWarehousingVO extends CybVoBase<HseHazardousWasteW
     }
     
     /**
+     * 设置状态(0未出库;1部分出库;2已出库)
+     *
+     * @param status 状态(0未出库;1部分出库;2已出库)
+     */
+    public HseHazardousWasteWarehousingDTO status(String status) {
+        this.status = status;
+        return this;
+    }
+    
+    
+    /**
      * 获取计量单位code
      *
      * @return 计量单位code
@@ -526,6 +876,17 @@ public class HseHazardousWasteWarehousingVO extends CybVoBase<HseHazardousWasteW
     public void setMeasurementUnitCode(String measurementUnitCode) {
         this.measurementUnitCode = measurementUnitCode;
     }
+    
+    /**
+     * 设置计量单位code
+     *
+     * @param measurementUnitCode 计量单位code
+     */
+    public HseHazardousWasteWarehousingDTO measurementUnitCode(String measurementUnitCode) {
+        this.measurementUnitCode = measurementUnitCode;
+        return this;
+    }
+    
     
     /**
      * 获取计量单位name
@@ -546,6 +907,17 @@ public class HseHazardousWasteWarehousingVO extends CybVoBase<HseHazardousWasteW
     }
     
     /**
+     * 设置计量单位name
+     *
+     * @param measurementUnitName 计量单位name
+     */
+    public HseHazardousWasteWarehousingDTO measurementUnitName(String measurementUnitName) {
+        this.measurementUnitName = measurementUnitName;
+        return this;
+    }
+    
+    
+    /**
      * 获取容器/包装个数
      *
      * @return 容器/包装个数
@@ -562,6 +934,17 @@ public class HseHazardousWasteWarehousingVO extends CybVoBase<HseHazardousWasteW
     public void setContainerNumber(Integer containerNumber) {
         this.containerNumber = containerNumber;
     }
+    
+    /**
+     * 设置容器/包装个数
+     *
+     * @param containerNumber 容器/包装个数
+     */
+    public HseHazardousWasteWarehousingDTO containerNumber(Integer containerNumber) {
+        this.containerNumber = containerNumber;
+        return this;
+    }
+    
     
     /**
      * 获取入库量
@@ -582,6 +965,17 @@ public class HseHazardousWasteWarehousingVO extends CybVoBase<HseHazardousWasteW
     }
     
     /**
+     * 设置入库量
+     *
+     * @param warehousingQuantity 入库量
+     */
+    public HseHazardousWasteWarehousingDTO warehousingQuantity(BigDecimal warehousingQuantity) {
+        this.warehousingQuantity = warehousingQuantity;
+        return this;
+    }
+    
+    
+    /**
      * 获取剩余量
      *
      * @return 剩余量
@@ -598,6 +992,17 @@ public class HseHazardousWasteWarehousingVO extends CybVoBase<HseHazardousWasteW
     public void setResidueQuantity(BigDecimal residueQuantity) {
         this.residueQuantity = residueQuantity;
     }
+    
+    /**
+     * 设置剩余量
+     *
+     * @param residueQuantity 剩余量
+     */
+    public HseHazardousWasteWarehousingDTO residueQuantity(BigDecimal residueQuantity) {
+        this.residueQuantity = residueQuantity;
+        return this;
+    }
+    
     
     /**
      * 获取入库时间
@@ -618,6 +1023,17 @@ public class HseHazardousWasteWarehousingVO extends CybVoBase<HseHazardousWasteW
     }
     
     /**
+     * 设置入库时间
+     *
+     * @param warehousingTime 入库时间
+     */
+    public HseHazardousWasteWarehousingDTO warehousingTime(Date warehousingTime) {
+        this.warehousingTime = warehousingTime;
+        return this;
+    }
+    
+    
+    /**
      * 获取产生批次编码
      *
      * @return 产生批次编码
@@ -634,6 +1050,17 @@ public class HseHazardousWasteWarehousingVO extends CybVoBase<HseHazardousWasteW
     public void setGenerationCodes(String generationCodes) {
         this.generationCodes = generationCodes;
     }
+    
+    /**
+     * 设置产生批次编码
+     *
+     * @param generationCodes 产生批次编码
+     */
+    public HseHazardousWasteWarehousingDTO generationCodes(String generationCodes) {
+        this.generationCodes = generationCodes;
+        return this;
+    }
+    
     
     /**
      * 获取附件
@@ -653,62 +1080,132 @@ public class HseHazardousWasteWarehousingVO extends CybVoBase<HseHazardousWasteW
         this.fileId = fileId;
     }
     
+    /**
+     * 设置附件
+     *
+     * @param fileId 附件
+     */
+    public HseHazardousWasteWarehousingDTO fileId(String fileId) {
+        this.fileId = fileId;
+        return this;
+    }
+    
     
     /**
-     * 转换成固废管理-危废入库Entity对象
+     * 获取编号年份标记
      *
-     * @return 固废管理-危废入库Entity对象
+     * @return 编号年份标记
      */
-    @Override
-    protected HseHazardousWasteWarehousing convertToEntity() {
-        HseHazardousWasteWarehousing hseHazardousWasteWarehousing = new HseHazardousWasteWarehousing();
-        BeanUtils.copyProperties(this, hseHazardousWasteWarehousing);
-        return hseHazardousWasteWarehousing;
+    public String getYearTag() {
+        return yearTag;
     }
     
     /**
-     * 转换成固废管理-危废入库DTO对象
+     * 设置编号年份标记
      *
-     * @return 固废管理-危废入库DTO对象
+     * @param yearTag 编号年份标记
      */
-    @Override
-    protected HseHazardousWasteWarehousingDTO convertToDto() {
-        HseHazardousWasteWarehousingDTO hseHazardousWasteWarehousingDTO = new HseHazardousWasteWarehousingDTO();
-        BeanUtils.copyProperties(this, hseHazardousWasteWarehousingDTO);
-        return hseHazardousWasteWarehousingDTO;
+    public void setYearTag(String yearTag) {
+        this.yearTag = yearTag;
     }
     
-    @Override
-    public String toString() {
-        return "HseHazardousWasteWarehousingVO{" +
-                
-                "appId='" + super.getAppId() + "\'," +
-                "wasteBaseId='" + wasteBaseId + "\'," +
-                "generationIds='" + generationIds + "\'," +
-                "warehousingCode='" + warehousingCode + "\'," +
-                "transportOrgId='" + transportOrgId + "\'," +
-                "transportOrgName='" + transportOrgName + "\'," +
-                "transportPersonId='" + transportPersonId + "\'," +
-                "transportPersonName='" + transportPersonName + "\'," +
-                "storageOrgId='" + storageOrgId + "\'," +
-                "storageOrgName='" + storageOrgName + "\'," +
-                "storagePersonId='" + storagePersonId + "\'," +
-                "storagePersonName='" + storagePersonName + "\'," +
-                "storagePositionCode='" + storagePositionCode + "\'," +
-                "storagePositionName='" + storagePositionName + "\'," +
-                "storagePositionType='" + storagePositionType + "\'," +
-                "containerCode='" + containerCode + "\'," +
-                "containerName='" + containerName + "\'," +
-                "status='" + status + "\'," +
-                "measurementUnitCode='" + measurementUnitCode + "\'," +
-                "measurementUnitName='" + measurementUnitName + "\'," +
-                "containerNumber='" + containerNumber + "\'," +
-                "warehousingQuantity='" + warehousingQuantity + "\'," +
-                "residueQuantity='" + residueQuantity + "\'," +
-                "warehousingTime='" + warehousingTime + "\'," +
-                "generationCodes='" + generationCodes + "\'," +
-                "fileId='" + fileId + "\'," +
-                "remark='" + super.getRemark() + "\'" +
-                '}';
+    /**
+     * 设置编号年份标记
+     *
+     * @param yearTag 编号年份标记
+     */
+    public HseHazardousWasteWarehousingDTO yearTag(String yearTag) {
+        this.yearTag = yearTag;
+        return this;
     }
+    
+    
+    /**
+     * 获取每个标记的最大序号
+     *
+     * @return 每个标记的最大序号
+     */
+    public Integer getSerialNumber() {
+        return serialNumber;
+    }
+    
+    /**
+     * 设置每个标记的最大序号
+     *
+     * @param serialNumber 每个标记的最大序号
+     */
+    public void setSerialNumber(Integer serialNumber) {
+        this.serialNumber = serialNumber;
+    }
+    
+    /**
+     * 设置每个标记的最大序号
+     *
+     * @param serialNumber 每个标记的最大序号
+     */
+    public HseHazardousWasteWarehousingDTO serialNumber(Integer serialNumber) {
+        this.serialNumber = serialNumber;
+        return this;
+    }
+    
+    
+    /**
+     * 获取租户id
+     *
+     * @return 租户id
+     */
+    public String getTenantId() {
+        return tenantId;
+    }
+    
+    /**
+     * 设置租户id
+     *
+     * @param tenantId 租户id
+     */
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
+    }
+    
+    /**
+     * 设置租户id
+     *
+     * @param tenantId 租户id
+     */
+    public HseHazardousWasteWarehousingDTO tenantId(String tenantId) {
+        this.tenantId = tenantId;
+        return this;
+    }
+    
+    
+    /**
+     * 获取租户名称
+     *
+     * @return 租户名称
+     */
+    public String getTenantName() {
+        return tenantName;
+    }
+    
+    /**
+     * 设置租户名称
+     *
+     * @param tenantName 租户名称
+     */
+    public void setTenantName(String tenantName) {
+        this.tenantName = tenantName;
+    }
+    
+    /**
+     * 设置租户名称
+     *
+     * @param tenantName 租户名称
+     */
+    public HseHazardousWasteWarehousingDTO tenantName(String tenantName) {
+        this.tenantName = tenantName;
+        return this;
+    }
+    
+    
+    
 }

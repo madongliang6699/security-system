@@ -1,10 +1,6 @@
 package com.security.wasteGeneration.domain.dto;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.cybstar.base.CybDtoBase;
-import com.cybstar.base.secureBase.solidWaste.hazardousWaste.entity.HseHazardousWasteGeneration;
-import com.cybstar.base.secureBase.solidWaste.hazardousWaste.vo.HseHazardousWasteGenerationVO;
-import org.springframework.beans.BeanUtils;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
@@ -23,9 +19,202 @@ import java.util.Date;
  * @Encoding UTF-8
  * @Description Copyright (c) 2004-2023 All Rights Reserved.
  */
-public class HseHazardousWasteGenerationDTO extends CybDtoBase<HseHazardousWasteGeneration, HseHazardousWasteGenerationDTO, HseHazardousWasteGenerationVO> implements Serializable {
+public class HseHazardousWasteGenerationDTO implements Serializable {
     
     private static final long serialVersionUID = 1L;
+    
+    
+    
+    /**
+     * 流水ID
+     */
+    private Long sid;
+    
+    /**
+     * 应用ID
+     */
+    private Integer appId;
+    
+    
+    /**
+     * 备注信息
+     */
+    private String remark;
+    
+    /**
+     * 创建者
+     */
+    private String createBy;
+    
+    /**
+     * 创建时间
+     */
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date createTime;
+    
+    /**
+     * 修改者
+     */
+    private String updateBy;
+    
+    /**
+     * 修改时间
+     */
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date updateTime;
+    
+    /**
+     * 删除标记
+     */
+    private Integer delFlag;
+    
+    /**
+     * 获取流水ID
+     *
+     * @return 流水ID
+     */
+    public Long getSid() {
+        return sid;
+    }
+    
+    /**
+     * 设置流水ID
+     *
+     * @param sid 流水ID
+     */
+    public void setSid(Long sid) {
+        this.sid = sid;
+    }
+    
+    /**
+     * 获取应用ID
+     *
+     * @return 应用ID
+     */
+    public Integer getAppId() {
+        return appId;
+    }
+    
+    /**
+     * 设置应用ID
+     *
+     * @param appId 应用ID
+     */
+    public void setAppId(Integer appId) {
+        this.appId = appId;
+    }
+    
+    /**
+     * 获取备注信息
+     *
+     * @return 备注信息
+     */
+    public String getRemark() {
+        return remark;
+    }
+    
+    /**
+     * 设置备注信息
+     *
+     * @param remark 备注信息
+     */
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+    
+    /**
+     * 获取创建者
+     *
+     * @return 创建者
+     */
+    public String getCreateBy() {
+        return createBy;
+    }
+    
+    /**
+     * 设置创建者
+     *
+     * @param createBy 创建者
+     */
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+    
+    /**
+     * 获取创建时间
+     *
+     * @return 创建时间
+     */
+    public Date getCreateTime() {
+        return createTime;
+    }
+    
+    /**
+     * 设置创建时间
+     *
+     * @param createTime 创建时间
+     */
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+    
+    /**
+     * 获取修改者
+     *
+     * @return 修改者
+     */
+    public String getUpdateBy() {
+        return updateBy;
+    }
+    
+    /**
+     * 设置修改者
+     *
+     * @param updateBy 修改者
+     */
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy;
+    }
+    
+    /**
+     * 获取修改时间
+     *
+     * @return 修改时间
+     */
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+    
+    /**
+     * 设置修改时间
+     *
+     * @param updateTime 修改时间
+     */
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+    
+    /**
+     * 获取删除标记
+     *
+     * @return 删除标记
+     */
+    public Integer getDelFlag() {
+        return delFlag;
+    }
+    
+    /**
+     * 设置删除标记
+     *
+     * @param delFlag 删除标记
+     */
+    public void setDelFlag(Integer delFlag) {
+        this.delFlag = delFlag;
+    }
+    
+    
     
     /**
      * 关联的废物id
@@ -777,66 +966,5 @@ public class HseHazardousWasteGenerationDTO extends CybDtoBase<HseHazardousWaste
         return this;
     }
     
-    
-    public HseHazardousWasteGenerationDTO appId(Integer appId) {
-        super.setAppId(appId);
-        return this;
-    }
-    
-    
-    /**
-     * 转换成固废管理-危废产生Entity对象
-     *
-     * @return 固废管理-危废产生Entity对象
-     */
-    @Override
-    protected HseHazardousWasteGeneration convertToEntity() {
-        HseHazardousWasteGeneration hseHazardousWasteGeneration = new HseHazardousWasteGeneration();
-        BeanUtils.copyProperties(this, hseHazardousWasteGeneration);
-        return hseHazardousWasteGeneration;
-    }
-    
-    /**
-     * 转换成固废管理-危废产生VO对象
-     *
-     * @return 固废管理-危废产生VO对象
-     */
-    @Override
-    protected HseHazardousWasteGenerationVO convertToVo() {
-        HseHazardousWasteGenerationVO hseHazardousWasteGenerationVO = new HseHazardousWasteGenerationVO();
-        BeanUtils.copyProperties(this, hseHazardousWasteGenerationVO);
-        return hseHazardousWasteGenerationVO;
-    }
-    
-    @Override
-    public String toString() {
-        return "HseHazardousWasteGenerationDTO{" +
-                
-                "appId='" + super.getAppId() + "\'," +
-                "wasteBaseId='" + wasteBaseId + "\'," +
-                "generationCode='" + generationCode + "\'," +
-                "generationOrgId='" + generationOrgId + "\'," +
-                "generationOrgName='" + generationOrgName + "\'," +
-                "orgPersonId='" + orgPersonId + "\'," +
-                "orgPersonName='" + orgPersonName + "\'," +
-                "wastePositionCode='" + wastePositionCode + "\'," +
-                "wastePositionName='" + wastePositionName + "\'," +
-                "containerCode='" + containerCode + "\'," +
-                "containerName='" + containerName + "\'," +
-                "status='" + status + "\'," +
-                "destination='" + destination + "\'," +
-                "measurementUnitCode='" + measurementUnitCode + "\'," +
-                "measurementUnitName='" + measurementUnitName + "\'," +
-                "containerNumber='" + containerNumber + "\'," +
-                "generationQuantity='" + generationQuantity + "\'," +
-                "generationTime='" + generationTime + "\'," +
-                "fileId='" + fileId + "\'," +
-                "yearTag='" + yearTag + "\'," +
-                "serialNumber='" + serialNumber + "\'," +
-                "tenantId='" + tenantId + "\'," +
-                "tenantName='" + tenantName + "\'," +
-                "remark='" + super.getRemark() + "\'" +
-                '}';
-    }
     
 }

@@ -1,10 +1,5 @@
-package com.security.wasteGeneration.domain.mapper;
+package com.security.wasteWarehousing.domain;
 
-import com.cybstar.base.secureBase.solidWaste.hazardousWaste.dto.HseHazardousWasteGenerationDTO;
-import com.cybstar.base.secureBase.solidWaste.hazardousWaste.dto.HseHazardousWasteWarehousingDTO;
-import com.cybstar.base.secureBase.solidWaste.hazardousWaste.entity.HseHazardousWasteGeneration;
-import com.cybstar.base.secureBase.solidWaste.hazardousWaste.entity.HseHazardousWasteWarehousing;
-import com.cybstar.base.secureBase.solidWaste.hazardousWaste.vo.HseHazardousWasteWarehousingVO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -94,23 +89,5 @@ public interface HseHazardousWasteWarehousingMapper {
      */
     List<HseHazardousWasteWarehousing> selectByEntity(HseHazardousWasteWarehousingDTO entity);
     
-    
-    /**
-     * <p>
-     * 根据 关键字 查询
-     * </p>
-     *
-     * @param dto 实体对象
-     * @return 固废管理-危废入库对象集合
-     */
-    List<HseHazardousWasteWarehousingVO> selectByKeyWord(HseHazardousWasteWarehousingDTO dto);
-    
-    /**
-     * 根据入库时间参数的年份，查询出当年最新的一条数据
-     *
-     * @param dto
-     * @return
-     */
-    HseHazardousWasteWarehousing selectLastOneForYear(HseHazardousWasteWarehousingDTO dto);
-    
+ 
 }

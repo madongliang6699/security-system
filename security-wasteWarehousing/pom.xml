@@ -9,12 +9,13 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>security-wasteGeneration</artifactId>
+    <artifactId>security-wasteWarehousing</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
+
 
     <dependencies>
 
@@ -69,6 +70,10 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot</artifactId>
         </dependency>
 
         <!--        <dependency>-->
@@ -190,5 +195,6 @@
             </plugin>
         </plugins>
     </build>
+
 
 </project>

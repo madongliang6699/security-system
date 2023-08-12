@@ -1,12 +1,14 @@
-package com.security.wasteGeneration.controller;
+package com.security.wasteWarehousing.controller;
 
 import com.security.common.core.JsonResult;
-import com.security.wasteGeneration.domain.dto.HseHazardousWasteGenerationDTO;
-import com.security.wasteGeneration.service.WasteGenerationService;
+import com.security.wasteWarehousing.domain.HseHazardousWasteWarehousingDTO;
+import com.security.wasteWarehousing.service.WasteWarehousingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 
 /**
@@ -22,13 +24,13 @@ import org.springframework.web.bind.annotation.*;
  * @Description Copyright (c) 2004-2023 All Rights Reserved.
  */
 @RestController()
-@RequestMapping("/wasteGeneration")
-public class WasteGenerationController {
+@RequestMapping("/wasteWarehousing")
+public class WasteWarehousingController {
     
-    private static final Logger logger = LoggerFactory.getLogger(WasteGenerationController.class);
+    private static final Logger logger = LoggerFactory.getLogger(WasteWarehousingController.class);
     
     @Autowired
-    WasteGenerationService wasteGenerationService;
+    WasteWarehousingService wasteWarehousingService;
     
     
     /**
@@ -39,8 +41,8 @@ public class WasteGenerationController {
      * @return RespInfo 业务信息
      */
     @RequestMapping("/insert")
-    public JsonResult<String> insert(@RequestBody HseHazardousWasteGenerationDTO dto) {
-        wasteGenerationService.insert(dto);
+    public JsonResult<String> insert(@RequestBody HseHazardousWasteWarehousingDTO dto) {
+        wasteWarehousingService.insert(dto);
         return JsonResult.buildSuccess("ok");
     }
     
@@ -53,8 +55,8 @@ public class WasteGenerationController {
      * @return RespInfo 业务信息
      */
     @RequestMapping("/selectByEn")
-    public JsonResult<String> selectByEn(HseHazardousWasteGenerationDTO dto) {
-        wasteGenerationService.selectByEn(dto);
+    public JsonResult<String> selectByEn(HseHazardousWasteWarehousingDTO dto) {
+        wasteWarehousingService.selectByEn(dto);
         return JsonResult.buildSuccess("ok");
     }
     
