@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -54,5 +55,18 @@ public class WasteGenerationService {
         
         logger.info("generationVOS:{}", JSONObject.toJSONString(generationVOS));
         return generationVOS;
+    }
+    
+    
+    /**
+     * 校验所选的产生单子是否都存在，并且都是“待处置”状态（status为0）、去向都是“贮存”（destination为1）
+     */
+    public boolean checkGenerationStatusIs0AndDestinationIs1(List<String> generationIds) {
+        Assert.notEmpty(generationIds, "产生单ids不能为空");
+        List<HseHazardousWasteGeneration> generations = wasteGenerationMapper.selectBatchIds(generationIds);
+        if (generations.size() != generationIds.size()) {
+            throw new RuntimeException("查询到的产生单数量和ids数量不相等，可能所选的产生单已经部分删除");
+        }
+        return generations.stream().allMatch(en -> "0".equals(en.getStatus()) && "1".equals(en.getDestination()));
     }
 }
