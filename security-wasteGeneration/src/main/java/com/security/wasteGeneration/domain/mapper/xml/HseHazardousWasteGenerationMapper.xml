@@ -409,5 +409,46 @@
 
     </select>
 
+
+    <select id="selectBatchIds" resultMap="BaseResultMap" parameterType="java.util.ArrayList">
+        select
+        sid,
+        app_id,
+        waste_base_id,
+        generation_code,
+        generation_org_id,
+        generation_org_name,
+        org_person_id,
+        org_person_name,
+        waste_position_code,
+        waste_position_name,
+        container_code,
+        container_name,
+        status,
+        destination,
+        measurement_unit_code,
+        measurement_unit_name,
+        container_number,
+        generation_quantity,
+        generation_time,
+        file_id,
+        year_tag,
+        serial_number,
+        remark,
+        update_by,
+        update_time,
+        create_by,
+        create_time,
+        tenant_id,
+        tenant_name,
+        del_flag
+        from hse_hazardous_waste_generation
+        where sid in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and del_flag=0
+    </select>
+
 </mapper>
 
