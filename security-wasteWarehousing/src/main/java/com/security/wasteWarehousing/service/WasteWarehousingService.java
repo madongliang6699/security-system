@@ -28,6 +28,7 @@ public class WasteWarehousingService {
     
     @Autowired
     HseHazardousWasteWarehousingMapper wasteWarehousingMapper;
+    //@Reference已被废弃，2.7.7后使用@DubboReference
     @DubboReference(version = "1.0.0")
     WasteGenerationApi wasteGenerationApi;
     
