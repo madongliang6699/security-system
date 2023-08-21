@@ -1,0 +1,17 @@
+package market.api.impl;
+
+import com.security.common.core.JsonResult;
+import com.security.market.api.MarketApi;
+import com.security.market.domain.dto.CalculateOrderAmountDTO;
+
+/**
+ * @author zhonghuashishan
+ * @version 1.0
+ */
+public class MarketApiImpl implements MarketApi {
+
+    @Override
+    public JsonResult<CalculateOrderAmountDTO> calculateOrderAmount(com.security.market.domain.request.CalculateOrderAmountRequest calculateOrderAmountRequest) {
+        return null;
+    }
+}

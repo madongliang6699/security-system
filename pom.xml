@@ -28,6 +28,8 @@
         <module>security-wasteGeneration-api</module>
         <module>security-order</module>
         <module>security-order-api</module>
+        <module>security-market-api</module>
+        <module>security-market</module>
     </modules>
 
     <dependencyManagement>

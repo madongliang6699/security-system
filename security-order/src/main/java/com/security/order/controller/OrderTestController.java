@@ -3,11 +3,15 @@ package com.security.order.controller;
 
 import com.security.common.core.JsonResult;
 import com.security.order.api.OrderApi;
+import com.security.order.domain.dto.CreateOrderDTO;
 import com.security.order.domain.dto.GenOrderIdDTO;
+import com.security.order.domain.request.CreateOrderRequest;
 import com.security.order.domain.request.GenOrderIdRequest;
 import org.apache.dubbo.config.annotation.DubboReference;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/order/test")
@@ -26,9 +30,16 @@ public class OrderTestController {
      * 生成订单id
      */
     @RequestMapping("/genOrderId")
-    public JsonResult<GenOrderIdDTO> genOrderId(@RequestBody GenOrderIdRequest genOrderIdRequest){
+    public JsonResult<GenOrderIdDTO> genOrderId(@RequestBody GenOrderIdRequest genOrderIdRequest) {
         return orderApi.genOrderNo(genOrderIdRequest);
     }
-
-
+    
+    /**
+     * 测试提交订单
+     */
+    @PostMapping("/createOrder")
+    public JsonResult<CreateOrderDTO> createOrder(@RequestBody CreateOrderRequest createOrderRequest) {
+        return orderApi.createOrder(createOrderRequest);
+    }
+    
 }
