@@ -1,6 +1,7 @@
 package com.security.wasteGeneration.domain.dto;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
@@ -19,7 +20,7 @@ import java.util.Date;
  * @Encoding UTF-8
  * @Description Copyright (c) 2004-2023 All Rights Reserved.
  */
-public class HseHazardousWasteGenerationDTO implements Serializable {
+public class HseHazardousWasteGenerationDTO extends Model implements Serializable {
     
     private static final long serialVersionUID = 1L;
     

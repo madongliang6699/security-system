@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,7 +45,8 @@ public class WasteGenerationService {
      * @param dto
      */
     public List<HseHazardousWasteGenerationVO> selectByEn(HseHazardousWasteGenerationDTO dto) {
-        List<HseHazardousWasteGeneration> generations = wasteGenerationMapper.selectByEntity(dto);
+        //List<HseHazardousWasteGeneration> generations = wasteGenerationMapper.selectByEntity(dto);
+        List<HseHazardousWasteGeneration> generations = wasteGenerationMapper.selectBatchIds(Arrays.asList("xx"));
         
         List<HseHazardousWasteGenerationVO> generationVOS = generations.stream()
                 .map(en -> {

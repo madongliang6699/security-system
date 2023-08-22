@@ -2,11 +2,14 @@ package com.security.wasteGeneration.controller;
 
 import com.security.common.core.JsonResult;
 import com.security.wasteGeneration.domain.dto.HseHazardousWasteGenerationDTO;
+import com.security.wasteGeneration.domain.vo.HseHazardousWasteGenerationVO;
 import com.security.wasteGeneration.service.WasteGenerationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 /**
@@ -53,9 +56,9 @@ public class WasteGenerationController {
      * @return RespInfo 业务信息
      */
     @RequestMapping("/selectByEn")
-    public JsonResult<String> selectByEn(HseHazardousWasteGenerationDTO dto) {
-        wasteGenerationService.selectByEn(dto);
-        return JsonResult.buildSuccess("ok");
+    public JsonResult<List<HseHazardousWasteGenerationVO>> selectByEn(@RequestBody HseHazardousWasteGenerationDTO dto) {
+        List<HseHazardousWasteGenerationVO> vos = wasteGenerationService.selectByEn(dto);
+        return JsonResult.buildSuccess(vos);
     }
     
     
