@@ -1,4 +1,4 @@
-package market.api.impl;
+package com.security.market.api.impl;
 
 import com.security.common.core.JsonResult;
 import com.security.market.api.MarketApi;

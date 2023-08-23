@@ -25,6 +25,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -39,19 +40,16 @@ public class OrderServiceImpl implements OrderService {
     
     private static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
     
-    @DubboReference(version = "1.0.0", retries = 0)
+    //todo 测试这里使用@Autowired会怎么样
+    //@DubboReference(version = "1.0.0", retries = 0)
+    @Autowired
     MarketApi marketApi;
-    
-    
-    
-    
     
     
     /**
      * 生成订单号
      *
      * @param genOrderIdRequest 生成订单号入参
-     *
      * @return 订单号
      */
     public GenOrderIdDTO genOrderId(GenOrderIdRequest genOrderIdRequest) {
@@ -83,24 +81,24 @@ public class OrderServiceImpl implements OrderService {
     public CreateOrderDTO createOrder(CreateOrderRequest createOrderRequest) {
         // 1、入参检查
         checkCreateOrderRequestParam(createOrderRequest);
-    
+        
         // 2、风控检查。这里省略
-    
+        
         // 3、获取商品信息。这里省略，远程只是查一下数据库，手动造一些数据就行
         List<ProductSkuDTO> productSkuList = new ArrayList<>();
         
         
         // 4、计算订单价格。
-        CalculateOrderAmountDTO calculateOrderAmountDTO = calculateOrderAmount(createOrderRequest,  productSkuList);
+        CalculateOrderAmountDTO calculateOrderAmountDTO = calculateOrderAmount(createOrderRequest, productSkuList);
         
         
         return null;
     }
     
     
-    private CalculateOrderAmountDTO calculateOrderAmount(CreateOrderRequest createOrderRequest, List<ProductSkuDTO> productSkuList){
+    private CalculateOrderAmountDTO calculateOrderAmount(CreateOrderRequest createOrderRequest, List<ProductSkuDTO> productSkuList) {
         CalculateOrderAmountRequest calculateOrderPriceRequest = createOrderRequest.clone(CalculateOrderAmountRequest.class, CloneDirection.FORWARD);
-    
+        
         // 订单条目补充商品信息
         Map<String, ProductSkuDTO> productSkuDTOMap = productSkuList.stream().collect(Collectors.toMap(ProductSkuDTO::getSkuCode, Function.identity()));
         calculateOrderPriceRequest.getOrderItemRequestList().forEach(item -> {
@@ -109,7 +107,7 @@ public class OrderServiceImpl implements OrderService {
             item.setProductId(productSkuDTO.getProductId());
             item.setSalePrice(productSkuDTO.getSalePrice());
         });
-    
+        
         // 调用营销服务计算订单价格
         JsonResult<CalculateOrderAmountDTO> jsonResult = marketApi.calculateOrderAmount(calculateOrderPriceRequest);
         
@@ -126,7 +124,7 @@ public class OrderServiceImpl implements OrderService {
         if (orderAmountList == null || orderAmountList.isEmpty()) {
             throw new OrderBizException(OrderErrorCodeEnum.CALCULATE_ORDER_AMOUNT_ERROR);
         }
-    
+        
         // 订单条目费用明细
         List<OrderAmountDetailDTO> orderItemAmountList = ObjectUtil.convertList(calculateOrderAmountDTO.getOrderAmountDetail(), OrderAmountDetailDTO.class);
         if (orderItemAmountList == null || orderItemAmountList.isEmpty()) {
