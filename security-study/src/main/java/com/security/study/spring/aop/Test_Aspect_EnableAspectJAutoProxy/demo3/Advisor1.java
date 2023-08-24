@@ -26,7 +26,7 @@ public class Advisor1 extends DefaultPointcutAdvisor {
         setOrder(4);
     
         AspectJExpressionPointcut expressionPointcut = new AspectJExpressionPointcut();
-        expressionPointcut.setExpression("execution(* com.mdl.aop.Test_Aspect_EnableAspectJAutoProxy.demo3.Service3.*(..))");
+        expressionPointcut.setExpression("execution(* com.security.study.spring.aop.Test_Aspect_EnableAspectJAutoProxy.demo3.Service3.*(..))");
         //设置切点
         setPointcut(expressionPointcut);
     }

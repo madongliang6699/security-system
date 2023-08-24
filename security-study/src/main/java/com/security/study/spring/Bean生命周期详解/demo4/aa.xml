@@ -7,7 +7,7 @@
 
 <!--    通过xml定义3个具有父子关系的bean, lesson2相当于lesson1的儿子，lesson3相当于lesson1的孙子。-->
 
-    <bean id="lesson1" class="com.mdl.spring.Bean生命周期详解.demo4.LessonModel"/>
+    <bean id="lesson1" class="com.security.study.spring.Bean生命周期详解.demo4.LessonModel"/>
 
 
     <bean id="lesson2" parent="lesson1">

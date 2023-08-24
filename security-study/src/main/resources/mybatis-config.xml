@@ -39,6 +39,6 @@
     </environments>
 
     <mappers>
-        <package name="com.mdl.myBatis.E_多种查询详解.demo1"/>
+        <package name="com.security.study.myBatis.E_多种查询详解.demo1"/>
     </mappers>
 </configuration>

@@ -15,9 +15,9 @@ import org.springframework.context.annotation.ComponentScan;
 // @EnableAspectJAutoProxy
 // @Import({MyUser.class, Service.class})
 @EnableMyCacheService(type = CacheType.LOCAL)
-@MyMapperScan(basePackages = "com.mdl.Import.demo4")
+//@MyMapperScan(basePackages = "com.mdl.Import.demo4")
 // @MapperScan
-@ComponentScan
+//@ComponentScan
 public class MyApplication {
     
     public static void main(String[] args) {

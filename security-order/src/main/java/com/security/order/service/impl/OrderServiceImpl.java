@@ -41,8 +41,8 @@ public class OrderServiceImpl implements OrderService {
     private static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
     
     //todo 测试这里使用@Autowired会怎么样
-    //@DubboReference(version = "1.0.0", retries = 0)
-    @Autowired
+    @DubboReference(version = "1.0.0", retries = 0)
+//    @Autowired  //这里直接报错，找不到需要注入的bean
     MarketApi marketApi;
     
     

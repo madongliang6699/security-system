@@ -25,7 +25,7 @@ public class MyConfig {
         };
         
         AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
-        pointcut.setExpression("execution(* com.mdl.aop.Test_Aspect_EnableAspectJAutoProxy.demo3.Service3.*(..))");
+        pointcut.setExpression("execution(* com.security.study.spring.aop.Test_Aspect_EnableAspectJAutoProxy.demo3.Service3.*(..))");
         // 配置增强类advisor
         DefaultPointcutAdvisor advisor = new DefaultPointcutAdvisor();
         advisor.setPointcut(pointcut);

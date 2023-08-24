@@ -10,7 +10,7 @@ import org.aspectj.lang.annotation.Pointcut;
 @Aspect
 public class Aspect1 {
     //@2：定义了一个切入点，可以匹配Service1中所有方法
-    @Pointcut("execution(* com.mdl.aop.Test_Aspect_AspectJProxyFactory.demo1.Service1.*(..))")
+    @Pointcut("execution(* com.security.study.spring.aop.Test_Aspect_AspectJProxyFactory.demo1.Service1.*(..))")
     public void pointcut1() {
     }
     //@3：定义了一个前置通知，这个通知对刚刚上面我们定义的切入点中的所有方法有效

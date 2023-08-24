@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MyAspect1 {
     
-    @Pointcut("execution(* com.mdl.aop.Test_Aspect_EnableAspectJAutoProxy.demo3.Service3.*(..))")
+    @Pointcut("execution(* com.security.study.spring.aop.Test_Aspect_EnableAspectJAutoProxy.demo3.Service3.*(..))")
     public void pc() {
     }
     

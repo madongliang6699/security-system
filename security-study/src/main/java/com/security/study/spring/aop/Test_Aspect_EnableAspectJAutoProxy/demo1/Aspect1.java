@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class Aspect1 {
     
     
-    @Pointcut("execution(* com.mdl.aop.Test_Aspect_EnableAspectJAutoProxy.demo1..say(..))") //@3定义切入点，目前的配置，会拦截test1包及其子包中所有类的所有say方法，而CarService和UserService刚好满足，所以会被拦截；
+    @Pointcut("execution(* com.security.study.spring.aop.Test_Aspect_EnableAspectJAutoProxy.demo1..say(..))") //@3定义切入点，目前的配置，会拦截test1包及其子包中所有类的所有say方法，而CarService和UserService刚好满足，所以会被拦截；
     public void pc() {
     }
     

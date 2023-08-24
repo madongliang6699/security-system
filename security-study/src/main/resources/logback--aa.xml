@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+<!--    说明，这个日志文件不知道是哪里错误，导致日志都打印不出来，以至于启动的时候有报错，起不来服务，都一直错误信息都没有提示，
+     导致看不出是什么错误，因此这里先把本文件名改掉，不让其生效。就能打印默认的日志了。回头再研究这个文件是什么错误，
+     应该是不适应当前父工程定义的日志框架，因为这个study服务是从之前单独的项目集成到这个父工程下的，改过名字和包名等。
+
+-->
+
+
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <logger name="com.security.study" level="debug" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+</configuration>

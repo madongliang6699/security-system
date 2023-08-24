@@ -130,7 +130,7 @@ public class Test0729 {
             //创建UserModel对象
             UserModel_0729 userModel0729 = UserModel_0729.builder().id(RandomUtils.nextLong()).name("javacode2018").age(30).salary(50000D).sex(1).build();
             //执行插入操作
-            int result = sqlSession.insert("com.mdl.myBatis.demo1.mapper.UserMapper.insertUser", userModel0729);
+            int result = sqlSession.insert("com.security.study.myBatis.demo1.mapper.UserMapper.insertUser", userModel0729);
             log.info("插入影响行数：{}", result);
             //提交事务
             sqlSession2.commit();//这里使用的sqlSession2默认是不会自动提交事务，要想自动提交事务，上面的方法改成true。这里就不用手动commit了。
