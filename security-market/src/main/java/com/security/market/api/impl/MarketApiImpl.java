@@ -9,7 +9,7 @@ import org.apache.dubbo.config.annotation.DubboService;
  * @author zhonghuashishan
  * @version 1.0
  */
-@DubboService(version = "1.0.0", interfaceClass = MarketApiImpl.class, retries = 0)
+@DubboService(version = "1.0.0", interfaceClass = MarketApi.class, retries = 0)
 public class MarketApiImpl implements MarketApi {
 
     @Override
