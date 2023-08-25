@@ -18,6 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,7 @@ import java.util.stream.Collectors;
  *
  */
 @Service
-public class MarketServiceImpl implements MarketService {
+public class MarketServiceImpl implements MarketService, Serializable {
 
 	@Autowired
 	private CouponDAO couponDAO;

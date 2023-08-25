@@ -2,6 +2,9 @@ package com.security.order.controller;
 
 
 import com.security.common.core.JsonResult;
+import com.security.market.api.MarketApi;
+import com.security.market.domain.dto.CalculateOrderAmountDTO;
+import com.security.market.domain.request.CalculateOrderAmountRequest;
 import com.security.order.api.OrderApi;
 import com.security.order.domain.dto.CreateOrderDTO;
 import com.security.order.domain.dto.GenOrderIdDTO;
@@ -25,12 +28,18 @@ public class OrderTestController {
     
     @DubboReference(version = "1.0.0", retries = 0) //使用dubbo注入，拿到的对象不是OrderApiImpl对象，是一个Proxy0的代理对象
     OrderApi orderApi;
+
+    @DubboReference(version = "1.0.0", retries = 0)
+    MarketApi marketApi;
     
     /**
      * 生成订单id
      */
     @RequestMapping("/genOrderId")
     public JsonResult<GenOrderIdDTO> genOrderId(@RequestBody GenOrderIdRequest genOrderIdRequest) {
+        CalculateOrderAmountRequest calculateOrderAmountRequest = new CalculateOrderAmountRequest();
+        calculateOrderAmountRequest.setOrderId("12121212121");
+        JsonResult<CalculateOrderAmountDTO> calculateOrderAmountDTOJsonResult = marketApi.calculateOrderAmount(calculateOrderAmountRequest);
         return orderApi.genOrderNo(genOrderIdRequest);
     }
     

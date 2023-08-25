@@ -100,13 +100,15 @@ public class OrderServiceImpl implements OrderService {
         CalculateOrderAmountRequest calculateOrderPriceRequest = createOrderRequest.clone(CalculateOrderAmountRequest.class, CloneDirection.FORWARD);
         
         // 订单条目补充商品信息
-        Map<String, ProductSkuDTO> productSkuDTOMap = productSkuList.stream().collect(Collectors.toMap(ProductSkuDTO::getSkuCode, Function.identity()));
-        calculateOrderPriceRequest.getOrderItemRequestList().forEach(item -> {
-            String skuCode = item.getSkuCode();
-            ProductSkuDTO productSkuDTO = productSkuDTOMap.get(skuCode);
-            item.setProductId(productSkuDTO.getProductId());
-            item.setSalePrice(productSkuDTO.getSalePrice());
-        });
+//        Map<String, ProductSkuDTO> productSkuDTOMap = productSkuList.stream().collect(Collectors.toMap(ProductSkuDTO::getSkuCode, Function.identity()));
+//        List<CalculateOrderAmountRequest.OrderItemRequest> orderItemRequestList = calculateOrderPriceRequest.getOrderItemRequestList();
+//
+//        for (CalculateOrderAmountRequest.OrderItemRequest orderItemRequest : orderItemRequestList) {
+//            String skuCode = orderItemRequest.getSkuCode();
+//            ProductSkuDTO productSkuDTO = productSkuDTOMap.get(skuCode);
+//            orderItemRequest.setProductId(productSkuDTO.getProductId());
+//            orderItemRequest.setSalePrice(productSkuDTO.getSalePrice());
+//        }
         
         // 调用营销服务计算订单价格
         JsonResult<CalculateOrderAmountDTO> jsonResult = marketApi.calculateOrderAmount(calculateOrderPriceRequest);

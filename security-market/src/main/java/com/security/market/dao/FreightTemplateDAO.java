@@ -7,6 +7,8 @@ import com.security.market.mapper.FreightTemplateMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.io.Serializable;
+
 /**
  * <p>
  * 运费模板 DAO 接口
@@ -15,7 +17,7 @@ import org.springframework.stereotype.Repository;
  * @author zhonghuashishan
  */
 @Repository
-public class FreightTemplateDAO extends BaseDAO<FreightTemplateMapper, FreightTemplateDO> {
+public class FreightTemplateDAO extends BaseDAO<FreightTemplateMapper, FreightTemplateDO> implements Serializable {
     
     @Autowired
     private FreightTemplateMapper freightTemplateMapper;
