@@ -11,14 +11,6 @@
 
     <artifactId>security-common</artifactId>
 
-    <properties>
-        <java.version>1.8</java.version>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    </properties>
-
 
     <dependencies>
 
@@ -70,7 +62,7 @@
         <dependency>
             <groupId>org.apache.dubbo</groupId>
             <artifactId>dubbo</artifactId>
-            <version>2.7.8</version>
+<!--            <version>2.7.8</version>    在老师的案例中没有加这个版本，使用的应该是父工程中的版本，这里去掉版本，测试一下还会不会报错各种需要序列化-->
             <exclusions>
                 <exclusion>
                     <artifactId>spring-context</artifactId>
@@ -83,10 +75,10 @@
             <artifactId>nacos-client</artifactId>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>com.alibaba.cloud</groupId>-->
-<!--            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
 
         <!-- BeanCopier start -->
         <dependency>

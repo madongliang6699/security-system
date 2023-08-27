@@ -1,6 +1,5 @@
 package com.security.study.spring.Bean生命周期详解.demo9;
 
-import com.github.pagehelper.util.StringUtil;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.*;
@@ -86,17 +85,10 @@ public class SpringContextUtil implements EnvironmentAware, EmbeddedValueResolve
     public static ApplicationContext getApplicationContext() {
         return applicationContext;
     }
-    
-    public static Object getBean(String name) {
-        return StringUtil.isEmpty(name) ? null : getApplicationContext().getBean(name);
-    }
+
     
     public static <T> T getBean(Class<T> clazz) {
         return clazz == null ? null : getApplicationContext().getBean(clazz);
-    }
-    
-    public static <T> T getBean(String name, Class<T> clazz) {
-        return !StringUtil.isEmpty(name) && clazz != null ? getApplicationContext().getBean(name, clazz) : null;
     }
     
     

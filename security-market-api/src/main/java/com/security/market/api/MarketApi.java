@@ -16,6 +16,6 @@ public interface MarketApi {
      * @param calculateOrderAmountRequest
      * @return
      */
-    JsonResult<CalculateOrderAmountDTO> calculateOrderAmount(CalculateOrderAmountRequest calculateOrderAmountRequest);
+    JsonResult<Long> calculateOrderAmount(CalculateOrderAmountRequest calculateOrderAmountRequest);
 
 }

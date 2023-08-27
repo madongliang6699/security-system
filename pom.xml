@@ -21,7 +21,6 @@
 
     <modules>
         <module>security-common</module>
-        <module>security-generator</module>
         <module>security-study</module>
         <module>security-wasteGeneration</module>
         <module>security-wasteWarehousing</module>
@@ -60,6 +59,27 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+
+            <dependency>
+                <groupId>com.alibaba.csp</groupId>
+                <artifactId>sentinel-datasource-nacos</artifactId>
+                <version>1.8.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.dubbo</groupId>
+                <artifactId>dubbo</artifactId>
+                <version>2.7.12</version>
+            </dependency>
+
+            <!-- rocketmq -->
+            <dependency>
+                <groupId>org.apache.rocketmq</groupId>
+                <artifactId>rocketmq-spring-boot-starter</artifactId>
+                <version>2.1.1</version>
+            </dependency>
+
 
             <!-- cglib的BeanCopier需要的依赖 start -->
             <dependency>
@@ -188,6 +208,12 @@
                 <artifactId>redisson</artifactId>
                 <version>3.15.5</version>
             </dependency>
+            <dependency>
+                <groupId>org.apache.rocketmq</groupId>
+                <artifactId>rocketmq-client</artifactId>
+                <version>4.9.1</version>
+            </dependency>
+
 
         </dependencies>
 

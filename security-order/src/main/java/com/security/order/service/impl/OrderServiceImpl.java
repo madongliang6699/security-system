@@ -27,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sun.util.resources.cldr.mg.LocaleNames_mg;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class OrderServiceImpl implements OrderService {
     private static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
     
     //todo 测试这里使用@Autowired会怎么样
-    @DubboReference(version = "1.0.0", retries = 0)
+    @DubboReference(version = "2.0.0", retries = 0)
 //    @Autowired  //这里直接报错，找不到需要注入的bean
     MarketApi marketApi;
     
@@ -89,14 +90,14 @@ public class OrderServiceImpl implements OrderService {
         
         
         // 4、计算订单价格。
-        CalculateOrderAmountDTO calculateOrderAmountDTO = calculateOrderAmount(createOrderRequest, productSkuList);
-        
-        
+        Long aLong = calculateOrderAmount(createOrderRequest, productSkuList);
+
+
         return null;
     }
     
     
-    private CalculateOrderAmountDTO calculateOrderAmount(CreateOrderRequest createOrderRequest, List<ProductSkuDTO> productSkuList) {
+    private Long calculateOrderAmount(CreateOrderRequest createOrderRequest, List<ProductSkuDTO> productSkuList) {
         CalculateOrderAmountRequest calculateOrderPriceRequest = createOrderRequest.clone(CalculateOrderAmountRequest.class, CloneDirection.FORWARD);
         
         // 订单条目补充商品信息
@@ -111,28 +112,28 @@ public class OrderServiceImpl implements OrderService {
 //        }
         
         // 调用营销服务计算订单价格
-        JsonResult<CalculateOrderAmountDTO> jsonResult = marketApi.calculateOrderAmount(calculateOrderPriceRequest);
+        JsonResult<Long> jsonResult = marketApi.calculateOrderAmount(calculateOrderPriceRequest);
         
         // 检查价格计算结果
         if (!jsonResult.getSuccess()) {
             throw new OrderBizException(jsonResult.getErrorCode(), jsonResult.getErrorMessage());
         }
-        CalculateOrderAmountDTO calculateOrderAmountDTO = jsonResult.getData();
-        if (calculateOrderAmountDTO == null) {
+        Long data = jsonResult.getData();
+        if (data == null) {
             throw new OrderBizException(OrderErrorCodeEnum.CALCULATE_ORDER_AMOUNT_ERROR);
         }
-        // 订单费用信息
-        List<OrderAmountDTO> orderAmountList = ObjectUtil.convertList(calculateOrderAmountDTO.getOrderAmountList(), OrderAmountDTO.class);
-        if (orderAmountList == null || orderAmountList.isEmpty()) {
-            throw new OrderBizException(OrderErrorCodeEnum.CALCULATE_ORDER_AMOUNT_ERROR);
-        }
-        
-        // 订单条目费用明细
-        List<OrderAmountDetailDTO> orderItemAmountList = ObjectUtil.convertList(calculateOrderAmountDTO.getOrderAmountDetail(), OrderAmountDetailDTO.class);
-        if (orderItemAmountList == null || orderItemAmountList.isEmpty()) {
-            throw new OrderBizException(OrderErrorCodeEnum.CALCULATE_ORDER_AMOUNT_ERROR);
-        }
-        return calculateOrderAmountDTO;
+//        // 订单费用信息
+//        List<OrderAmountDTO> orderAmountList = ObjectUtil.convertList(calculateOrderAmountDTO.getOrderAmountList(), OrderAmountDTO.class);
+//        if (orderAmountList == null || orderAmountList.isEmpty()) {
+//            throw new OrderBizException(OrderErrorCodeEnum.CALCULATE_ORDER_AMOUNT_ERROR);
+//        }
+//
+//        // 订单条目费用明细
+//        List<OrderAmountDetailDTO> orderItemAmountList = ObjectUtil.convertList(calculateOrderAmountDTO.getOrderAmountDetail(), OrderAmountDetailDTO.class);
+//        if (orderItemAmountList == null || orderItemAmountList.isEmpty()) {
+//            throw new OrderBizException(OrderErrorCodeEnum.CALCULATE_ORDER_AMOUNT_ERROR);
+//        }
+        return data;
     }
     
     

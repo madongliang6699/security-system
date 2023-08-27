@@ -60,9 +60,9 @@ nbdist/
 target/
 *.war
 *.ear
-*.zip
+# *.zip
 *.tar
-*.tar.gz
+# *.tar.gz
 
 ### logs ####
 /logs/

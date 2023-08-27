@@ -1,0 +1,32 @@
+在/app/service文件夹下解压nacos：tar -xvf nacos-server-2.0.3.tar.gz
+
+解压后进入nacos目录，先修改bin目录下的startup.sh中的MODE为单例模式：
+# export MODE="cluster"
+export MODE="standalone"
+
+
+然后修改启动内存：
+startup.sh中可以看到设置启动内存的地方：
+===========================================================
+if [[ "${MODE}" == "standalone" ]]; then
+    JAVA_OPT="${JAVA_OPT} -Xms128m -Xmx128m -Xmn128m"
+    JAVA_OPT="${JAVA_OPT} -Dnacos.standalone=true"
+else
+    if [[ "${EMBEDDED_STORAGE}" == "embedded" ]]; then
+        JAVA_OPT="${JAVA_OPT} -DembeddedStorage=true"
+    fi
+    JAVA_OPT="${JAVA_OPT} -server -Xms2g -Xmx2g -Xmn1g -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=320m"
+    JAVA_OPT="${JAVA_OPT} -XX:-OmitStackTraceInFastThrow -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=${BASE_DIR}/logs/java_heapdump.hprof"
+    JAVA_OPT="${JAVA_OPT} -XX:-UseLargePages"
+
+fi
+================================================================================
+可以根据启动模式MODE设置对应的启动内存。
+
+
+然后启动：sh bin/startup.sh
+
+这样就是启动的单例模式的nacos。并且是以最默认的配置启动的，具体其他启动配置，以后待学习。
+
+在浏览器中访问nacos的管理页面：ip:端口/nacos
+账户密码默认是：nacos

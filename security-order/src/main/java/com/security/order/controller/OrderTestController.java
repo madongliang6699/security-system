@@ -28,9 +28,6 @@ public class OrderTestController {
     
     @DubboReference(version = "1.0.0", retries = 0) //使用dubbo注入，拿到的对象不是OrderApiImpl对象，是一个Proxy0的代理对象
     OrderApi orderApi;
-
-    @DubboReference(version = "1.0.0", retries = 0)
-    MarketApi marketApi;
     
     /**
      * 生成订单id
@@ -39,7 +36,6 @@ public class OrderTestController {
     public JsonResult<GenOrderIdDTO> genOrderId(@RequestBody GenOrderIdRequest genOrderIdRequest) {
         CalculateOrderAmountRequest calculateOrderAmountRequest = new CalculateOrderAmountRequest();
         calculateOrderAmountRequest.setOrderId("12121212121");
-        JsonResult<CalculateOrderAmountDTO> calculateOrderAmountDTOJsonResult = marketApi.calculateOrderAmount(calculateOrderAmountRequest);
         return orderApi.genOrderNo(genOrderIdRequest);
     }
     
