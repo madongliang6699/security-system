@@ -93,6 +93,7 @@
             <artifactId>spring-cloud-starter-alibaba-seata</artifactId>
             <exclusions>
                 <exclusion>
+                    <!--  这里排除是因为自动加入的版本可能与安装的seata的TC服务版本不一致，下面手动导入版本一致的-->
                     <groupId>io.seata</groupId>
                     <artifactId>seata-spring-boot-starter</artifactId>
                 </exclusion>
