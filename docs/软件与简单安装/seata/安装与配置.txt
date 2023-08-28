@@ -188,8 +188,10 @@ INSERT INTO `distributed_lock` (lock_key, lock_value, expire) VALUES ('TxTimeout
 exec "$JAVACMD" $JAVA_OPTS -server -Xmx128m -Xms128m -Xmn128m -Xss512k -XX:SurvivorRatio=10 -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=128m -XX:MaxDirectMemorySize=128m -XX:-OmitStackTraceInFastThrow -XX:-UseAdaptiveSizePolicy -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath="$BASEDIR"/logs/java_heapdump.hprof -XX:+DisableExplicitGC -XX:+CMSParallelRemarkEnabled -XX:+UseCMSInitiatingOccupancyOnly -XX:CMSInitiatingOccupancyFraction=75 -Xloggc:"$BASEDIR"/logs/seata_gc.log -verbose:gc -Dio.netty.leakDetectionLevel=advanced \
 
 启动：
-nohup sh bin/seata-server.sh &
-【怎么关闭seata】
+nohup sh bin/seata-server.sh -h 124.222.246.77 &
+【启动seata尽量加上指定IP的参数，要不然注册到nacos上的seata服务的ip可能是内网的ip，或者docker容器的ip】
+
+【怎么关闭seata？ 目前是使用kill杀进程的方式关闭seata服务的】
 
 nohup.out文件中最后有：Server started, listen port: 8091  就说明启动成功。
 【这样启动的不知道是集群模式还是单例模式】
