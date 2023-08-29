@@ -1,6 +1,7 @@
 package com.security.market.service;
 
 
+import com.security.common.core.JsonResult;
 import com.security.market.domain.request.CalculateOrderAmountRequest;
 
 /**
@@ -17,5 +18,7 @@ public interface MarketService {
      * @return
      */
     Long calculateOrderAmount(CalculateOrderAmountRequest calculateOrderAmountRequest);
+
+
 
 }

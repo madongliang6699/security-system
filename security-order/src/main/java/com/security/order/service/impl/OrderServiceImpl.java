@@ -42,7 +42,7 @@ public class OrderServiceImpl implements OrderService {
     private static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
     
     //todo 测试这里使用@Autowired会怎么样
-    @DubboReference(version = "2.0.0", retries = 0)
+    @DubboReference(version = "1.0.0", retries = 0)
 //    @Autowired  //这里直接报错，找不到需要注入的bean
     MarketApi marketApi;
     
@@ -92,6 +92,10 @@ public class OrderServiceImpl implements OrderService {
         // 4、计算订单价格。
         Long aLong = calculateOrderAmount(createOrderRequest, productSkuList);
 
+        JsonResult<Boolean> booleanJsonResult = marketApi.lockUserCoupon(createOrderRequest.getUserId());
+        if(!booleanJsonResult.getSuccess()){
+            throw new OrderBizException(booleanJsonResult.getErrorCode(), booleanJsonResult.getErrorMessage());
+        }
 
         return null;
     }

@@ -1,7 +1,6 @@
 package com.security.market.api;
 
 import com.security.common.core.JsonResult;
-import com.security.market.domain.dto.CalculateOrderAmountDTO;
 import com.security.market.domain.request.CalculateOrderAmountRequest;
 
 /**
@@ -17,5 +16,14 @@ public interface MarketApi {
      * @return
      */
     JsonResult<Long> calculateOrderAmount(CalculateOrderAmountRequest calculateOrderAmountRequest);
+
+
+    /**
+     * 计算订单费用
+     *
+     * @param userId
+     * @return
+     */
+    JsonResult<Boolean> lockUserCoupon(String userId);
 
 }

@@ -2,7 +2,10 @@ package com.security.market.service.impl;
 
 
 import com.security.market.domain.request.CalculateOrderAmountRequest;
+import com.security.market.entity.FreightTemplateDO;
+import com.security.market.mapper.FreightTemplateMapper;
 import com.security.market.service.MarketService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,9 +16,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class MarketServiceImpl implements MarketService {
 
+    @Autowired
+    FreightTemplateMapper freightTemplateMapper;
+
 
     @Override
     public Long calculateOrderAmount(CalculateOrderAmountRequest calculateOrderAmountRequest) {
-        return 1212L;
+        FreightTemplateDO freightTemplateDO = freightTemplateMapper.selectById(1);
+
+        return freightTemplateDO.getShippingAmount().longValue();
     }
+
+
 }

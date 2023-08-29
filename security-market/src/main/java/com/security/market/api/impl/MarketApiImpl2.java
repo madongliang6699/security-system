@@ -21,7 +21,7 @@ import java.util.List;
 @Slf4j
 // version = "2.0.0"
 @DubboService(version = "2.0.0", interfaceClass = MarketApi.class, retries = 0)
-public class MarketApiImpl2 implements MarketApi, Serializable {
+public class MarketApiImpl2 implements MarketApi {
 
 
     @Autowired
@@ -64,5 +64,10 @@ public class MarketApiImpl2 implements MarketApi, Serializable {
             return JsonResult.buildError(e.getMessage());
         }
 
+    }
+
+    @Override
+    public JsonResult<Boolean> lockUserCoupon(String userId) {
+        return null;
     }
 }
