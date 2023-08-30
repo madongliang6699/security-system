@@ -1,3 +1,7 @@
+软件包（nacos-server-2.0.3.tar.gz）在阿里云盘
+======================================================================================
+
+
 在/app/service文件夹下解压nacos：tar -xvf nacos-server-2.0.3.tar.gz
 
 解压后进入nacos目录，先修改bin目录下的startup.sh中的MODE为单例模式：
