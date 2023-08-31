@@ -5,13 +5,13 @@ import com.security.common.core.JsonResult;
 import com.security.common.enums.AmountTypeEnum;
 import com.security.common.enums.PayTypeEnum;
 import com.security.common.utils.LoggerFormat;
-import com.security.common.utils.ObjectUtil;
 import com.security.common.utils.ParamCheckUtil;
 import com.security.common.utils.RandomUtil;
 import com.security.market.api.MarketApi;
-import com.security.market.domain.dto.CalculateOrderAmountDTO;
 import com.security.market.domain.request.CalculateOrderAmountRequest;
-import com.security.order.domain.dto.*;
+import com.security.order.domain.dto.CreateOrderDTO;
+import com.security.order.domain.dto.GenOrderIdDTO;
+import com.security.order.domain.dto.ProductSkuDTO;
 import com.security.order.domain.request.CreateOrderRequest;
 import com.security.order.domain.request.GenOrderIdRequest;
 import com.security.order.enums.AccountTypeEnum;
@@ -25,28 +25,25 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.util.resources.cldr.mg.LocaleNames_mg;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
-    
+
     private static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
-    
+
     //todo 测试这里使用@Autowired会怎么样
     @DubboReference(version = "1.0.0", retries = 0)
 //    @Autowired  //这里直接报错，找不到需要注入的bean
-    MarketApi marketApi;
-    
-    
+            MarketApi marketApi;
+
+
     /**
      * 生成订单号
      *
@@ -55,23 +52,23 @@ public class OrderServiceImpl implements OrderService {
      */
     public GenOrderIdDTO genOrderId(GenOrderIdRequest genOrderIdRequest) {
         logger.info(LoggerFormat.build().remark("genOrderId->request").data("request", genOrderIdRequest).finish());
-        
+
         // 参数检查
         String userId = genOrderIdRequest.getUserId();
         ParamCheckUtil.checkStringNonEmpty(userId);
         Integer businessIdentifier = genOrderIdRequest.getBusinessIdentifier();
         ParamCheckUtil.checkObjectNonNull(businessIdentifier);
-        
+
         //todo 这里单号的生成逻辑先不研究，里面挺复杂的。先临时造一个随机的。
         // String orderId = orderNoManager.genOrderId(OrderNoTypeEnum.SALE_ORDER.getCode(), userId);
         String orderId = RandomUtil.genRandomNumberStr(12);
         GenOrderIdDTO genOrderIdDTO = new GenOrderIdDTO();
         genOrderIdDTO.setOrderId(orderId);
-        
+
         return genOrderIdDTO;
     }
-    
-    
+
+
     /**
      * 提交订单/生成订单接口
      *
@@ -82,42 +79,16 @@ public class OrderServiceImpl implements OrderService {
     public CreateOrderDTO createOrder(CreateOrderRequest createOrderRequest) {
         // 1、入参检查
         checkCreateOrderRequestParam(createOrderRequest);
-        
+
         // 2、风控检查。这里省略
-        
+
         // 3、获取商品信息。这里省略，远程只是查一下数据库，手动造一些数据就行
         List<ProductSkuDTO> productSkuList = new ArrayList<>();
-        
-        
-        // 4、计算订单价格。
-        Long aLong = calculateOrderAmount(createOrderRequest, productSkuList);
 
-        JsonResult<Boolean> booleanJsonResult = marketApi.lockUserCoupon(createOrderRequest.getUserId());
-        if(!booleanJsonResult.getSuccess()){
-            throw new OrderBizException(booleanJsonResult.getErrorCode(), booleanJsonResult.getErrorMessage());
-        }
-
-        return null;
-    }
-    
-    
-    private Long calculateOrderAmount(CreateOrderRequest createOrderRequest, List<ProductSkuDTO> productSkuList) {
+        //region 4、计算订单价格。
         CalculateOrderAmountRequest calculateOrderPriceRequest = createOrderRequest.clone(CalculateOrderAmountRequest.class, CloneDirection.FORWARD);
-        
-        // 订单条目补充商品信息
-//        Map<String, ProductSkuDTO> productSkuDTOMap = productSkuList.stream().collect(Collectors.toMap(ProductSkuDTO::getSkuCode, Function.identity()));
-//        List<CalculateOrderAmountRequest.OrderItemRequest> orderItemRequestList = calculateOrderPriceRequest.getOrderItemRequestList();
-//
-//        for (CalculateOrderAmountRequest.OrderItemRequest orderItemRequest : orderItemRequestList) {
-//            String skuCode = orderItemRequest.getSkuCode();
-//            ProductSkuDTO productSkuDTO = productSkuDTOMap.get(skuCode);
-//            orderItemRequest.setProductId(productSkuDTO.getProductId());
-//            orderItemRequest.setSalePrice(productSkuDTO.getSalePrice());
-//        }
-        
         // 调用营销服务计算订单价格
         JsonResult<Long> jsonResult = marketApi.calculateOrderAmount(calculateOrderPriceRequest);
-        
         // 检查价格计算结果
         if (!jsonResult.getSuccess()) {
             throw new OrderBizException(jsonResult.getErrorCode(), jsonResult.getErrorMessage());
@@ -126,60 +97,58 @@ public class OrderServiceImpl implements OrderService {
         if (data == null) {
             throw new OrderBizException(OrderErrorCodeEnum.CALCULATE_ORDER_AMOUNT_ERROR);
         }
-//        // 订单费用信息
-//        List<OrderAmountDTO> orderAmountList = ObjectUtil.convertList(calculateOrderAmountDTO.getOrderAmountList(), OrderAmountDTO.class);
-//        if (orderAmountList == null || orderAmountList.isEmpty()) {
-//            throw new OrderBizException(OrderErrorCodeEnum.CALCULATE_ORDER_AMOUNT_ERROR);
-//        }
-//
-//        // 订单条目费用明细
-//        List<OrderAmountDetailDTO> orderItemAmountList = ObjectUtil.convertList(calculateOrderAmountDTO.getOrderAmountDetail(), OrderAmountDetailDTO.class);
-//        if (orderItemAmountList == null || orderItemAmountList.isEmpty()) {
-//            throw new OrderBizException(OrderErrorCodeEnum.CALCULATE_ORDER_AMOUNT_ERROR);
-//        }
-        return data;
+        //endregion
+
+        //region 5、锁定库存。
+        JsonResult<Boolean> booleanJsonResult = marketApi.lockUserCoupon(createOrderRequest.getUserId());
+        if (!booleanJsonResult.getSuccess()) {
+            throw new OrderBizException(booleanJsonResult.getErrorCode(), booleanJsonResult.getErrorMessage());
+        }
+        //endregion
+
+        return null;
     }
-    
-    
+
+
     /**
      * 检查创建订单请求参数
      */
     private void checkCreateOrderRequestParam(CreateOrderRequest createOrderRequest) {
         ParamCheckUtil.checkObjectNonNull(createOrderRequest);
-        
+
         // 订单ID
         String orderId = createOrderRequest.getOrderId();
         ParamCheckUtil.checkStringNonEmpty(orderId, OrderErrorCodeEnum.ORDER_ID_IS_NULL);
-        
+
         // 业务线标识
         Integer businessIdentifier = createOrderRequest.getBusinessIdentifier();
         ParamCheckUtil.checkObjectNonNull(businessIdentifier, OrderErrorCodeEnum.BUSINESS_IDENTIFIER_IS_NULL);
         if (BusinessIdentifierEnum.getByCode(businessIdentifier) == null) {
             throw new OrderBizException(OrderErrorCodeEnum.BUSINESS_IDENTIFIER_ERROR);
         }
-        
+
         // 用户ID
         String userId = createOrderRequest.getUserId();
         ParamCheckUtil.checkStringNonEmpty(userId, OrderErrorCodeEnum.USER_ID_IS_NULL);
-        
+
         // 订单类型
         Integer orderType = createOrderRequest.getOrderType();
         ParamCheckUtil.checkObjectNonNull(businessIdentifier, OrderErrorCodeEnum.ORDER_TYPE_IS_NULL);
         if (OrderTypeEnum.getByCode(orderType) == null) {
             throw new OrderBizException(OrderErrorCodeEnum.ORDER_TYPE_ERROR);
         }
-        
+
         // 卖家ID
         String sellerId = createOrderRequest.getSellerId();
         ParamCheckUtil.checkStringNonEmpty(sellerId, OrderErrorCodeEnum.SELLER_ID_IS_NULL);
-        
+
         // 配送类型
         Integer deliveryType = createOrderRequest.getDeliveryType();
         ParamCheckUtil.checkObjectNonNull(deliveryType, OrderErrorCodeEnum.USER_ADDRESS_ERROR);
         if (DeliveryTypeEnum.getByCode(deliveryType) == null) {
             throw new OrderBizException(OrderErrorCodeEnum.DELIVERY_TYPE_ERROR);
         }
-        
+
         // 地址信息
         String province = createOrderRequest.getProvince();
         String city = createOrderRequest.getCity();
@@ -189,31 +158,31 @@ public class OrderServiceImpl implements OrderService {
         ParamCheckUtil.checkStringNonEmpty(city, OrderErrorCodeEnum.USER_ADDRESS_ERROR);
         ParamCheckUtil.checkStringNonEmpty(area, OrderErrorCodeEnum.USER_ADDRESS_ERROR);
         ParamCheckUtil.checkStringNonEmpty(streetAddress, OrderErrorCodeEnum.USER_ADDRESS_ERROR);
-        
+
         // 区域ID
         String regionId = createOrderRequest.getRegionId();
         ParamCheckUtil.checkStringNonEmpty(regionId, OrderErrorCodeEnum.REGION_ID_IS_NULL);
-        
+
         // 经纬度
         BigDecimal lon = createOrderRequest.getLon();
         BigDecimal lat = createOrderRequest.getLat();
         ParamCheckUtil.checkObjectNonNull(lon, OrderErrorCodeEnum.USER_LOCATION_IS_NULL);
         ParamCheckUtil.checkObjectNonNull(lat, OrderErrorCodeEnum.USER_LOCATION_IS_NULL);
-        
+
         // 收货人信息
         String receiverName = createOrderRequest.getReceiverName();
         String receiverPhone = createOrderRequest.getReceiverPhone();
         ParamCheckUtil.checkStringNonEmpty(receiverName, OrderErrorCodeEnum.ORDER_RECEIVER_IS_NULL);
         ParamCheckUtil.checkStringNonEmpty(receiverPhone, OrderErrorCodeEnum.ORDER_RECEIVER_IS_NULL);
-        
+
         // 客户端设备信息
         String clientIp = createOrderRequest.getClientIp();
         ParamCheckUtil.checkStringNonEmpty(clientIp, OrderErrorCodeEnum.CLIENT_IP_IS_NULL);
-        
+
         // 商品条目信息
         List<CreateOrderRequest.OrderItemRequest> orderItemRequestList = createOrderRequest.getOrderItemRequestList();
         ParamCheckUtil.checkCollectionNonEmpty(orderItemRequestList, OrderErrorCodeEnum.ORDER_ITEM_IS_NULL);
-        
+
         for (CreateOrderRequest.OrderItemRequest orderItemRequest : orderItemRequestList) {
             Integer productType = orderItemRequest.getProductType();
             Integer saleQuantity = orderItemRequest.getSaleQuantity();
@@ -222,15 +191,15 @@ public class OrderServiceImpl implements OrderService {
             ParamCheckUtil.checkObjectNonNull(saleQuantity, OrderErrorCodeEnum.ORDER_ITEM_PARAM_ERROR);
             ParamCheckUtil.checkStringNonEmpty(skuCode, OrderErrorCodeEnum.ORDER_ITEM_PARAM_ERROR);
         }
-        
+
         // 订单费用信息
         List<CreateOrderRequest.OrderAmountRequest> orderAmountRequestList = createOrderRequest.getOrderAmountRequestList();
         ParamCheckUtil.checkCollectionNonEmpty(orderAmountRequestList, OrderErrorCodeEnum.ORDER_AMOUNT_IS_NULL);
-        
+
         for (CreateOrderRequest.OrderAmountRequest orderAmountRequest : orderAmountRequestList) {
             Integer amountType = orderAmountRequest.getAmountType();
             ParamCheckUtil.checkObjectNonNull(amountType, OrderErrorCodeEnum.ORDER_AMOUNT_TYPE_IS_NULL);
-            
+
             if (AmountTypeEnum.getByCode(amountType) == null) {
                 throw new OrderBizException(OrderErrorCodeEnum.ORDER_AMOUNT_TYPE_PARAM_ERROR);
             }
@@ -238,7 +207,7 @@ public class OrderServiceImpl implements OrderService {
         Map<Integer, Integer> orderAmountMap = orderAmountRequestList.stream()
                 .collect(Collectors.toMap(CreateOrderRequest.OrderAmountRequest::getAmountType,
                         CreateOrderRequest.OrderAmountRequest::getAmount));
-        
+
         // 订单支付原价不能为空
         if (orderAmountMap.get(AmountTypeEnum.ORIGIN_PAY_AMOUNT.getCode()) == null) {
             throw new OrderBizException(OrderErrorCodeEnum.ORDER_ORIGIN_PAY_AMOUNT_IS_NULL);
@@ -257,11 +226,11 @@ public class OrderServiceImpl implements OrderService {
                 throw new OrderBizException(OrderErrorCodeEnum.ORDER_DISCOUNT_AMOUNT_IS_NULL);
             }
         }
-        
+
         // 订单支付信息
         List<CreateOrderRequest.PaymentRequest> paymentRequestList = createOrderRequest.getPaymentRequestList();
         ParamCheckUtil.checkCollectionNonEmpty(paymentRequestList, OrderErrorCodeEnum.ORDER_PAYMENT_IS_NULL);
-        
+
         for (CreateOrderRequest.PaymentRequest paymentRequest : paymentRequestList) {
             Integer payType = paymentRequest.getPayType();
             Integer accountType = paymentRequest.getAccountType();
@@ -272,7 +241,7 @@ public class OrderServiceImpl implements OrderService {
                 throw new OrderBizException(OrderErrorCodeEnum.ACCOUNT_TYPE_PARAM_ERROR);
             }
         }
-        
+
     }
-    
+
 }

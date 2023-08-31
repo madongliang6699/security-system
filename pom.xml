@@ -29,6 +29,8 @@
         <module>security-order-api</module>
         <module>security-market-api</module>
         <module>security-market</module>
+        <module>security-inventory</module>
+        <module>security-inventory-api</module>
     </modules>
 
     <dependencyManagement>
