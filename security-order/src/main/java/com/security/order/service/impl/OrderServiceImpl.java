@@ -7,6 +7,8 @@ import com.security.common.enums.PayTypeEnum;
 import com.security.common.utils.LoggerFormat;
 import com.security.common.utils.ParamCheckUtil;
 import com.security.common.utils.RandomUtil;
+import com.security.inventory.api.InventoryApi;
+import com.security.inventory.domain.request.LockProductStockRequest;
 import com.security.market.api.MarketApi;
 import com.security.market.domain.request.CalculateOrderAmountRequest;
 import com.security.order.domain.dto.CreateOrderDTO;
@@ -23,12 +25,15 @@ import com.security.order.exception.OrderErrorCodeEnum;
 import com.security.order.service.OrderService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.DubboReference;
+import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -41,7 +46,14 @@ public class OrderServiceImpl implements OrderService {
     //todo 测试这里使用@Autowired会怎么样
     @DubboReference(version = "1.0.0", retries = 0)
 //    @Autowired  //这里直接报错，找不到需要注入的bean
-            MarketApi marketApi;
+    MarketApi marketApi;
+
+
+    @DubboReference(version = "1.0.0")
+    InventoryApi inventoryApi;
+
+    @Autowired
+    DefaultMQProducer defaultMQProducer;
 
 
     /**
@@ -80,16 +92,18 @@ public class OrderServiceImpl implements OrderService {
         // 1、入参检查
         checkCreateOrderRequestParam(createOrderRequest);
 
+
         // 2、风控检查。这里省略
+
 
         // 3、获取商品信息。这里省略，远程只是查一下数据库，手动造一些数据就行
         List<ProductSkuDTO> productSkuList = new ArrayList<>();
+
 
         //region 4、计算订单价格。
         CalculateOrderAmountRequest calculateOrderPriceRequest = createOrderRequest.clone(CalculateOrderAmountRequest.class, CloneDirection.FORWARD);
         // 调用营销服务计算订单价格
         JsonResult<Long> jsonResult = marketApi.calculateOrderAmount(calculateOrderPriceRequest);
-        // 检查价格计算结果
         if (!jsonResult.getSuccess()) {
             throw new OrderBizException(jsonResult.getErrorCode(), jsonResult.getErrorMessage());
         }
@@ -99,11 +113,28 @@ public class OrderServiceImpl implements OrderService {
         }
         //endregion
 
-        //region 5、锁定库存。
+
+        //region 5、锁定优惠券。
         JsonResult<Boolean> booleanJsonResult = marketApi.lockUserCoupon(createOrderRequest.getUserId());
         if (!booleanJsonResult.getSuccess()) {
             throw new OrderBizException(booleanJsonResult.getErrorCode(), booleanJsonResult.getErrorMessage());
         }
+        //endregion
+
+
+        //region 5、锁定商品库存。
+        LockProductStockRequest lockProductStockRequest = new LockProductStockRequest();
+        LockProductStockRequest.OrderItemRequest o = new LockProductStockRequest.OrderItemRequest();
+        o.setSkuCode("10101010");
+        o.setSaleQuantity(12);
+        lockProductStockRequest.setOrderItemRequestList(Arrays.asList(o));
+        JsonResult<Boolean> booleanJsonResult1 = inventoryApi.lockProductStock(lockProductStockRequest);
+
+        //endregion
+
+
+        //region 6、发送订单延迟消息用于支付超时自动关单。
+
         //endregion
 
         return null;
