@@ -22,10 +22,10 @@ import com.security.order.enums.DeliveryTypeEnum;
 import com.security.order.enums.OrderTypeEnum;
 import com.security.order.exception.OrderBizException;
 import com.security.order.exception.OrderErrorCodeEnum;
+import com.security.order.mq.DefaultProducer;
 import com.security.order.service.OrderService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.DubboReference;
-import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +53,7 @@ public class OrderServiceImpl implements OrderService {
     InventoryApi inventoryApi;
 
     @Autowired
-    DefaultMQProducer defaultMQProducer;
+    DefaultProducer defaultProducer;
 
 
     /**
@@ -134,7 +134,7 @@ public class OrderServiceImpl implements OrderService {
 
 
         //region 6、发送订单延迟消息用于支付超时自动关单。
-
+        defaultProducer.sendMessage("order_topic", "xiaoxi", 5, "niaho");
         //endregion
 
         return null;
