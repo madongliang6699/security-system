@@ -1,0 +1,19 @@
+下载RocketMQ和 rocketmq-dashboard界面化平台的地址。
+https://rocketmq.apache.org/zh/download/#rocketmq-dashboard
+
+下载到rocketmq-dashboard的源码，可以在idea里操作如下的修改配置文件和打jar包。
+
+参考：https://blog.csdn.net/qq_45654671/article/details/129857886
+具体过程看上面的博客吧。之前已经打好了jar包，放在了阿里云盘里，可以直接使用：
+打的jar包里面配置的rocketMQ的服务ip端口是localhost:9876
+所以rocketmq-dashboard-1.0.0.jar要和rocketMQ服务在同一台机器上启动。
+要不然rocketmq-dashboard-1.0.0.jar连不上rocketMQ服务。
+端口是8180
+
+启动rocketmq-dashboard-1.0.0.jar的命令：
+nohup java -Xms16m -Xmx64m -XX:PermSize=32M -XX:MaxPermSize=64M -jar rocketmq-dashboard-1.0.0.jar &
+这么大的内存就可以了。
+
+在浏览器访问：
+ip:8180就可以了。
+腾讯云已经部署好的是：http://124.222.246.77:8180

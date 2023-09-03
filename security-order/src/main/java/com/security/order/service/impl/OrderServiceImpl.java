@@ -117,7 +117,8 @@ public class OrderServiceImpl implements OrderService {
         //region 5、锁定优惠券。
         JsonResult<Boolean> booleanJsonResult = marketApi.lockUserCoupon(createOrderRequest.getUserId());
         if (!booleanJsonResult.getSuccess()) {
-            throw new OrderBizException(booleanJsonResult.getErrorCode(), booleanJsonResult.getErrorMessage());
+            logger.info(booleanJsonResult.getErrorCode(), booleanJsonResult.getErrorMessage());
+//            throw new OrderBizException(booleanJsonResult.getErrorCode(), booleanJsonResult.getErrorMessage());
         }
         //endregion
 
