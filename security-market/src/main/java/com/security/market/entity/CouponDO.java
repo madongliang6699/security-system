@@ -22,25 +22,15 @@ public class CouponDO extends BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 优惠券ID
-     */
-    private String couponId;
-
-    /**
-     * 优惠券配置ID
-     */
-    private String couponConfigId;
-
-    /**
      * 用户ID
      */
-    private String userId;
+    private String userName;
 
     /**
      * 是否使用过这个优惠券，1：使用了，0：未使用
      */
-    @TableField(value = "is_used")
-    private Integer used;
+//    @TableField(value = "is_used")
+    private Integer usedTag;
 
     /**
      * 使用优惠券的时间

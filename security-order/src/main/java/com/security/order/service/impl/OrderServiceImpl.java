@@ -1,9 +1,14 @@
 package com.security.order.service.impl;
 
+import com.security.common.constants.RocketDelayedLevel;
+import com.security.common.constants.RocketMqConstant;
 import com.security.common.core.CloneDirection;
 import com.security.common.core.JsonResult;
 import com.security.common.enums.AmountTypeEnum;
+import com.security.common.enums.OrderStatusEnum;
 import com.security.common.enums.PayTypeEnum;
+import com.security.common.message.PayOrderTimeoutDelayMessage;
+import com.security.common.utils.JsonUtil;
 import com.security.common.utils.LoggerFormat;
 import com.security.common.utils.ParamCheckUtil;
 import com.security.common.utils.RandomUtil;
@@ -16,10 +21,7 @@ import com.security.order.domain.dto.GenOrderIdDTO;
 import com.security.order.domain.dto.ProductSkuDTO;
 import com.security.order.domain.request.CreateOrderRequest;
 import com.security.order.domain.request.GenOrderIdRequest;
-import com.security.order.enums.AccountTypeEnum;
-import com.security.order.enums.BusinessIdentifierEnum;
-import com.security.order.enums.DeliveryTypeEnum;
-import com.security.order.enums.OrderTypeEnum;
+import com.security.order.enums.*;
 import com.security.order.exception.OrderBizException;
 import com.security.order.exception.OrderErrorCodeEnum;
 import com.security.order.mq.DefaultProducer;
@@ -43,15 +45,11 @@ public class OrderServiceImpl implements OrderService {
 
     private static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
-    //todo 测试这里使用@Autowired会怎么样
     @DubboReference(version = "1.0.0", retries = 0)
-//    @Autowired  //这里直接报错，找不到需要注入的bean
+    //@Autowired  //这里直接报错，找不到需要注入的bean
     MarketApi marketApi;
-
-
     @DubboReference(version = "1.0.0")
     InventoryApi inventoryApi;
-
     @Autowired
     DefaultProducer defaultProducer;
 
@@ -97,13 +95,11 @@ public class OrderServiceImpl implements OrderService {
 
 
         // 3、获取商品信息。这里省略，远程只是查一下数据库，手动造一些数据就行
-        List<ProductSkuDTO> productSkuList = new ArrayList<>();
 
 
         //region 4、计算订单价格。
-        CalculateOrderAmountRequest calculateOrderPriceRequest = createOrderRequest.clone(CalculateOrderAmountRequest.class, CloneDirection.FORWARD);
         // 调用营销服务计算订单价格
-        JsonResult<Long> jsonResult = marketApi.calculateOrderAmount(calculateOrderPriceRequest);
+        JsonResult<Long> jsonResult = marketApi.calculateOrderAmount(null);
         if (!jsonResult.getSuccess()) {
             throw new OrderBizException(jsonResult.getErrorCode(), jsonResult.getErrorMessage());
         }
@@ -115,7 +111,7 @@ public class OrderServiceImpl implements OrderService {
 
 
         //region 5、锁定优惠券。
-        JsonResult<Boolean> booleanJsonResult = marketApi.lockUserCoupon(createOrderRequest.getUserId());
+        JsonResult<Boolean> booleanJsonResult = marketApi.lockUserCoupon("小明");
         if (!booleanJsonResult.getSuccess()) {
             logger.info(booleanJsonResult.getErrorCode(), booleanJsonResult.getErrorMessage());
 //            throw new OrderBizException(booleanJsonResult.getErrorCode(), booleanJsonResult.getErrorMessage());
@@ -124,21 +120,36 @@ public class OrderServiceImpl implements OrderService {
 
 
         //region 5、锁定商品库存。
-        LockProductStockRequest lockProductStockRequest = new LockProductStockRequest();
-        LockProductStockRequest.OrderItemRequest o = new LockProductStockRequest.OrderItemRequest();
-        o.setSkuCode("10101010");
-        o.setSaleQuantity(12);
-        lockProductStockRequest.setOrderItemRequestList(Arrays.asList(o));
-        JsonResult<Boolean> booleanJsonResult1 = inventoryApi.lockProductStock(lockProductStockRequest);
+        JsonResult<Boolean> booleanJsonResult1 = inventoryApi.lockProductStock(new LockProductStockRequest());
+        if (!booleanJsonResult1.getSuccess()) {
+            logger.info(booleanJsonResult.getErrorCode(), booleanJsonResult.getErrorMessage());
+        }
+        //endregion
+
+        //region 6、生成订单入库。
 
         //endregion
 
 
-        //region 6、发送订单延迟消息用于支付超时自动关单。
-        defaultProducer.sendMessage("order_topic", "xiaoxi", 5, "niaho");
+        //region 7、发送订单延迟消息用于支付超时自动关单。
+        PayOrderTimeoutDelayMessage message = new PayOrderTimeoutDelayMessage();
+
+        message.setOrderId(createOrderRequest.getOrderId());
+        message.setBusinessIdentifier(createOrderRequest.getBusinessIdentifier());
+        message.setCancelType(OrderCancelTypeEnum.TIMEOUT_CANCELED.getCode());
+        message.setUserId(createOrderRequest.getUserId());
+        message.setOrderType(createOrderRequest.getOrderType());
+        message.setOrderStatus(OrderStatusEnum.CREATED.getCode());
+
+        String msgJson = JsonUtil.object2Json(message);
+        defaultProducer.sendMessage(RocketMqConstant.PAY_ORDER_TIMEOUT_DELAY_TOPIC, msgJson,
+                RocketDelayedLevel.DELAYED_30m, "支付订单超时延迟消息");
         //endregion
 
-        return null;
+        //返回订单创建成功
+        CreateOrderDTO createOrderDTO = new CreateOrderDTO();
+        createOrderDTO.setOrderId(createOrderRequest.getOrderId());
+        return createOrderDTO;
     }
 
 

@@ -67,9 +67,9 @@ public class MarketApiImpl implements MarketApi {
     }
 
     @Override
-    public JsonResult<Boolean> lockUserCoupon(String userId) {
+    public JsonResult<Boolean> lockUserCoupon(String userName) {
         try {
-            Boolean b = couponService.lockUserCoupon(userId);
+            Boolean b = couponService.lockUserCoupon(userName);
             return JsonResult.buildSuccess(b);
         } catch (MarketBizException e) {
             log.error("biz error", e);
