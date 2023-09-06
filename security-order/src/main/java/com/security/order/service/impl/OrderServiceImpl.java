@@ -26,12 +26,14 @@ import com.security.order.exception.OrderBizException;
 import com.security.order.exception.OrderErrorCodeEnum;
 import com.security.order.mq.DefaultProducer;
 import com.security.order.service.OrderService;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -85,6 +87,8 @@ public class OrderServiceImpl implements OrderService {
      * @param createOrderRequest 提交订单请求入参
      * @return 订单号
      */
+    @GlobalTransactional
+    @Transactional
     @Override
     public CreateOrderDTO createOrder(CreateOrderRequest createOrderRequest) {
         // 1、入参检查
@@ -117,8 +121,8 @@ public class OrderServiceImpl implements OrderService {
         //region 5、锁定商品库存。
         JsonResult<Boolean> booleanJsonResult1 = inventoryApi.lockProductStock(new LockProductStockRequest());
         if (!booleanJsonResult1.getSuccess()) {
-            logger.info("异常：{}，{}", booleanJsonResult.getErrorCode(), booleanJsonResult.getErrorMessage());
-            throw new OrderBizException(booleanJsonResult.getErrorCode(), booleanJsonResult.getErrorMessage());
+            logger.info("异常：{}，{}", booleanJsonResult1.getErrorCode(), booleanJsonResult1.getErrorMessage());
+            throw new OrderBizException(booleanJsonResult1.getErrorCode(), booleanJsonResult1.getErrorMessage());
         }
         //endregion
 
