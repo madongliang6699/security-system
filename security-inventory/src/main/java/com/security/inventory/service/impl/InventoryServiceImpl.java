@@ -27,7 +27,7 @@ public class InventoryServiceImpl extends ServiceImpl<InventoryMapper, ProductSt
      * @param lockProductStockRequest
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Boolean lockProductStock(LockProductStockRequest lockProductStockRequest) {
         /*
          这里固定使用id为1和2的数据，模拟当前订单中买了两个商品，分别是两种sku的具体商品，锁定这两个sku的库存。

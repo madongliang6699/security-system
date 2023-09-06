@@ -24,7 +24,7 @@ public class MarketServiceImpl implements MarketService {
     public Long calculateOrderAmount(CalculateOrderAmountRequest calculateOrderAmountRequest) {
         FreightTemplateDO freightTemplateDO = freightTemplateMapper.selectById(1);
 
-        return freightTemplateDO.getShippingAmount().longValue();
+        return freightTemplateDO.getYunfei().longValue();
     }
 
 

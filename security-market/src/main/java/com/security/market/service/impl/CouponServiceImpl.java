@@ -3,7 +3,7 @@ package com.security.market.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.security.market.entity.CouponDO;
+import com.security.market.entity.YouhuiquanDO;
 import com.security.market.enums.CouponUsedStatusEnum;
 import com.security.market.exception.MarketBizException;
 import com.security.market.exception.MarketErrorCodeEnum;
@@ -22,7 +22,7 @@ import java.util.Objects;
  * @author zhonghuashishan
  */
 @Service
-public class CouponServiceImpl extends ServiceImpl<CouponMapper, CouponDO> implements CouponService {
+public class CouponServiceImpl extends ServiceImpl<CouponMapper, YouhuiquanDO> implements CouponService {
 
     @Autowired
     CouponMapper couponMapper;
@@ -31,9 +31,9 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, CouponDO> imple
     @Override
     public Boolean lockUserCoupon(String userName) {
 
-        QueryWrapper<CouponDO> tWrapper = new QueryWrapper<>();
+        QueryWrapper<YouhuiquanDO> tWrapper = new QueryWrapper<>();
         tWrapper.eq("user_name", userName);
-        CouponDO couponDO = couponMapper.selectOne(tWrapper);
+        YouhuiquanDO couponDO = couponMapper.selectOne(tWrapper);
 
         if (couponDO == null) {
             throw new MarketBizException(MarketErrorCodeEnum.USER_COUPON_IS_NULL);

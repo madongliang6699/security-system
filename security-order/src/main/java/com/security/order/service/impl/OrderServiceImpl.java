@@ -89,13 +89,8 @@ public class OrderServiceImpl implements OrderService {
     public CreateOrderDTO createOrder(CreateOrderRequest createOrderRequest) {
         // 1、入参检查
         checkCreateOrderRequestParam(createOrderRequest);
-
-
         // 2、风控检查。这里省略
-
-
-        // 3、获取商品信息。这里省略，远程只是查一下数据库，手动造一些数据就行
-
+        // 3、获取商品信息。这里省略
 
         //region 4、计算订单价格。
         // 调用营销服务计算订单价格
@@ -114,7 +109,7 @@ public class OrderServiceImpl implements OrderService {
         JsonResult<Boolean> booleanJsonResult = marketApi.lockUserCoupon("小明");
         if (!booleanJsonResult.getSuccess()) {
             logger.info(booleanJsonResult.getErrorCode(), booleanJsonResult.getErrorMessage());
-//            throw new OrderBizException(booleanJsonResult.getErrorCode(), booleanJsonResult.getErrorMessage());
+            throw new OrderBizException(booleanJsonResult.getErrorCode(), booleanJsonResult.getErrorMessage());
         }
         //endregion
 
@@ -122,12 +117,13 @@ public class OrderServiceImpl implements OrderService {
         //region 5、锁定商品库存。
         JsonResult<Boolean> booleanJsonResult1 = inventoryApi.lockProductStock(new LockProductStockRequest());
         if (!booleanJsonResult1.getSuccess()) {
-            logger.info(booleanJsonResult.getErrorCode(), booleanJsonResult.getErrorMessage());
+            logger.info("异常：{}，{}", booleanJsonResult.getErrorCode(), booleanJsonResult.getErrorMessage());
+            throw new OrderBizException(booleanJsonResult.getErrorCode(), booleanJsonResult.getErrorMessage());
         }
         //endregion
 
-        //region 6、生成订单入库。
 
+        //region 6、生成订单入库。
         //endregion
 
 

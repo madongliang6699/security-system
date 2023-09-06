@@ -16,7 +16,7 @@ import java.io.Serializable;
  * @author zhonghuashishan
  */
 @Data
-@TableName("market_freight_template")
+@TableName("market_yunfei")
 public class FreightTemplateDO extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -28,23 +28,13 @@ public class FreightTemplateDO extends BaseEntity implements Serializable {
     private Long id;
 
     /**
-     * 模板名称
-     */
-    private String name;
-
-    /**
      * 区域ID
      */
-    private String regionId;
+    private String areaName;
 
     /**
      * 标准运费
      */
-    private Integer shippingAmount;
-
-    /**
-     * 订单满多少钱则免运费
-     */
-    private Integer conditionAmount;
+    private Integer yunfei;
 
 }

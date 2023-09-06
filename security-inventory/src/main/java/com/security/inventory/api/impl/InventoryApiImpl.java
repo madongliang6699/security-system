@@ -31,7 +31,8 @@ public class InventoryApiImpl implements InventoryApi {
         } catch (InventoryBizException ex) {
             return JsonResult.buildError(ex.getErrorCode(), ex.getErrorMsg());
         } catch (Exception ex) {
-            return JsonResult.buildError(ex.getMessage());
+            JsonResult objectJsonResult = JsonResult.buildError(ex.getMessage());
+            return objectJsonResult;
         }
     }
 

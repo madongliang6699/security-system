@@ -16,8 +16,8 @@ import java.util.Date;
  * @author zhonghuashishan
  */
 @Data
-@TableName("market_coupon")
-public class CouponDO extends BaseEntity implements Serializable {
+@TableName("market_youhuiquan")
+public class YouhuiquanDO extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
