@@ -41,7 +41,7 @@ public class InventoryServiceImpl extends ServiceImpl<InventoryMapper, ProductSt
         /*
           todo 这里先测试本地事务是否可用，然后测试seata全局事务是否可用。
          */
-        int i = 9 / 0;
+//        int i = 9 / 0;
 
         ProductStockDO byId2 = getById(2);
         byId2.setSaleStockQuantity(byId2.getSaleStockQuantity() - 1);

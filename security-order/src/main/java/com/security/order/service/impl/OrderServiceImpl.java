@@ -1,8 +1,8 @@
 package com.security.order.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.security.common.constants.RocketDelayedLevel;
 import com.security.common.constants.RocketMqConstant;
-import com.security.common.core.CloneDirection;
 import com.security.common.core.JsonResult;
 import com.security.common.enums.AmountTypeEnum;
 import com.security.common.enums.OrderStatusEnum;
@@ -15,15 +15,15 @@ import com.security.common.utils.RandomUtil;
 import com.security.inventory.api.InventoryApi;
 import com.security.inventory.domain.request.LockProductStockRequest;
 import com.security.market.api.MarketApi;
-import com.security.market.domain.request.CalculateOrderAmountRequest;
+import com.security.order.domain.OrderInfoDO;
 import com.security.order.domain.dto.CreateOrderDTO;
 import com.security.order.domain.dto.GenOrderIdDTO;
-import com.security.order.domain.dto.ProductSkuDTO;
 import com.security.order.domain.request.CreateOrderRequest;
 import com.security.order.domain.request.GenOrderIdRequest;
 import com.security.order.enums.*;
 import com.security.order.exception.OrderBizException;
 import com.security.order.exception.OrderErrorCodeEnum;
+import com.security.order.mapper.OrderInfoMapper;
 import com.security.order.mq.DefaultProducer;
 import com.security.order.service.OrderService;
 import io.seata.spring.annotation.GlobalTransactional;
@@ -36,14 +36,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-public class OrderServiceImpl implements OrderService {
+public class OrderServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfoDO> implements OrderService {
 
     private static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
@@ -54,6 +53,8 @@ public class OrderServiceImpl implements OrderService {
     InventoryApi inventoryApi;
     @Autowired
     DefaultProducer defaultProducer;
+    @Autowired
+    OrderInfoMapper orderInfoMapper;
 
 
     /**
@@ -112,7 +113,7 @@ public class OrderServiceImpl implements OrderService {
         //region 5、锁定优惠券。
         JsonResult<Boolean> booleanJsonResult = marketApi.lockUserCoupon("小明");
         if (!booleanJsonResult.getSuccess()) {
-            logger.info(booleanJsonResult.getErrorCode(), booleanJsonResult.getErrorMessage());
+            logger.info("异常：{}，{}", booleanJsonResult.getErrorCode(), booleanJsonResult.getErrorMessage());
             throw new OrderBizException(booleanJsonResult.getErrorCode(), booleanJsonResult.getErrorMessage());
         }
         //endregion
@@ -128,6 +129,15 @@ public class OrderServiceImpl implements OrderService {
 
 
         //region 6、生成订单入库。
+        save(new OrderInfoDO() {{
+            setOrderId(createOrderRequest.getOrderId());
+            setOrderStatus(OrderStatusEnum.CREATED.getCode());
+            setOrderType(OrderTypeEnum.NORMAL.getCode());
+            setCancelTime(new Date());
+            setCancelType(OrderCancelTypeEnum.TIMEOUT_CANCELED.getCode());
+            setGmtModified(new Date());
+            setGmtCreate(new Date());
+        }});
         //endregion
 
 
@@ -143,7 +153,7 @@ public class OrderServiceImpl implements OrderService {
 
         String msgJson = JsonUtil.object2Json(message);
         defaultProducer.sendMessage(RocketMqConstant.PAY_ORDER_TIMEOUT_DELAY_TOPIC, msgJson,
-                RocketDelayedLevel.DELAYED_30m, "支付订单超时延迟消息");
+                RocketDelayedLevel.DELAYED_30s, "支付订单超时延迟消息");
         //endregion
 
         //返回订单创建成功
