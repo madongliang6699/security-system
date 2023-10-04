@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+思考一个需求
+假如有这样一个需求，当我们需要解析一个Excel里多个sheet的数据时，可以考虑使用多线程，
+每个线程解析一个sheet里的数据，等到所有的sheet都解析完之后，程序需要统计解析总耗时。
+分析一下：解析每个sheet耗时可能不一样，总耗时就是最长耗时的那个操作。
+
+我们能够想到的最简单的做法是使用join，代码如下：Demo1
+
+=========================================================================
+CountDownLatch介绍
+CountDownLatch称之为闭锁，它可以使一个或一批线程在闭锁上等待，等到其他线程执行完相应操作后，闭锁打开，
+这些等待的线程才可以继续执行。确切的说，闭锁在内部维护了一个倒计数器。
+通过该计数器的值来决定闭锁的状态，从而决定是否允许等待的线程继续执行。
+
+常用方法：
+public CountDownLatch(int count)：构造方法，count表示计数器的值，不能小于0，否者会报异常。
+public void await() throws InterruptedException：调用await()会让当前线程等待，直到计数器为0的时候，方法才会返回，此方法会响应线程中断操作。
+public boolean await(long timeout, TimeUnit unit) throws InterruptedException：限时等待，在超时之前，计数器变为了0，方法返回true，否者直到超时，返回false，此方法会响应线程中断操作。
+public void countDown()：让计数器减1
+
+CountDownLatch使用步骤：
+1、创建CountDownLatch对象
+2、调用其实例方法await()，让当前线程等待
+3、调用countDown()方法，让计数器减1
+4、当计数器变为0的时候，await()方法会返回
+
+Demo2：我们使用CountDownLatch来完成上面示例中使用join实现的功能
+Demo3：等待指定的时间
+Demo4：2个CountDown结合使用的示例：
+        有3个人参加跑步比赛，需要先等指令员发指令枪后才能开跑【a、b、c三个线程同时在等待另一个线程x的通知】，
+        所有人都跑完之后，指令员喊一声，大家跑完了【x线程在等待abc三个线程都给到了通知再执行】。
+        【相当于双方都需要在特定场景下等待对方】
+
+
+======================================================================================
+手写一个并行处理任务的工具类：
+
+TaskDisposeUtils
+
+TaskDisposeUtils是一个并行处理的工具类，可以传入n个任务内部使用线程池进行处理，等待所有任务都处理完成之后，方法才会返回。
+比如我们发送短信，系统中有1万条短信，我们使用上面的工具，每次取100条并行发送，待100个都处理完毕之后，
+再取一批按照同样的逻辑发送。
+
+
+</body>
+</html>
