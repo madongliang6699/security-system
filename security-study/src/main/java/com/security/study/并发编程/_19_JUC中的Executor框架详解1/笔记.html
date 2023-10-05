@@ -128,9 +128,26 @@ public interface Callable< V> {
 
 
 获取异步任务执行结果：Demo6
-超时获取异步任务执行结果：可能任务执行比较耗时，比如耗时1分钟，我最多只能等待10秒，如果10秒还没返回，我就去做其他事情了。
+超时获取异步任务执行结果：可能任务执行比较耗时，比如耗时1分钟，我最多只能等待10秒，如果10秒还没返回，我就去做其他事情了。Demo7
 
 
+Future其他方法介绍一下：
+cancel：取消在执行的任务，参数表示是否对执行的任务发送中断信号，方法声明如下： boolean cancel(boolean mayInterruptIfRunning);
+isCancelled：用来判断任务是否被取消
+isDone：判断任务是否执行完毕。
+
+
+总结：从上面可以看出Future、Callable接口需要结合ExecutorService来使用，需要有线程池的支持。
+
+==================================================================================================
+FutureTask类
+
+FutureTask除了实现Future接口，还实现了Runnable接口，因此FutureTask可以交给Executor执行，
+也可以交给线程执行执行（Thread有个Runnable的构造方法），FutureTask表示带返回值结果的任务。
+
+上面我们演示的是通过线程池执行任务然后获取执行结果。
+
+这次我们通过FutureTask类，自己启动一个线程来获取执行结果，示例如下：
 
 
 
