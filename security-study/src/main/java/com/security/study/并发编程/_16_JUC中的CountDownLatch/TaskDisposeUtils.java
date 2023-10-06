@@ -10,11 +10,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
- * 并行处理任务的工具类
+ * 并行处理任务的工具类,并且阻塞等待所有任务执行完毕之后再继续执行主线程
+ * 注意：这里没研究如果如果其中一个任务有异常会导致什么结果，会不会所有任务都不再执行了。可以测试一下。
+ * 并且这是一个没有返回执行结果的异步任务，下面的知识点中有可以返回执行结果的工具类，比如CompletionServiceUtil类
  */
 public class TaskDisposeUtils {
     //并行线程数
@@ -71,7 +71,7 @@ public class TaskDisposeUtils {
                     });
                 }
                 //阻塞，等待所有线程（所有任务）都执行完毕，再放行退出
-                countDownLatch.await();//当前同时
+                countDownLatch.await();
             } finally {
                 if (executorService != null) {
                     executorService.shutdown();

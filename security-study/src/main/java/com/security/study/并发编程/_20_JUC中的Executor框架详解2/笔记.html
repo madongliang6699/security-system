@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+文章开头模拟了一个同时下单买冰箱和洗衣机的例子，洗衣机和冰箱到了之后就把它们从楼下搬到楼上，
+但是下单之后不知道洗衣机先到还是冰箱想到，因此就不知道应该先搬哪个。
+现实当中我们当然知道哪个先到就先搬哪个，但是在程序中，当用ExecutorService线程池模拟提交了两个下订单的任务（买洗衣机和冰箱），
+//异步下单购买冰箱
+Future< GoodsModel> bxFuture = executor.submit(buyGoods("冰箱", 5));
+//异步下单购买洗衣机
+Future< GoodsModel> xyjFuture = executor.submit(buyGoods("洗衣机", 2));
+就不知道是洗衣机的任务先执行完还是冰箱的任务先执行完，因此在下一步的获取执行执行结果的时候就不知道先调用
+GoodsModel bxGoodModel = bxFuture.get();//等待冰箱送到拿到冰箱
+还是先调用
+GoodsModel xyjGooldModel = xyjFuture.get();//等待洗衣机送到拿到洗衣机
+因为不知道哪个任务先执行完毕。我们要想做到哪个任务先执行完就先去获取该任务的执行结果，上面的方法就办不到。
+
+因此，有了 CompletionService接口 和其实现类 ExecutorCompletionService类。
+
+==============================================================================================
+CompletionService接口
+CompletionService相当于一个执行任务的服务，通过submit丢任务给这个服务，服务内部去执行任务，
+可以通过服务提供的一些方法获取服务中已经完成的任务。
+
+接口内的几个方法：
+Future< V> submit(Callable< V> task); 用于向服务中提交有返回结果的任务，并返回Future对象
+Future< V> submit(Runnable task, V result); 用户向服务中提交有返回值的任务去执行，并返回Future对象
+Future< V> take() throws InterruptedException; 从服务中返回并移除一个已经完成的任务，如果获取不到，会一致阻塞到有返回值为止。此方法会响应线程中断。
+Future< V> poll(); 从服务中返回并移除一个已经完成的任务，如果内部没有已经完成的任务，则返回空，此方法会立即响应。
+Future< V> poll(long timeout, TimeUnit unit) throws InterruptedException; 尝试在指定的时间内从服务中返回并移除一个已经完成的任务，等待的时间超时还是没有获取到已完成的任务，则返回空。此方法会响应线程中断
+
+通过submit向内部提交任意多个任务，通过take方法可以获取已经执行完成的任务，如果获取不到将等待。
+
+----------------------------------------------------------------------------
+ExecutorCompletionService类
+ExecutorCompletionService类是CompletionService接口的具体实现。
+说一下其内部原理，ExecutorCompletionService创建的时候会传入一个线程池，调用submit方法传入需要执行的任务，
+任务由内部的线程池来处理；ExecutorCompletionService内部有个阻塞队列，任意一个任务完成之后，
+会将任务的执行结果（Future类型）放入阻塞队列中，然后其他线程可以调用它take、poll方法从这个阻塞队列中获取一个已经完成的任务，
+获取任务返回结果的顺序和任务执行完成的先后顺序一致，所以最先完成的任务会先返回。
+【说白了，这个类解决上面问题的方法很简单：就是执行任务还是使用基本的线程池，但是会把执行完的任务都放进一个阻塞队列里面，
+队列本身就具有排队的功能，这样就能做到哪个任务先执行完毕哪个任务就放到了队列的第一个，其他线程去等着一个个获取被放进队列的任务就行了。
+这样就自然做到了哪个任务先完成就先获取哪个任务的执行结果。】
+
+使用ExecutorCompletionService解决上面的买冰箱和洗衣机的问题：Demo1
+
+==========================================================================================
+案例：写一个工具类：执行一批任务，然后消费执行结果，哪个任务先执行完就先消费哪个任务的执行结果。
+看案例：CompletionServiceUtil
+
+===========================================================
+案例：异步执行一批任务，有一个完成立即返回，其他取消
+
+方式1：使用ExecutorCompletionService实现：Demo2
+
+方式2：其实ExecutorService已经为我们提供了这样的方法，实现案例需求，方法声明如下：
+< T> T invokeAny(Collection< ? extends Callable< T>> tasks) throws InterruptedException, ExecutionException;
+
+
+
+
+
+
+</body>
+</html>
