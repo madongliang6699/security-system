@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+看了 文章之后，大概的知识点就是 ThreadLocal 还是和之前掌握的一样，可以在线程上传递数据信息（线程与线程之间隔离），
+因为ThreadLocal内部操作的是一个map，map的key是线程本身。但是最新了解到ThreadLocal内部操作的
+map好像并不是ThreadLocal本身内部维护的map，操作的而是Thread内部的map，名字叫做：threadLocals
+ThreadLocal.ThreadLocalMap threadLocals = null;
+但是看上面的类型是ThreadLocal.ThreadLocalMap，那不还是ThreadLocal内部的map吗？
+
+看了一下源码才明白一些：
+threadLocals这个map确实是在Thread类里面的变量，但是ThreadLocal.ThreadLocalMap这个类的定义是在ThreadLocal里面的。
+也就是在Thread线程类里面实例化了ThreadLocalMap买个类。想想确实应该在Thread里面实例化这个map，因为这样做，这个map就是属于这个线程的，
+才能做到数据信息是在当前线程内部传递（可以在不同的方法之间传递等），在线程与线程之间隔离。并且这个map的key也不是线程本身，
+而是ThreadLocal对象本身，因为从上面的知识点（一个线程内部有且只有一个ThreadLocalMap的map，即threadLocals变量，
+这个map保存了要转递的数据）来看，如果map中的key是线程本身的话，那岂不是如果往里面put多个值的话，key都一样，value都被覆盖了吗。
+实际上map在一个线程中只有一个（一个线程中ThreadLocalMap对象是唯一的），但是ThreadLocal对象是多个的，ThreadLocal对象的get等方法，
+内部操作的都是当前线程中的threadLocals map对象，所以ThreadLocal对象是可以有多个的，map的key就是ThreadLocal对象本身，也就是ThreadLocal对象
+只是操作map的工具，是一个介质而已。
+从ThreadLocal的get方法可以看出：
+public T get() {
+    Thread t = Thread.currentThread();
+    ThreadLocalMap map = getMap(t); //todo 这里拿到的是当前线程对象中的map
+    if (map != null) {
+        ThreadLocalMap.Entry e = map.getEntry(this);
+        if (e != null) {
+            @SuppressWarnings("unchecked")
+            T result = (T)e.value;
+            return result;
+        }
+    }
+    return setInitialValue();
+}
+
+
+=================================================================================
+InheritableThreadLocal是做什么的呢
+
+思考这样一个问题：
+ThreadLocal是相当于操作当前线程北部的map吗，这样可以在同一个线程内部的不同调用方法之间传递数据，但是如果当前线程中为了优化性能，
+使用了多线程，导致处理业务逻辑的是很多子线程，那子线程也是另外一个线程了，子线程中的map就没有主线程中那个map内的数据了，
+ThreadLocal对象在子线程中使用的时候，get等方法就拿不到想传递的数据了，怎么搞。
+这就是InheritableThreadLocal诞生的原因，InheritableThreadLocal可以做到在主线程创建子线程时，把自己的map数据复制给子线程一份，
+这样子线程的map中也有相同的数据了。
+
+=================================================================================================================
+InheritableThreadLocal和 线程池 搭配使用存在的问题
+InheritableThreadLocal和线程池搭配使用时，可能得不到想要的结果，因为线程池中的线程是复用的，
+并没有重新初始化线程，InheritableThreadLocal之所以起作用是因为在Thread类中最终会调用init()方法去把
+InheritableThreadLocal的map复制到子线程中。由于线程池复用了已有线程，所以没有调用init()方法这个过程，
+也就不能将父线程中的InheritableThreadLocal值传给子线程。
+
+解决线程池传递值问题，见TransmittableThreadLocal
+
+
+</body>
+</html>

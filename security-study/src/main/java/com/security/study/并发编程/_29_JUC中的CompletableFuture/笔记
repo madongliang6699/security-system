@@ -1,0 +1,75 @@
+
+
+CompletableFuture是java8中新增的一个类，算是对Future的一种增强，用起来很方便，
+也是会经常用到的一个工具类，熟悉一下。
+
+===============================================================================
+CompletionStage接口
+1、CompletionStage代表异步计算过程中的某一个阶段，一个阶段完成以后可能会触发另外一个阶段
+2、一个阶段的计算执行可以是一个Function，Consumer或者Runnable。
+比如：stage.thenApply(x -> square(x))
+        .thenAccept(x -> System.out.print(x))
+        .thenRun(() -> System.out.println())
+3、一个阶段的执行可能是被单个阶段的完成触发，也可能是由多个阶段一起触发
+
+========================================================================
+CompletableFuture类
+1、在Java8中，CompletableFuture提供了非常强大的Future的扩展功能，可以帮助我们简化异步编程的复杂性，
+并且提供了函数式编程的能力，可以通过回调的方式处理计算结果，也提供了转换和组合 CompletableFuture 的方法。
+2、它可能代表一个明确完成的Future，也有可能代表一个完成阶段（ CompletionStage ），
+它支持在计算完成以后触发一些函数或执行某些动作。
+3、它实现了Future和CompletionStage接口
+
+下面介绍它的常见的方法，熟悉一下：
+------------------------------------
+runAsync 和 supplyAsync方法
+
+CompletableFuture 提供了四个静态方法来创建一个异步操作：
+public static CompletableFuture<Void> runAsync(Runnable runnable)
+public static CompletableFuture<Void> runAsync(Runnable runnable, Executor executor)
+public static <U> CompletableFuture<U> supplyAsync(Supplier< U> supplier)
+public static <U> CompletableFuture<U> supplyAsync(Supplier< U> supplier, Executor executor)
+
+上面的相同名字的两个方法，没有指定Executor的方法会使用ForkJoinPool.commonPool() 作为它的线程池执行异步代码。
+如果指定线程池，则使用指定的线程池运行。以下所有的方法都类同。
+
+runAsync方法不支持返回值。
+supplyAsync可以支持返回值。
+示例代码：Demo1
+
+--------------------------------------
+计算结果完成时的回调方法
+
+当CompletableFuture的计算结果完成，或者抛出异常的时候，可以执行特定的Action。主要是下面的方法：
+public CompletableFuture< T> whenComplete(BiConsumer< ? super T,? super Throwable> action)
+public CompletableFuture< T> whenCompleteAsync(BiConsumer< ? super T,? super Throwable> action)
+public CompletableFuture< T> whenCompleteAsync(BiConsumer< ? super T,? super Throwable> action, Executor executor)
+public CompletableFuture< T> exceptionally(Function< Throwable,? extends T> fn)
+
+可以看到Action的类型是BiConsumer< ? super T,? super Throwable>它可以处理正常的计算结果，或者异常情况。
+
+whenComplete 和 whenCompleteAsync 的区别：
+whenComplete：是执行当前任务的线程继续执行 whenComplete 的任务。
+whenCompleteAsync：是执行把 whenCompleteAsync 这个任务继续提交给线程池来进行执行。
+示例代码：Demo2
+
+------------------------------------
+thenApply 方法
+
+当一个线程依赖另一个线程时，可以使用 thenApply 方法来把这两个线程串行化。
+
+public <U> CompletableFuture< U> thenApply(Function<? super T,? extends U> fn)
+public <U> CompletableFuture< U> thenApplyAsync(Function<? super T,? extends U> fn)
+public <U> CompletableFuture< U> thenApplyAsync(Function<? super T,? extends U> fn, Executor executor)
+
+Function<? super T,? extends U>
+T：上一个任务返回结果的类型
+U：当前任务的返回值类型
+
+Demo3
+
+
+---------------------------------------
+handle 方法
+
+
