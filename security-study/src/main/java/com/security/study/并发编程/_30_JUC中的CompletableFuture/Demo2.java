@@ -1,10 +1,9 @@
-package com.security.study.并发编程._29_JUC中的CompletableFuture;
+package com.security.study.并发编程._30_JUC中的CompletableFuture;
 
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
-import java.util.function.Function;
 
 public class Demo2 {
     public static void main(String[] args) throws InterruptedException {

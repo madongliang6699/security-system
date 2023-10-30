@@ -1,0 +1,6 @@
+
+
+从上面4个示例的结果来看，LongAdder、LongAccumulator全面超越同步锁及AtomicLong的方式，
+建议在使用AtomicLong的地方可以直接替换为LongAdder、LongAccumulator，吞吐量更高一些。
+
+【这一篇讲的就是LongAdder、LongAccumulator的性能比AtomicLong的性能高很多，就是用来替代AtomicLong的】

@@ -1,4 +1,4 @@
-package com.security.study.并发编程._29_JUC中的CompletableFuture;
+package com.security.study.并发编程._30_JUC中的CompletableFuture;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
