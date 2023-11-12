@@ -1,4 +1,4 @@
-package com.security.study.特定知识点测试和总结.webSocket;
+package com.security.study.特定知识点测试和总结.webSocket.test1;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -14,15 +14,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * WebSocket的操作类
- */
-@Component
-@Slf4j
-/**
+ *
  * html页面与之关联的接口
  * var reqUrl = "http://localhost:8080/websocket/" + sid;
  * socket = new WebSocket(reqUrl.replace("http", "ws"));
  */
 @ServerEndpoint("/websocket/{sid}")
+@Component
+@Slf4j
 public class WebSocketServer {
 
     /**

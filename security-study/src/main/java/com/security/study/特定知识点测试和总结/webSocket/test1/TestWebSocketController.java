@@ -1,6 +1,5 @@
-package com.security.study.特定知识点测试和总结.webSocket;
+package com.security.study.特定知识点测试和总结.webSocket.test1;
 
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

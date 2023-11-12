@@ -2,10 +2,10 @@ package com.security.study;
 
 import com.security.study.spring.注解.Import.demo2.CacheType;
 import com.security.study.spring.注解.Import.demo2.EnableMyCacheService;
-import com.security.study.spring.注解.Import.demo4.MyMapperScan;
+import com.security.webSocket.CybstarWebSocketConfigurer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
 
 
 // @EnableWebMvc
@@ -18,6 +18,7 @@ import org.springframework.context.annotation.ComponentScan;
 //@MyMapperScan(basePackages = "com.mdl.Import.demo4")
 // @MapperScan
 //@ComponentScan
+@Import({CybstarWebSocketConfigurer.class})
 public class MyApplication {
     
     public static void main(String[] args) {
