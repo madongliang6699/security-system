@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * var reqUrl = "http://localhost:8080/websocket/" + sid;
  * socket = new WebSocket(reqUrl.replace("http", "ws"));
  */
-@ServerEndpoint("/websocket/{sid}")
+@ServerEndpoint(value = "/websocket/{sid}", configurator = WebSocketConfig.class)
 @Component
 @Slf4j
 public class WebSocketServer {

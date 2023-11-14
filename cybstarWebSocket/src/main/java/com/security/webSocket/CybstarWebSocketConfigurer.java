@@ -30,7 +30,23 @@ public class CybstarWebSocketConfigurer implements WebSocketConfigurer {
      *
      * 可以写成@EnableCybstarWebSocket的形式，参数是启用那种集群通讯模式（redis或mq），还有参数是控制哪些业务类型不做token验证。
      */
-
+    /**
+     * todo 可用性问题 ：
+     *  1、客户端死机后，后端怎么检测到并删除对应的session，防止内存泄漏，（定时发心跳，前后端都应该给对方定时发心跳（约定一个过期时间，在过期时间之前就要发送一次心跳），验证对方是否已经死机）
+     *  2、最大连接数的问题：不能无限制建立会话，判断如果会话数量大于最大限制数量。
+     *  3、如果有异常了是否要重发，如果重发，可能就要维护一个需要重发的消息和客户端的对应关系。（放map里）
+     *  4、如果要区分用户，还要维护一套用户id和sessionid的对应关系，
+     * <p>
+     * <p>
+     * <p>
+     * // region Token解析
+     * <p>
+     * // region 用户状态判断
+     * <p>
+     * // endregion 用户状态判断
+     * <p>
+     * // endregion Token解析
+     */
 
 
     @Override
