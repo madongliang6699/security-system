@@ -8,12 +8,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.server.HandshakeInterceptor;
 
+import java.net.URI;
 import java.util.Map;
 
 /**
  * WebSocketInterceptor鉴权拦截器
  */
-//@Component
+@Component
 public class WebSocketInterceptor2 implements HandshakeInterceptor {
 
     /**
@@ -32,6 +33,11 @@ public class WebSocketInterceptor2 implements HandshakeInterceptor {
         ServletServerHttpResponse serverHttpResponse = (ServletServerHttpResponse) response;
         String token = serverHttpRequest.getServletRequest().getHeader("Sec-WebSocket-Protocol");
         System.out.println("token="+token);
+
+
+        System.out.println("======= 拦截器2 ====================");
+        URI uri = serverHttpRequest.getURI();
+        System.out.println("uri==="+uri);
 
         //获取参数
         String userId = serverHttpRequest.getServletRequest().getParameter("userId");

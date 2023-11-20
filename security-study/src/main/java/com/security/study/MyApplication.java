@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Import;
 //@MyMapperScan(basePackages = "com.mdl.Import.demo4")
 // @MapperScan
 //@ComponentScan
-@Import({CybstarWebSocketConfigurer.class})
+//@Import({CybstarWebSocketConfigurer.class})
 public class MyApplication {
     
     public static void main(String[] args) {

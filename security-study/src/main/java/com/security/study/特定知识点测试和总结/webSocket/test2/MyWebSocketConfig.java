@@ -13,8 +13,8 @@ import javax.annotation.Resource;
 /**
  * WebSocketConfig配置
  */
-//@Configuration
-//@EnableWebSocket
+@Configuration
+@EnableWebSocket
 public class MyWebSocketConfig implements WebSocketConfigurer {
 
     /**
@@ -31,12 +31,14 @@ public class MyWebSocketConfig implements WebSocketConfigurer {
 
         webSocketHandlerRegistry
                 //添加myHandler消息处理对象，和websocket访问地址
-                .addHandler(myHandler1(), "/ws", "/ws1")
-                .addHandler(myHandler2(), "/wsNoToken")
+                .addHandler(myHandler1(), "/ws")
+                .addHandler(myHandler2(), "/wsWithout")
+                //.setHandshakeHandler()
                 //设置允许跨域访问
                 .setAllowedOrigins("*")
                 //添加拦截器可实现用户链接前进行权限校验等操作
-                .addInterceptors(webSocketInterceptor, webSocketInterceptor2)
+                .addInterceptors(webSocketInterceptor)
+                //.addInterceptors(webSocketInterceptor, webSocketInterceptor2)
         ;
 
 
