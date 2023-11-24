@@ -1,4 +1,4 @@
-package com.security.study.特定知识点测试和总结.webSocket.test2;
+package com.security.study.webSocket.test2;
 
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
@@ -15,7 +15,7 @@ import java.util.Map;
  * WebSocketInterceptor鉴权拦截器
  */
 @Component
-public class WebSocketInterceptor implements HandshakeInterceptor {
+public class WebSocketInterceptor2 implements HandshakeInterceptor {
 
     /**
      * 握手之前
@@ -34,12 +34,10 @@ public class WebSocketInterceptor implements HandshakeInterceptor {
         String token = serverHttpRequest.getServletRequest().getHeader("Sec-WebSocket-Protocol");
         System.out.println("token="+token);
 
-        System.out.println("======= 拦截器1 ====================");
 
-        //todo 拿到url地址，根据不同地址做不同的token验证。
+        System.out.println("======= 拦截器2 ====================");
         URI uri = serverHttpRequest.getURI();
         System.out.println("uri==="+uri);
-
 
         //获取参数
         String userId = serverHttpRequest.getServletRequest().getParameter("userId");

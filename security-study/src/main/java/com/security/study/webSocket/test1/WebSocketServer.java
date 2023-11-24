@@ -1,4 +1,4 @@
-package com.security.study.特定知识点测试和总结.webSocket.test1;
+package com.security.study.webSocket.test1;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;

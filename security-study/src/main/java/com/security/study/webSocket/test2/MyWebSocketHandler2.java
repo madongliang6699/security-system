@@ -1,4 +1,4 @@
-package com.security.study.特定知识点测试和总结.webSocket.test2;
+package com.security.study.webSocket.test2;
 
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * MyWebSocketHandler处理器
  */
-public class MyWebSocketHandler extends TextWebSocketHandler {
+public class MyWebSocketHandler2 extends TextWebSocketHandler {
 
 
 
@@ -49,7 +49,7 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
      */
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
-        session.sendMessage(new TextMessage(String.format("收到用户：【%s】发来的【%s】",
+        session.sendMessage(new TextMessage(String.format("收到2222用户：【%s】发来的【%s】",
                 session.getAttributes().get("uid"),
                 message.getPayload())));
     }

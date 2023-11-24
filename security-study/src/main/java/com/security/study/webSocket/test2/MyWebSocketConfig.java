@@ -1,4 +1,4 @@
-package com.security.study.特定知识点测试和总结.webSocket.test2;
+package com.security.study.webSocket.test2;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
