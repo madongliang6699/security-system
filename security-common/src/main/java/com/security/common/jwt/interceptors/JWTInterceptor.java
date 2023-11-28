@@ -1,12 +1,12 @@
-package com.security.study.jwt.demo.interceptors;
+package com.security.common.jwt.interceptors;
 
+import com.alibaba.fastjson.JSONObject;
 import com.auth0.jwt.exceptions.AlgorithmMismatchException;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.security.study.jwt.demo.utils.JWTUtils;
-import org.springframework.core.annotation.Order;
+import com.security.common.jwt.utils.JWTUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +22,10 @@ public class JWTInterceptor implements HandlerInterceptor {
         //获取请求头中令牌
         String token = request.getHeader("token");
         try {
-//            JWTUtils.verify(token);//验证令牌
+            DecodedJWT verify = JWTUtils.verify(token);//验证令牌
+            String userId = verify.getClaim("userId").asString();
+            System.out.println("--"+userId);
+            System.out.println("====token校验成功：" + JSONObject.toJSONString(verify));
             return true;//放行请求
         } catch (SignatureVerificationException e) {
             e.printStackTrace();

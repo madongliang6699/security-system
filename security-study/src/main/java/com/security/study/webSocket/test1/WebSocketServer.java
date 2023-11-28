@@ -2,15 +2,15 @@ package com.security.study.webSocket.test1;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.security.multisupport.utils.CollectionUtil;
-import com.security.multisupport.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.apache.http.HttpStatus;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.http.server.ServletServerHttpResponse;
+import org.springframework.util.CollectionUtils;
 
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
@@ -51,7 +51,7 @@ public class WebSocketServer {
     /**
      * 连接建立成功调用的方法。由前端<code>new WebSocket</code>触发
      *
-     * @param sid     每次页面建立连接时传入到服务端的id，比如用户id等。可以自定义。
+//     * @param sid     每次页面建立连接时传入到服务端的id，比如用户id等。可以自定义。
      * @param session 与某个客户端的连接会话，需要通过它来给客户端发送消息
      */
     @OnOpen
@@ -69,7 +69,7 @@ public class WebSocketServer {
         Map<String, List<String>> requestParameterMap = session.getRequestParameterMap();
         List<String> tokenList = requestParameterMap.get("token");
         String token = "";
-        if(!CollectionUtil.isEmpty(tokenList) && StringUtil.isNotBlank(tokenList.get(0))){
+        if(!CollectionUtils.isEmpty(tokenList) && StringUtils.isNotBlank(tokenList.get(0))){
             token = tokenList.get(0);
             System.out.println("token----" + token);
         }else {
@@ -83,7 +83,7 @@ public class WebSocketServer {
         System.out.println("deviceId----" + deviceId);
         List<String> strings = requestParameterMap.get("deviceName");
         String deviceName = "";
-        if(!CollectionUtil.isEmpty(strings)){
+        if(!CollectionUtils.isEmpty(strings)){
             deviceName = strings.get(0);
             System.out.println("deviceName----" + deviceName);
         }
@@ -115,7 +115,7 @@ public class WebSocketServer {
     /**
      * 连接关闭调用的方法。由前端<code>socket.close()</code>触发
      *
-     * @param sid
+     * @param
      * @param session
      */
     @OnClose

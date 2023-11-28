@@ -1,12 +1,11 @@
-package com.security.study.jwt.demo.config;
+package com.security.common.jwt.config;
 
-import com.security.study.jwt.demo.interceptors.JWTInterceptor;
+import com.security.common.jwt.interceptors.JWTInterceptor;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-//@Configuration
+@Configuration
 public class InterceptorConfig implements WebMvcConfigurer {
 
     @Override
