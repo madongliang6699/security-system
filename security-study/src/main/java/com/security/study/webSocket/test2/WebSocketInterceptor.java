@@ -1,5 +1,6 @@
 package com.security.study.webSocket.test2;
 
+import org.springframework.core.annotation.Order;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.http.server.ServletServerHttpRequest;
@@ -15,6 +16,7 @@ import java.util.Map;
  * WebSocketInterceptor鉴权拦截器
  */
 @Component
+@Order(3)
 public class WebSocketInterceptor implements HandshakeInterceptor {
 
     /**
@@ -39,6 +41,9 @@ public class WebSocketInterceptor implements HandshakeInterceptor {
         //todo 拿到url地址，根据不同地址做不同的token验证。
         URI uri = serverHttpRequest.getURI();
         System.out.println("uri==="+uri);
+        if(uri.getPath().contains("wsWithout")){
+            return true;
+        }
 
 
         //获取参数

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-public class TestController {
+public class JWTTestController {
 
     @GetMapping("/test/test")
     public String test(String username, HttpServletRequest request){

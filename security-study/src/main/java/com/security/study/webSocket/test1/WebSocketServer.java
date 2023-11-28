@@ -2,24 +2,33 @@ package com.security.study.webSocket.test1;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.security.multisupport.utils.CollectionUtil;
+import com.security.multisupport.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.http.server.ServerHttpRequest;
+import org.springframework.http.server.ServerHttpResponse;
+import org.apache.http.HttpStatus;
+import org.springframework.http.server.ServletServerHttpRequest;
+import org.springframework.http.server.ServletServerHttpResponse;
 
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
+import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * WebSocket的操作类
- *
+ * <p>
  * html页面与之关联的接口
  * var reqUrl = "http://localhost:8080/websocket/" + sid;
  * socket = new WebSocket(reqUrl.replace("http", "ws"));
  */
-@ServerEndpoint(value = "/websocket/{sid}", configurator = WebSocketConfig.class)
+@ServerEndpoint(value = "/websocket"  /*,configurator = WebSocketConfig.class*/)
 @Component
 @Slf4j
 public class WebSocketServer {
@@ -46,19 +55,60 @@ public class WebSocketServer {
      * @param session 与某个客户端的连接会话，需要通过它来给客户端发送消息
      */
     @OnOpen
-    public void onOpen(@PathParam("sid") String sid, Session session) {
+    public void onOpen(Session session) throws IOException {
+
+        System.out.println("---------"+session.getRequestParameterMap());
+
+//        Map<String, String> pathParameters = session.getPathParameters();
+//        String token = pathParameters.get("token");
+//        System.out.println("token----" + token);
+//        String deviceId = pathParameters.get("deviceId");
+//        System.out.println("deviceId----" + deviceId);
+//        String deviceName = pathParameters.get("deviceName");
+//        System.out.println("deviceName----" + deviceName);
+        Map<String, List<String>> requestParameterMap = session.getRequestParameterMap();
+        List<String> tokenList = requestParameterMap.get("token");
+        String token = "";
+        if(!CollectionUtil.isEmpty(tokenList) && StringUtil.isNotBlank(tokenList.get(0))){
+            token = tokenList.get(0);
+            System.out.println("token----" + token);
+        }else {
+            System.out.println("token 验证失败。");
+            session.getAsyncRemote().sendText("token 验证失败。");
+            session.close();
+        }
+
+
+        String deviceId = requestParameterMap.get("deviceId").get(0);
+        System.out.println("deviceId----" + deviceId);
+        List<String> strings = requestParameterMap.get("deviceName");
+        String deviceName = "";
+        if(!CollectionUtil.isEmpty(strings)){
+            deviceName = strings.get(0);
+            System.out.println("deviceName----" + deviceName);
+        }
+
+        session.getAsyncRemote().sendText("收到-token:" + token +", deviceId:"+deviceId+", deviceName:"+deviceName);
+
+//        if(!TokenUtils.isValid(token)){
+        //token验证失败
+        System.out.println(" WebSocket verify token failed ");
+        //logger.error(" WebSocket verify token failed ");
+        //return false;
+//        }
+
         /**
          * session.getId()：当前session会话会自动生成一个id，从0开始累加的。
          */
         log.info("连接建立中 ==> session_id = {}， sid = {}", session.getId(), sid);
         //加入 Map中。将页面的sid和session绑定或者session.getId()与session
         //onlineSessionIdClientMap.put(session.getId(), session);
-        onlineSessionClientMap.put(sid, session);
+//        onlineSessionClientMap.put(sid, session);
 
         //在线数加1
         onlineSessionClientCount.incrementAndGet();
-        this.sid = sid;
-        sendToOne(sid, "连接成功");
+//        this.sid = sid;
+//        sendToOne(sid, "连接成功");
         log.info("连接建立成功，当前在线数为：{} ==> 开始监听新连接：session_id = {}， sid = {},。", onlineSessionClientCount, session.getId(), sid);
     }
 
@@ -69,10 +119,12 @@ public class WebSocketServer {
      * @param session
      */
     @OnClose
-    public void onClose(@PathParam("sid") String sid, Session session) {
+    public void onClose(Session session) {
         //onlineSessionIdClientMap.remove(session.getId());
         // 从 Map中移除
-        onlineSessionClientMap.remove(sid);
+//        onlineSessionClientMap.remove(sid);
+
+        System.out.println("---------"+session.getRequestParameterMap());
 
         //在线数减1
         onlineSessionClientCount.decrementAndGet();
@@ -96,7 +148,7 @@ public class WebSocketServer {
         String toSid = jsonObject.getString("sid");
         String msg = jsonObject.getString("message");
         log.info("服务端收到客户端消息 ==> fromSid = {}, toSid = {}, message = {}", sid, toSid, message);
-
+        session.getAsyncRemote().sendText("收到-" + jsonObject);
         /**
          * 模拟约定：如果未指定sid信息，则群发，否则就单独发送
          */
@@ -129,8 +181,8 @@ public class WebSocketServer {
         onlineSessionClientMap.forEach((onlineSid, toSession) -> {
             // 排除掉自己
 //            if (!sid.equalsIgnoreCase(onlineSid)) {
-                log.info("服务端给客户端群发消息 ==> sid = {}, toSid = {}, message = {}", sid, onlineSid, message);
-                toSession.getAsyncRemote().sendText(message);
+            log.info("服务端给客户端群发消息 ==> sid = {}, toSid = {}, message = {}", sid, onlineSid, message);
+            toSession.getAsyncRemote().sendText(message);
 //            }
         });
     }

@@ -62,11 +62,11 @@ public class MyWebSocketHandler2 extends TextWebSocketHandler {
      */
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        String uid = session.getAttributes().get("uid").toString();
-        WebSocketSession put = sessionPools.put(Integer.parseInt(uid), session);
-        if (put == null) {
-            addOnlineCount();
-        }
+//        String uid = session.getAttributes().get("uid").toString();
+//        WebSocketSession put = sessionPools.put(Integer.parseInt(uid), session);
+//        if (put == null) {
+//            addOnlineCount();
+//        }
         session.sendMessage(new TextMessage("连接成功! 在线数量：" + onlineNum));
     }
 

@@ -6,6 +6,7 @@ import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.security.study.jwt.demo.utils.JWTUtils;
+import org.springframework.core.annotation.Order;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
-
+@Order(2)
 public class JWTInterceptor implements HandlerInterceptor {
 
     @Override
@@ -22,7 +23,7 @@ public class JWTInterceptor implements HandlerInterceptor {
         //获取请求头中令牌
         String token = request.getHeader("token");
         try {
-            JWTUtils.verify(token);//验证令牌
+//            JWTUtils.verify(token);//验证令牌
             return true;//放行请求
         } catch (SignatureVerificationException e) {
             e.printStackTrace();

@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 
 @RestController
 @Slf4j
-public class UserController {
+public class JWTUserController {
 
     @Autowired
     private UserService userService;
@@ -54,17 +55,19 @@ public class UserController {
     }
 
 
-    @PostMapping("/user/test")
-    public Map<String,Object> test(HttpServletRequest request){
+    @PostMapping("/user/userList")
+    public User test(HttpServletRequest request){
         Map<String, Object> map = new HashMap<>();
         //处理自己业务逻辑
         String token = request.getHeader("token");
         DecodedJWT verify = JWTUtils.verify(token);
         log.info("用户id: [{}]",verify.getClaim("id").asString());
         log.info("用户name: [{}]",verify.getClaim("name").asString());
-        map.put("state",true);
-        map.put("msg","请求成功!");
-        return map;
+        User userDB = new User();
+        userDB.setId("12");
+        userDB.setName("xiaoming");
+        userDB.setPassword("123");
+        return userDB;
     }
 
 

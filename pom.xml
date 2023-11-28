@@ -32,6 +32,7 @@
         <module>security-inventory</module>
         <module>security-inventory-api</module>
         <module>cybstarWebSocket</module>
+        <module>multi-support</module>
     </modules>
 
     <dependencyManagement>

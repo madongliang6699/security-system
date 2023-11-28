@@ -16,7 +16,7 @@ public class UserServiceImpl implements UserService {
         if ("xiaoming".equals(user.getName()) && "123".equals(user.getPassword())) {
             return user;
         }
-        throw new RuntimeException("认证失败~~");
+        throw new RuntimeException("用户或密码错误~~");
     }
 
 }
