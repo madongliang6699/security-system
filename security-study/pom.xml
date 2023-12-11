@@ -18,9 +18,14 @@
     </properties>
 
 
-
     <dependencies>
 
+        <!--  kaptcha 是给spring security添加验证码功能的依赖      -->
+        <dependency>
+            <groupId>com.github.penggle</groupId>
+            <artifactId>kaptcha</artifactId>
+            <version>2.3.2</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
@@ -31,11 +36,11 @@
         </dependency>
 
 
-<!--        <dependency>-->
-<!--            <groupId>com.security</groupId>-->
-<!--            <artifactId>multi-support</artifactId>-->
-<!--            <version>1.0-SNAPSHOT</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.security</groupId>-->
+        <!--            <artifactId>multi-support</artifactId>-->
+        <!--            <version>1.0-SNAPSHOT</version>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
@@ -96,7 +101,6 @@
         </dependency>
 
 
-
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
@@ -111,11 +115,11 @@
             <scope>runtime</scope>
         </dependency>
         <!--druid 依赖 构建多版本SQL支持包， 如果不自己加入连接池依赖，springboot就使用默认的号称史上最快连接池的Hikari-->
-<!--        <dependency>-->
-<!--            <groupId>com.alibaba</groupId>-->
-<!--            <artifactId>druid-spring-boot-starter</artifactId>-->
-<!--            <version>1.1.9</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.alibaba</groupId>-->
+        <!--            <artifactId>druid-spring-boot-starter</artifactId>-->
+        <!--            <version>1.1.9</version>-->
+        <!--        </dependency>-->
 
 
         <dependency>
@@ -218,7 +222,6 @@
         </plugins>
     </build>
     <!--                                插件管理end                               -->
-
 
 
 </project>

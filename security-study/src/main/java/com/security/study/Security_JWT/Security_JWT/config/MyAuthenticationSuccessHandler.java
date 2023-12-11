@@ -45,6 +45,7 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
         Map<String, Object> result = new HashMap();
         result.put("msg", "登录成功了啊");
         result.put("status", 200);
+        result.put("authentication", authentication);
         httpServletResponse.setContentType("application/json;charset=UTF-8");
         String s = new ObjectMapper().writeValueAsString(result);
         httpServletResponse.getWriter().println(s);
