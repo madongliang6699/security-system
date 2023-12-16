@@ -2,11 +2,10 @@ package com.security.study.Security_JWT.Security_JWT.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.security.study.Security_JWT.Security_JWT.filter.LoginKaptchaFilter;
-import com.security.study.Security_JWT.Security_JWT.service.MyUserDetailService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -14,6 +13,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 
@@ -21,11 +21,16 @@ import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.security.study.Security_JWT.Security_JWT.filter.LoginKaptchaFilter.VERIFICATION_CODE;
+
 /**
  * ⾃定义资源权限规则，请求拦截规则
  */
 @Configuration
 public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
+
+    @Resource
+    UserDetailsService myUserDetailService;
 
     //region =====使用security框架的总配置=========
     @Override
@@ -37,22 +42,32 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
          */
 
         http.authorizeRequests()
-                .mvcMatchers("/vc.jpg").permitAll()//验证码接口放行
+                .mvcMatchers("/vc.png").permitAll()//验证码接口放行
                 .mvcMatchers("/login.html").permitAll() //登录页面放行
                 .mvcMatchers("/index").permitAll() //permitAll() 代表放⾏该资源,该资源为公共资源 ⽆需认证和授权可以直接访问。todo 注意: 放⾏资源必须放在所有认证请求之前!
                 .anyRequest().authenticated() //anyRequest().authenticated() 代表所有请求,必须认证之后才能访问
                 .and()
-                .formLogin() //代表开启表单认证。怎么样设置是不开启？如果不开启就不需要登录了吗? （很多认证的逻辑可以进这个方法里断点源码查看）
+//                .formLogin() //代表开启表单认证。怎么样设置是不开启？如果不开启就不需要登录了吗? （很多认证的逻辑可以进这个方法里断点源码查看）
 //                .loginPage("/login.html") //登录页面地址，可以写一个自己的登录页面。（注意：这个页面就是检测到如果没登录就跳转登录的地址，所以上面一定要给这个地址放行拦截，要不然就循环跳转了。【当然现在测试的，没有实际写这个页面，就先注释掉，用默认的登录页】
-                .loginProcessingUrl("/doLogin") //指定登录请求的url，点击登录按钮就请求这个按钮，与前端保持一致。前端登录表单 method 必须为 post
-                .usernameParameter("uname") //指定用户名的字段名，与前端保持一致
-                .passwordParameter("passwd") //指定密码的字段名，与前端保持一致
+//                .loginProcessingUrl("/doLogin") //指定登录请求的url，点击登录按钮就请求这个按钮，与前端保持一致。前端登录表单 method 必须为 post
+//                .usernameParameter("uname") //指定用户名的字段名，与前端保持一致
+//                .passwordParameter("passwd") //指定密码的字段名，与前端保持一致
 //                .successForwardUrl("/index") //forward 转发，登录成功后直接跳转到这个指定路径
 //                .defaultSuccessUrl("/index" /*, true*/) //redirect 重定向，如果之前有请求路径, 会有优先跳转之前请求路径。否则跳转到这个指定的路径。如果设置了第二个参数为true，就每次都只跳转这个指定的地址。所以不传就是默认的false。
-                .successHandler(new MyAuthenticationSuccessHandler()) //如果是前后端分离的项目，登录成功后，是不需要后端跳转地址的，只返回一个成功的json数据就行了，那就需要配置这个参数，上面的两个参数就不需要了。
+//                .successHandler(new MyAuthenticationSuccessHandler()) //如果是前后端分离的项目，登录成功后，是不需要后端跳转地址的，只返回一个成功的json数据就行了，那就需要配置这个参数，上面的两个参数就不需要了。
 //                .failureForwardUrl("/xxx")//失败以后的转发跳转。因此如果页面想获取 request 中异常信息进行展示,这⾥只能使⽤failureForwardUrl（知识点：如果登录失败，security把异常信息放在了request（转发的情况下存在了request中）和session（重定向情况下）作用域中了，key是“SPRING_SECURITY_LAST_EXCEPTION”，源码可以参考SimpleUrlAuthenticationFailureHandler类）
 //                .failureUrl("/login.html") //认证失败后跳转的路径, 失败以后的重定向跳转
-                .failureHandler(new MyAuthenticationFailureHandler())//同上面的successHandler参数
+//                .failureHandler(new MyAuthenticationFailureHandler())//同上面的successHandler参数
+//                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint((req, resp, ex) -> { //前后端分离的项目拦截请求之后不应该跳转到某个页面，应该给前端返回一个提示认证的json数据就行了，可以这样设置。
+                    Map<String, Object> result = new HashMap<String, Object>();
+                    result.put("msg", "必须认证之后才能访问");
+                    String s = new ObjectMapper().writeValueAsString(result);
+                    resp.setContentType("application/json;charset=UTF-8");
+                    resp.setStatus(HttpStatus.UNAUTHORIZED.value());
+                    resp.getWriter().println(s);
+                })
                 .and()
                 .logout()//开启注销配置
                 .logoutRequestMatcher(//如果项⽬中有需要，开发者还可以配置多个注销登录的请求，同时还可以指定请求的⽅法
@@ -67,14 +82,10 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 //                .logoutSuccessUrl("/login.html")//退出登录时跳转地址。前后端分离的就不需要了
                 .logoutSuccessHandler(new MyLogoutSuccessHandler()) //前后端分离情况下，给返回一个json数据
                 .and()
-                .exceptionHandling()//这个是干嘛的，启动异常处理吗
-                .authenticationEntryPoint((req, resp, ex) -> {
-                    resp.setContentType("application/json;charset=UTF-8");
-                    resp.setStatus(HttpStatus.UNAUTHORIZED.value());
-                    resp.getWriter().println(" must Authentication 必须认证之后才能访问");
-                })
-                .and()
                 .csrf().disable(); //这⾥先关闭 CSRF
+
+        //添加验证码过滤器
+        http.addFilterAt(loginKaptchaFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     //endregion =====使用security框架的总配置===================
@@ -103,21 +114,19 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
      */
 //    @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        super.configure(auth);
+        //super.configure(auth);
         //这里替换了默认的UserDetailsService实现。把默认用户改成了haha。
         // 其实这个方法不用写也行，security会默认先在项目中找UserDetailsService
         //的实现，只要下面的userDetailsService()自定义了UserDetailsService 的bean就行。或其他地方已经自定义实现UserDetailsService
-//        auth.userDetailsService(userDetailsService());
-        auth.userDetailsService(myUserDetailService);//如果有多出实现了UserDetailsService接口，那就要在这里指定一下使用哪个。
-    }
 
-    @Resource
-    UserDetailsService myUserDetailService;
+        //auth.userDetailsService(hahaUserDetailsService());//如果有多出实现了UserDetailsService接口，那就要在这里指定一下使用哪个。
+        auth.userDetailsService(myUserDetailService);     //如果有多出实现了UserDetailsService接口，那就要在这里指定一下使用哪个。
+    }
 
 
     //⾃定义内存数据源，把默认用户改成haha。
     @Bean
-    public UserDetailsService userDetailsService() {
+    public UserDetailsService hahaUserDetailsService() {
         InMemoryUserDetailsManager inMemoryUserDetailsManager = new InMemoryUserDetailsManager();
         UserDetails u1 = User.withUsername("haha").password("{noop}111").roles("USER").build();
         inMemoryUserDetailsManager.createUser(u1);
@@ -130,19 +139,32 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     //region ===== 配置 登录验证码功能 的过滤器 ========================
 
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+    /**
+     * 注册验证码过滤器bean。既然登陆需要验证码，那使用默认表单登录（.formLogin()）就不适用了，需要加传验证码的参数给后端。
+     * 可以使用postman发送登录请求。
+     */
     @Bean
     public LoginKaptchaFilter loginKaptchaFilter() throws Exception {
         LoginKaptchaFilter loginKaptchaFilter = new LoginKaptchaFilter();
         //1.认证 url
         loginKaptchaFilter.setFilterProcessesUrl("/doLogin");
         //2.认证 接收参数
-        loginKaptchaFilter.setUsernameParameter("uname");
-        loginKaptchaFilter.setPasswordParameter("passwd");
-        loginKaptchaFilter.setKaptchaParameter("kaptcha");
+        loginKaptchaFilter.setUsernameParameter("myname");//可以指定参数名，不指定就用默认的
+        loginKaptchaFilter.setPasswordParameter("mypasswd");
+        //loginKaptchaFilter.setKaptchaParameter("verificationCode");
         //3.指定认证管理器
         loginKaptchaFilter.setAuthenticationManager(authenticationManagerBean());
         //4.指定成功时处理
         loginKaptchaFilter.setAuthenticationSuccessHandler((req, resp, authentication) -> {
+            //把验证码失效
+            req.getSession().removeAttribute(VERIFICATION_CODE);
+
             Map<String, Object> result = new HashMap();
             result.put("msg", "登录成功");
             result.put("⽤户信息", authentication.getPrincipal());

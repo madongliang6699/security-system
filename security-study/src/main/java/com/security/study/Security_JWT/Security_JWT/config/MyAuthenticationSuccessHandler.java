@@ -37,7 +37,6 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
      */
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
-
         /**
          * 这里配置完毕之后，要把这个自定义的AuthenticationSuccessHandler配置到security的配置类（前面写的WebSecurityConfigurer）中。
          */
