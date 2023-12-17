@@ -49,22 +49,22 @@ public class LoginKaptchaFilter extends UsernamePasswordAuthenticationFilter {
             String password = userInfo.get(getPasswordParameter());//获取密码
 
             if(ObjectUtils.isEmpty(verificationCode)){
-                throw new KaptchaNotMatchException("验证码为空!");
+//                throw new KaptchaNotMatchException("验证码为空!");
             }
 
             //2.获取 session 中验证码
             String sessionVerifyCode = (String) request.getSession().getAttribute(VERIFICATION_CODE);
             if(ObjectUtils.isEmpty(sessionVerifyCode)){
-                throw new KaptchaNotMatchException("未生成验证码!");
+//                throw new KaptchaNotMatchException("未生成验证码!");
             }
 
-            //3.校验验证码，如果验证码通过，就继续执行用户名和密码的验证
-            if (!ObjectUtils.isEmpty(verificationCode) && !ObjectUtils.isEmpty(sessionVerifyCode) && verificationCode.equalsIgnoreCase(sessionVerifyCode)) {
+            //3.校验验证码，如果验证码通过，就继续执行用户名和密码的验证（这里先注释掉验证码功能方便后面测试）
+//            if (!ObjectUtils.isEmpty(verificationCode) && !ObjectUtils.isEmpty(sessionVerifyCode) && verificationCode.equalsIgnoreCase(sessionVerifyCode)) {
                 //3.获取⽤户名和密码认证
                 UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username, password);
                 setDetails(request, authRequest);
                 return this.getAuthenticationManager().authenticate(authRequest);
-            }
+//            }
         } catch (IOException e) {
             e.printStackTrace();
         }

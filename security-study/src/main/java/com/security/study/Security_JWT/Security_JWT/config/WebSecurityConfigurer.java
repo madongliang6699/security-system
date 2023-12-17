@@ -12,6 +12,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -48,10 +50,10 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated() //anyRequest().authenticated() 代表所有请求,必须认证之后才能访问
                 .and()
 //                .formLogin() //代表开启表单认证。怎么样设置是不开启？如果不开启就不需要登录了吗? （很多认证的逻辑可以进这个方法里断点源码查看）
-//                .loginPage("/login.html") //登录页面地址，可以写一个自己的登录页面。（注意：这个页面就是检测到如果没登录就跳转登录的地址，所以上面一定要给这个地址放行拦截，要不然就循环跳转了。【当然现在测试的，没有实际写这个页面，就先注释掉，用默认的登录页】
+//                .loginPage("/mylogin.html") //登录页面地址，可以写一个自己的登录页面。（注意：这个页面就是检测到如果没登录就跳转登录的地址，所以上面一定要给这个地址放行拦截，要不然就循环跳转了。【当然现在测试的，没有实际写这个页面，就先注释掉，用默认的登录页】
 //                .loginProcessingUrl("/doLogin") //指定登录请求的url，点击登录按钮就请求这个按钮，与前端保持一致。前端登录表单 method 必须为 post
-//                .usernameParameter("uname") //指定用户名的字段名，与前端保持一致
-//                .passwordParameter("passwd") //指定密码的字段名，与前端保持一致
+//                .usernameParameter("myname") //指定用户名的字段名，与前端保持一致
+//                .passwordParameter("mypasswd") //指定密码的字段名，与前端保持一致
 //                .successForwardUrl("/index") //forward 转发，登录成功后直接跳转到这个指定路径
 //                .defaultSuccessUrl("/index" /*, true*/) //redirect 重定向，如果之前有请求路径, 会有优先跳转之前请求路径。否则跳转到这个指定的路径。如果设置了第二个参数为true，就每次都只跳转这个指定的地址。所以不传就是默认的false。
 //                .successHandler(new MyAuthenticationSuccessHandler()) //如果是前后端分离的项目，登录成功后，是不需要后端跳转地址的，只返回一个成功的json数据就行了，那就需要配置这个参数，上面的两个参数就不需要了。
@@ -62,7 +64,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .exceptionHandling()
                 .authenticationEntryPoint((req, resp, ex) -> { //前后端分离的项目拦截请求之后不应该跳转到某个页面，应该给前端返回一个提示认证的json数据就行了，可以这样设置。
                     Map<String, Object> result = new HashMap<String, Object>();
-                    result.put("msg", "必须认证之后才能访问");
+                    result.put("msg", "必须认证之后才能访问, " + ex.getMessage());
                     String s = new ObjectMapper().writeValueAsString(result);
                     resp.setContentType("application/json;charset=UTF-8");
                     resp.setStatus(HttpStatus.UNAUTHORIZED.value());
@@ -91,7 +93,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     //endregion =====使用security框架的总配置===================
 
 
-    //region ===== 自定义认证数据源 ===============
+    //region ===== 自定义认证数据源 和 密码加密方式指定 ===============
 
     /**
      * 总结: AuthenticationManager 是认证管理器，在 Spring Security 中有全局
@@ -112,7 +114,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
      * 建AuthenticationManager对象⼯⼚内部本地⼀个 AuthenticationManager
      * 对象 不允许在其他⾃定义组件中进⾏注⼊。
      */
-//    @Override
+    @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         //super.configure(auth);
         //这里替换了默认的UserDetailsService实现。把默认用户改成了haha。
@@ -128,13 +130,36 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     @Bean
     public UserDetailsService hahaUserDetailsService() {
         InMemoryUserDetailsManager inMemoryUserDetailsManager = new InMemoryUserDetailsManager();
-        UserDetails u1 = User.withUsername("haha").password("{noop}111").roles("USER").build();
+
+        /**如下面的配置默认用户，security给密码加密的方式是很灵活的，可以使用明文，可以使用MD5，可以使用推荐的bcrypt，可以随时变动加密方式，
+         * 因为他保存密码的方式是前面带个大括号，大括号里指定加密的方式，即：{加密方式标记}， 这样的方式只要指定加密方式，security就按指定的方式去校验密码，
+         * 这个设计应该是能比较灵活的兼容很多老系统的不同加密方式的密码适配security框架。
+         * 同理在数据库中保存的密码，也是这样存储的，使用这种带大括号的前缀。
+         *
+         * 如果就是一个新项目，就是想固定使用bcrypt的加密方式，根据源码，只需要给spring容器中注册一个指定的加密方式对象就行了。因为security是
+         * 优先查看容器中有没有 PasswordEncoder 这个密码加密接口的实现对象的，如果有就使用已有的，如果没有才使用上面说的大括号灵活匹配的方式（灵活匹配默认的也是bcrypt）。
+         */
+        //UserDetails u1 = User.withUsername("haha").password("{noop}111").roles("USER").build();//{noop}是指明文存储的密码
+        UserDetails u1 = User.withUsername("haha").password("{bcrypt}$2a$10$g8JKr1T0J2BF7lkyftZqy.rD0yLbyOr6p.xw6F5bRkUdQJlKMk2WW").roles("USER").build();//{bcrypt}是指bcrypt加密方式存储的密码
+
         inMemoryUserDetailsManager.createUser(u1);
         return inMemoryUserDetailsManager;
     }
 
 
-    //endregion ===== 自定义认证数据源 ========================
+    //指定固定的密码加密方式，使用 bcrypt方式。只要这里给容器中注册了加密对象bean，security发现已经有了加密方式对象，就优先使用指定的这个。如果没有指定，它再使用默认的逻辑去加解密。
+    //注意，一旦这里指定了固定的加密方式，上面的密码就不能带 {加密方式标识} 的前缀了，security给我们保存到数据库的时候也不会加大括号了。
+    //todo 有的老师建议使用上面那种带大括号的灵活的方式存储，因为security可以帮我们自带修改密码，这样，当security升级本版后，使用了一个新的更安全加密方式，
+    // 我们就不需要修改代码去适配新加密方式，并且security还可以帮我们自动替换掉老的加密（只要实现了 UserDetailsPasswordService 的修改密码的方法，每次登录认证之后都会帮我们重新加密并保存到数据库），
+    // 做到密码自动升级的效果。
+    // 但是另外一个老师说带前缀的密码存储太麻烦，或者不适用其他框架吧，就推荐使用固定的加密方式，就向下面这里指定固定的加密方式保存数据库。
+//    @Bean
+    public PasswordEncoder BcryptPasswordEncoder() {
+        //BCrypt是每次都随机加盐的，同一个密码每次生成的密文都不一样，
+        return new BCryptPasswordEncoder();
+    }
+
+    //endregion ===== 自定义认证数据源 和 密码加密方式指定 ========================
 
 
     //region ===== 配置 登录验证码功能 的过滤器 ========================

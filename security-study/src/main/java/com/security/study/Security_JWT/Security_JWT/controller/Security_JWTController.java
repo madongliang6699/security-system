@@ -19,6 +19,7 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.security.SecureRandom;
 
 import static com.security.study.Security_JWT.Security_JWT.filter.LoginKaptchaFilter.VERIFICATION_CODE;
 
@@ -93,9 +94,19 @@ public class Security_JWTController {
         /**
          不同密码加密方法的测试：
          */
-        //1.BCryptPasswordEncoder
+        //1.BCryptPasswordEncoder 推荐使用的。这种加密算法能加大消耗计算机资源，导致运行比较慢，增加暴力破解的难度。
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        System.out.println(bCryptPasswordEncoder.encode("123"));
+        System.out.println(bCryptPasswordEncoder.encode("123"));//$2a$10$SPGbmmH.iFx.4RpSImq54.indJlU4wAL9Ri50xqjq49sI9JHURbs6 【默认是10】
+        BCryptPasswordEncoder bc16 = new BCryptPasswordEncoder(16);
+        System.out.println(bc16.encode("123"));// 【设置16位】
+        BCryptPasswordEncoder bc16加盐 = new BCryptPasswordEncoder(16, new SecureRandom("haha".getBytes()));
+        System.out.println(bc16加盐.encode("123"));//加盐
+
+        BCryptPasswordEncoder aaa = new BCryptPasswordEncoder();
+        System.out.println("111: "+aaa.encode("111"));
+
+
+
 
         //2.Pbkdf2PasswordEncoder
         Pbkdf2PasswordEncoder pbkdf2PasswordEncoder = new Pbkdf2PasswordEncoder();
