@@ -16,10 +16,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -84,13 +86,34 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 //                .logoutSuccessUrl("/login.html")//退出登录时跳转地址。前后端分离的就不需要了
                 .logoutSuccessHandler(new MyLogoutSuccessHandler()) //前后端分离情况下，给返回一个json数据
                 .and()
-                .csrf().disable(); //这⾥先关闭 CSRF
+                .csrf().disable()//这⾥先关闭 CSRF
+                .sessionManagement() //开启会话管理，todo 注意，会话管理起作用的前提是User用户类的username字段重写了 equals hashCode 方法。
+                .maximumSessions(1) //允许同⼀个⽤户只允许创建⼀个会话,也就是只能在一个客户端登录
+                //.expiredUrl("/login")//会话过期处理 传统 web 开发
+                .expiredSessionStrategy(event -> {
+                    HttpServletResponse response = event.getResponse();
+                    response.setContentType("application/json;charset=UTF-8");
+                    Map<String, Object> result = new HashMap();
+                    result.put("status", 500);
+                    result.put("msg", "当前会话已经失效,请重新登录!");
+                    String s = new ObjectMapper().writeValueAsString(result);
+                    response.getWriter().println(s);
+                    response.flushBuffer();
+                })//前后端分离开发处理
+                .maxSessionsPreventsLogin(true)//true：登录之后禁⽌再次在其他客户端登录; 如果这里不指定或者设置false，就是后登录的挤掉前面登录的
+        ;
 
         //添加验证码过滤器
-        http.addFilterAt(loginKaptchaFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterAfter(loginKaptchaFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     //endregion =====使用security框架的总配置===================
+
+
+    @Bean
+    public HttpSessionEventPublisher httpSessionEventPublisher() {
+        return new HttpSessionEventPublisher();
+    }
 
 
     //region ===== 自定义认证数据源 和 密码加密方式指定 ===============

@@ -1,7 +1,6 @@
 package com.security.study.Security_JWT.Security_JWT.domain.entity;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 用户实例，实现security的UserDetails，因为security框架的 的 UserDetailsService 的 loadUserByUsername方法返回的是这个类型。
@@ -61,5 +61,19 @@ public class MyUser implements UserDetails {
     @Override
     public boolean isEnabled() {
         return enabled;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MyUser myUser = (MyUser) o;
+        return Objects.equals(username, myUser.username);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(username);
     }
 }
