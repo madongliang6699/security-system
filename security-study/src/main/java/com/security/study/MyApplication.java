@@ -1,11 +1,15 @@
 package com.security.study;
 
+import com.security.study.Security_JWT.security_jwt_2.config.RsaKeyProperties;
 import com.security.study.spring.注解.Import.demo2.CacheType;
 import com.security.study.spring.注解.Import.demo2.EnableMyCacheService;
 import com.security.webSocket.CybstarWebSocketConfigurer;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Import;
+import springfox.documentation.oas.annotations.EnableOpenApi;
 
 
 // @EnableWebMvc
@@ -16,9 +20,11 @@ import org.springframework.context.annotation.Import;
 // @Import({MyUser.class, Service.class})
 @EnableMyCacheService(type = CacheType.LOCAL)
 //@MyMapperScan(basePackages = "com.mdl.Import.demo4")
-// @MapperScan
+//@MapperScan(basePackages = "com.security.study.Security_JWT.security_jwt_2")
 //@ComponentScan
 //@Import({CybstarWebSocketConfigurer.class})
+@EnableOpenApi
+@EnableConfigurationProperties(RsaKeyProperties.class)
 public class MyApplication {
     
     public static void main(String[] args) {

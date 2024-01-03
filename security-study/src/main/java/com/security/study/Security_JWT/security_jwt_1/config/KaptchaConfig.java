@@ -1,0 +1,31 @@
+package com.security.study.Security_JWT.security_jwt_1.config;
+
+import com.google.code.kaptcha.Producer;
+import com.google.code.kaptcha.impl.DefaultKaptcha;
+import com.google.code.kaptcha.util.Config;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import java.util.Properties;
+
+/**
+ * Kaptcha 验证码 的Producer对象配置类
+ */
+@Configuration
+public class KaptchaConfig {
+
+    @Bean
+    public Producer kaptcha() {
+        Properties properties = new Properties();
+        properties.setProperty("kaptcha.image.width", "150");
+        properties.setProperty("kaptcha.image.height", "50");
+        properties.setProperty("kaptcha.textproducer.char.string", "0123456789");
+        properties.setProperty("kaptcha.textproducer.char.length", "4");
+        Config config = new Config(properties);
+        DefaultKaptcha defaultKaptcha = new DefaultKaptcha();
+        defaultKaptcha.setConfig(config);
+        return defaultKaptcha;
+    }
+
+
+}
