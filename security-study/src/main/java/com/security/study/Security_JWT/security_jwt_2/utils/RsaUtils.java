@@ -2,40 +2,71 @@ package com.security.study.Security_JWT.security_jwt_2.utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.security.*;
+import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
 /**
- * @author 黑马程序员
+ * @author
  */
 public class RsaUtils {
 
     private static final int DEFAULT_KEY_SIZE = 2048;
     /**
-     * 从文件中读取公钥
+     * 从文件中读取公钥,生成公钥对象
      *
      * @param filename 公钥保存路径，相对于classpath
      * @return 公钥对象
      * @throws Exception
      */
-    public static PublicKey getPublicKey(String filename) throws Exception {
+    public static PublicKey getPublicKeyByFile(String filename) throws Exception {
         byte[] bytes = readFile(filename);
         return getPublicKey(bytes);
     }
 
+
     /**
-     * 从文件中读取密钥
+     * 使用已经生成好的公钥,生成公钥对象
+     *
+     * @param publicKeyStr 已经生成好的公钥串
+     * @return 公钥对象
+     * @throws Exception
+     */
+    public static PublicKey getPublicKeyByStr(String publicKeyStr) throws Exception {
+        byte[] bytes = publicKeyStr.getBytes(StandardCharsets.UTF_8);
+        //byte[] keyBytes = Base64.getDecoder().decode(publicKeyStr);
+        return getPublicKey(bytes);
+    }
+
+
+
+    /**
+     * 从文件中读取私钥,,生成私钥对象
      *
      * @param filename 私钥保存路径，相对于classpath
      * @return 私钥对象
      * @throws Exception
      */
-    public static PrivateKey getPrivateKey(String filename) throws Exception {
+    public static PrivateKey getPrivateKeyByFile(String filename) throws Exception {
         byte[] bytes = readFile(filename);
+        return getPrivateKey(bytes);
+    }
+
+    /**
+     * 使用已经生成好的私钥,生成私钥对象
+     *
+     * @param privateKeyStr 已经生成好的私钥串
+     * @return 私钥对象
+     * @throws Exception
+     */
+    public static PrivateKey getPrivateKeyByStr(String privateKeyStr) throws Exception {
+        byte[] bytes = privateKeyStr.getBytes(StandardCharsets.UTF_8);
+        //byte[] keyBytes = Base64.getDecoder().decode(privateKeyStr);
         return getPrivateKey(bytes);
     }
 

@@ -4,7 +4,7 @@ import com.xxl.job.core.executor.impl.XxlJobSpringExecutor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-@Configuration
+//@Configuration  //注释掉,暂不使用
 public class XxlJobConfig {
     @Value("${xxl.job.admin.addresses}")
     private String adminAddresses;

@@ -40,7 +40,9 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
             SysUser user = JSONObject.parseObject(request.getInputStream(), SysUser.class);
-            return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+            UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
+            setDetails(request, authRequest);
+            return authenticationManager.authenticate(authRequest);
         } catch (Exception e) {
             try {
                 response.setContentType("application/json;charset=utf-8");
