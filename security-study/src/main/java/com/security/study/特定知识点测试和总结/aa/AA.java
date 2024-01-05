@@ -6,9 +6,13 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class AA {
+
     public static void main(String[] args) throws ParseException {
-        System.out.println(null+"");
-    
+        //System.out.println(null == 1);
+        System.out.println(null == null);
+        System.out.println(null == new AA());
+        System.out.println(null + "");
+
         String format = "HH:mm:ss";
         Calendar calendar = Calendar.getInstance();
 //获取当前时间
@@ -27,6 +31,7 @@ public class AA {
 //范围结束时间
         Date endTime = new SimpleDateFormat(format).parse("23:59:59");
         System.out.println();
-        
+
     }
+
 }
