@@ -3,6 +3,7 @@ package com.security.study.Security_JWT.security_jwt_2.filter;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.security.study.Security_JWT.security_jwt_2.config.RsaKeyProperties;
+import com.security.study.Security_JWT.security_jwt_2.constant.ConstantKey;
 import com.security.study.Security_JWT.security_jwt_2.entity.SysRole;
 import com.security.study.Security_JWT.security_jwt_2.entity.SysUser;
 import com.security.study.Security_JWT.security_jwt_2.utils.JwtUtils;
@@ -10,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -18,9 +20,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 认证过滤器 jwt验证
@@ -50,7 +54,7 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
                 PrintWriter out = response.getWriter();
                 Map<String, Object> map = new HashMap<>();
                 map.put("code", HttpServletResponse.SC_UNAUTHORIZED);
-                map.put("message", "账号或密码错误！");
+                map.put("message", "账号或密码错误:"+ e.getMessage());
                 out.write(new ObjectMapper().writeValueAsString(map));
                 out.flush();
                 out.close();
@@ -66,9 +70,15 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
     public void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         SysUser sysUser = new SysUser();
         sysUser.setUsername(authResult.getName());
-        sysUser.setRoles((List<SysRole>) authResult.getAuthorities());
+        List<SysRole> collect = authResult.getAuthorities().stream()
+                .map(en -> {
+                    SysRole role = new SysRole();
+                    role.setRoleName(en.getAuthority());
+                    return role;
+                }).collect(Collectors.toList());
+        sysUser.setRoles(collect);
         String token = JwtUtils.generateTokenExpireInMinutes(sysUser, rsaKeyProperties.getPrivateKey(), 24 * 60);
-        response.addHeader("Authorization", "myToken " + token);    //将Token信息返回给用户
+        response.addHeader(ConstantKey.HEADER_KEY, ConstantKey.BEARER + token);    //将Token信息返回给用户
         try {
             //登录成功时，返回json格式进行提示
             response.setContentType("application/json;charset=utf-8");

@@ -56,13 +56,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         LogoutConfigurer<HttpSecurity> httpSecurityLogoutConfigurer = http.cors().and().csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)//既然使用JWT了就禁用session
+                .and()
                 .authorizeRequests()
                 .antMatchers(AuthWhiteList.AUTH_WHITELIST).permitAll()
                 .anyRequest().authenticated()  // 所有请求需要身份认证
                 .and()
-                .addFilter(new JWTLoginFilter2(authenticationManager()))
-                .addFilter(new JWTAuthenticationFilter(authenticationManager()))
+                .addFilter(new JwtLoginFilter(authenticationManager(), rsaKeyProperties))
+                .addFilter(new JWTAuthenticationFilter(authenticationManager(), rsaKeyProperties))
                 .exceptionHandling()
                 .authenticationEntryPoint(authenticationEntryPoint())// 自定义身份验证入口点
                 .accessDeniedHandler(accessDeniedHandler()) // 自定义访问失败处理器
@@ -104,42 +105,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new CustomAccessDeniedHandler();
     }
 
-
-//    /**
-//     * 认证用户的来源
-//     *
-//     * @param auth
-//     * @throws Exception
-//     */
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        //数据库中
-//        auth.userDetailsService(mySecurityUserService).passwordEncoder(passwordEncoder());
-//    }
-
-//    /**
-//     * 配置SpringSecurity相关信息
-//     */
-//    @Override
-//    public void configure(HttpSecurity http) throws Exception {
-//        http.authorizeRequests()
-//                .anyRequest().authenticated()
-//                .and()
-//                .exceptionHandling()
-//                .authenticationEntryPoint((req, resp, ex) -> { //前后端分离的项目拦截请求之后不应该跳转到某个页面，应该给前端返回一个提示认证的json数据就行了，可以这样设置。
-//                    Map<String, Object> result = new HashMap<String, Object>();
-//                    result.put("msg", "必须认证之后才能访问, " + ex.getMessage());
-//                    String s = new ObjectMapper().writeValueAsString(result);
-//                    resp.setContentType("application/json;charset=UTF-8");
-//                    resp.setStatus(HttpStatus.UNAUTHORIZED.value());
-//                    resp.getWriter().println(s);
-//                })
-//        ;
-//
-//        http.csrf().disable()  //关闭csrf
-//                .addFilter(new JwtLoginFilter(super.authenticationManager(), rsaKeyProperties))
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
-//        ;
-//    }
 
 }

@@ -24,7 +24,12 @@ public class MySecurityUserServiceImpl implements MySecurityUserService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
         SysUser sysUser = mySecurityUserMapper.findByUsername(username);
+        sysUser.setEnabled(true);
+        sysUser.setAccountNonLocked(true);
+        sysUser.setCredentialsNonExpired(true);
+        sysUser.setAccountNonExpired(true);
         return sysUser;
     }
 

@@ -10,6 +10,10 @@ import java.util.Date;
 @Data
 public class Payload<T> {
     private String id;
+    //用户信息
     private T userInfo;
+    //过期时间
     private Date expiration;
+    //签发时间
+    private Date issuedAt;
 }

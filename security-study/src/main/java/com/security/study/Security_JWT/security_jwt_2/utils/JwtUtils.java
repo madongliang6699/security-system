@@ -1,5 +1,6 @@
 package com.security.study.Security_JWT.security_jwt_2.utils;
 
+import com.alibaba.fastjson.JSON;
 import com.security.study.Security_JWT.security_jwt_2.entity.Payload;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -29,9 +30,10 @@ public class JwtUtils {
      */
     public static String generateTokenExpireInMinutes(Object userInfo, PrivateKey privateKey, int expire) {
         return Jwts.builder()
-                .claim(JWT_PAYLOAD_USER_KEY, JsonUtils.toString(userInfo))
+                .claim(JWT_PAYLOAD_USER_KEY, JSON.toJSONString(userInfo))
                 .setId(createJTI())
                 .setExpiration(DateTime.now().plusMinutes(expire).toDate())
+                .setIssuedAt(DateTime.now().toDate())
                 .signWith(SignatureAlgorithm.RS256, privateKey)
                 .compact();
     }
@@ -80,8 +82,9 @@ public class JwtUtils {
         Claims body = claimsJws.getBody();
         Payload<T> claims = new Payload<>();
         claims.setId(body.getId());
-        claims.setUserInfo(JsonUtils.toBean(body.get(JWT_PAYLOAD_USER_KEY).toString(), userType));
+        claims.setUserInfo(JSON.parseObject(body.get(JWT_PAYLOAD_USER_KEY).toString(), userType));
         claims.setExpiration(body.getExpiration());
+        claims.setIssuedAt(body.getIssuedAt());
         return claims;
     }
 
@@ -98,6 +101,8 @@ public class JwtUtils {
         Payload<T> claims = new Payload<>();
         claims.setId(body.getId());
         claims.setExpiration(body.getExpiration());
+        claims.setIssuedAt(body.getIssuedAt());
         return claims;
     }
+
 }

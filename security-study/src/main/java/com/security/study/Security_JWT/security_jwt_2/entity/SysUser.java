@@ -1,8 +1,8 @@
 package com.security.study.Security_JWT.security_jwt_2.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
@@ -19,52 +19,54 @@ public class SysUser implements UserDetails {
     private Integer id;
     private String username;
     private String password;
-    private Integer status;
+    //指示用户是否被启用或禁用
+    private Boolean enabled;
+    //指示用户的帐户是否已过期
+    private Boolean accountNonExpired;
+    //指示用户是否被锁定或解锁
+    private Boolean accountNonLocked;
+    //指示用户的凭据（密码）是否已过期
+    private Boolean credentialsNonExpired;
+    //角色
     private List<SysRole> roles = new ArrayList<>();
 
-    @JsonIgnore
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles;
+        List<GrantedAuthority> roleList = new ArrayList<>();
+        roles.forEach(role -> roleList.add(new SimpleGrantedAuthority(role.getRoleName())));
+        return roleList;
     }
 
-    @JsonIgnore
     @Override
     public String getPassword() {
         return password;
     }
 
-    @JsonIgnore
     @Override
     public String getUsername() {
         return username;
     }
 
-
-
-    //todo 下面这四个方法是根据某些条件来判断用户是否可用，方便起见，可以直接设为true
-    @JsonIgnore
     @Override
-    public boolean isAccountNonExpired() { //指示用户的帐户是否已过期
+    public boolean isAccountNonExpired() {
         return true;
     }
 
-    @JsonIgnore
     @Override
-    public boolean isAccountNonLocked() {   //指示用户是否被锁定或解锁
+    public boolean isAccountNonLocked() {
         return true;
     }
 
-    @JsonIgnore
     @Override
-    public boolean isCredentialsNonExpired() {  //指示用户的凭据（密码）是否已过期
+    public boolean isCredentialsNonExpired() {
         return true;
     }
 
-    @JsonIgnore
     @Override
-    public boolean isEnabled() {    //指示用户是否被启用或禁用
-        return status==1;
+    public boolean isEnabled() {
+        return true;
     }
+
 
 }

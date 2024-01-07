@@ -53,12 +53,7 @@ public class JWTLoginFilter2 extends UsernamePasswordAuthenticationFilter {
             SysUser user = new SysUser();
             user.setUsername(username);
             user.setPassword(password);
-            return authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            user.getUsername(),
-                            user.getPassword(),
-                            new ArrayList<>())
-            );
+            return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), new ArrayList<>()));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
