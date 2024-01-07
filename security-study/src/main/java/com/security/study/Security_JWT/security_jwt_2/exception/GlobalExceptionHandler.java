@@ -16,8 +16,6 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.net.ConnectException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @ClassName GlobalExceptionHandler
@@ -34,84 +32,85 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NoHandlerFoundException.class)
     public Result handlerNoFoundException(Exception e) {
         logger.error(e.getMessage(), e);
-        return Result.error(404, "路径不存在，请检查路径是否正确");
+        return Result.error(404, "路径不存在，请检查路径是否正确:" + e.getMessage());
     }
 
     @ExceptionHandler(DuplicateKeyException.class)
-    public Result handleDuplicateKeyException(DuplicateKeyException e){
+    public Result handleDuplicateKeyException(DuplicateKeyException e) {
         logger.error(e.getMessage(), e);
-        return Result.error("数据库中已存在该记录（主键重复）");
+        return Result.error("数据库中已存在该记录(主键重复):" + e.getMessage());
     }
 
     @ExceptionHandler(UsernameIsExitedException.class)
-    public Result usernameIsExitedException(UsernameIsExitedException e){
+    public Result usernameIsExitedException(UsernameIsExitedException e) {
         logger.error(e.getMessage(), e);
-        return Result.error("用户已经存在");
+        return Result.error("用户已经存在:" + e.getMessage());
     }
 
     @ExceptionHandler(Exception.class)
-    public Result handleException(Exception e){
+    public Result handleException(Exception e) {
         logger.error(e.getMessage(), e);
         return Result.error();
     }
 
     @ExceptionHandler(ServiceException.class)
-    public Result serviceException(ServiceException e){
+    public Result serviceException(ServiceException e) {
         logger.error(e.getMessage(), e);
         return Result.error();
     }
 
     @ExceptionHandler(ConnectException.class)
-    public Result connectException(ConnectException e){
+    public Result connectException(ConnectException e) {
         logger.error(e.getMessage(), e);
-        return Result.error("系统调用异常");
+        return Result.error("系统调用异常:" + e.getMessage());
     }
 
     @ExceptionHandler(ResourceAccessException.class)
-    public Result connectException(ResourceAccessException e){
+    public Result connectException(ResourceAccessException e) {
         logger.error(e.getMessage(), e);
-        return Result.error("系统之间调用异常");
+        return Result.error("系统之间调用异常:" + e.getMessage());
     }
 
     @ResponseBody
     @ExceptionHandler(value = {ExpiredJwtException.class})
     public Result expiredJwtException(ExpiredJwtException e) {
         logger.error(e.getMessage(), e);
-        return Result.error("Token过期");
+        return Result.error("Token过期:" + e.getMessage());
     }
 
     @ExceptionHandler(value = UnsupportedJwtException.class)
     @ResponseBody
     public Result unsupportedJwtException(UnsupportedJwtException e) {
         logger.error(e.getMessage(), e);
-        return Result.error("Token签名失败");
+        return Result.error("Token签名失败:" + e.getMessage());
     }
 
     @ExceptionHandler(value = SignatureException.class)
     @ResponseBody
     public Result signatureException(SignatureException e) {
         logger.error(e.getMessage(), e);
-        return Result.error("Token格式错误（签名异常）");
+        return Result.error("Token格式错误(签名异常):" + e.getMessage());
     }
 
     @ExceptionHandler(value = IllegalArgumentException.class)
     @ResponseBody
     public Result illegalArgumentException(IllegalArgumentException e) {
         logger.error(e.getMessage(), e);
-        return Result.error("Token为空或Token非法参数异常");
+        return Result.error("Token为空或Token非法参数异常:" + e.getMessage());
     }
 
     @ExceptionHandler(value = AccessDeniedException.class)
     @ResponseBody
     public Result accessDeniedException(AccessDeniedException e) {
         logger.error(e.getMessage(), e);
-        return Result.error("Token非法参数异常");
+        return Result.error("Token非法参数异常:" + e.getMessage());
     }
 
     @ExceptionHandler(value = MalformedJwtException.class)
     @ResponseBody
     public Result malformedJwtException(MalformedJwtException e) {
         logger.error(e.getMessage(), e);
-        return Result.error("Token没有被正确构造");
+        return Result.error("Token没有被正确构造:" + e.getMessage());
     }
+
 }

@@ -1,9 +1,7 @@
 package com.security.study.Security_JWT.security_jwt_2.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.security.study.Security_JWT.security_jwt_2.constant.AuthWhiteList;
 import com.security.study.Security_JWT.security_jwt_2.filter.JWTAuthenticationFilter;
-import com.security.study.Security_JWT.security_jwt_2.filter.JWTLoginFilter2;
 import com.security.study.Security_JWT.security_jwt_2.filter.JwtLoginFilter;
 import com.security.study.Security_JWT.security_jwt_2.handler.CustomAccessDeniedHandler;
 import com.security.study.Security_JWT.security_jwt_2.handler.CustomAuthenticationEntryPoint;
@@ -11,11 +9,8 @@ import com.security.study.Security_JWT.security_jwt_2.handler.CustomAuthenticati
 import com.security.study.Security_JWT.security_jwt_2.handler.CustomAuthenticationSuccessHandler;
 import com.security.study.Security_JWT.security_jwt_2.service.MySecurityUserService;
 import com.security.study.Security_JWT.security_jwt_2.service.impl.CustomAuthenticationProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -28,15 +23,12 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.Map;
 
 @Configuration
 @EnableWebSecurity //这个注解的意思是这个类是Spring Security的配置类
-//@EnableGlobalMethodSecurity(securedEnabled = true)
+@EnableGlobalMethodSecurity(securedEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Resource
@@ -49,7 +41,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 
 
     // 设置 HTTP 验证规则
