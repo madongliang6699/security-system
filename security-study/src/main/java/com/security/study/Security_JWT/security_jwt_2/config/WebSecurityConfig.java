@@ -1,18 +1,34 @@
 package com.security.study.Security_JWT.security_jwt_2.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.security.study.Security_JWT.security_jwt_2.constant.AuthWhiteList;
+import com.security.study.Security_JWT.security_jwt_2.filter.JWTAuthenticationFilter;
+import com.security.study.Security_JWT.security_jwt_2.filter.JWTLoginFilter2;
 import com.security.study.Security_JWT.security_jwt_2.filter.JwtLoginFilter;
+import com.security.study.Security_JWT.security_jwt_2.handler.CustomAccessDeniedHandler;
+import com.security.study.Security_JWT.security_jwt_2.handler.CustomAuthenticationEntryPoint;
+import com.security.study.Security_JWT.security_jwt_2.handler.CustomAuthenticationFailureHandler;
+import com.security.study.Security_JWT.security_jwt_2.handler.CustomAuthenticationSuccessHandler;
 import com.security.study.Security_JWT.security_jwt_2.service.MySecurityUserService;
+import com.security.study.Security_JWT.security_jwt_2.service.impl.CustomAuthenticationProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -20,6 +36,7 @@ import java.util.Map;
 
 @Configuration
 @EnableWebSecurity //这个注解的意思是这个类是Spring Security的配置类
+//@EnableGlobalMethodSecurity(securedEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Resource
@@ -33,40 +50,96 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    /**
-     * 认证用户的来源
-     *
-     * @param auth
-     * @throws Exception
-     */
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        //数据库中
-        auth.userDetailsService(mySecurityUserService).passwordEncoder(passwordEncoder());
-    }
 
-    /**
-     * 配置SpringSecurity相关信息
-     */
+
+    // 设置 HTTP 验证规则
     @Override
-    public void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .anyRequest().authenticated()
+    protected void configure(HttpSecurity http) throws Exception {
+        LogoutConfigurer<HttpSecurity> httpSecurityLogoutConfigurer = http.cors().and().csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .authorizeRequests()
+                .antMatchers(AuthWhiteList.AUTH_WHITELIST).permitAll()
+                .anyRequest().authenticated()  // 所有请求需要身份认证
                 .and()
+                .addFilter(new JWTLoginFilter2(authenticationManager()))
+                .addFilter(new JWTAuthenticationFilter(authenticationManager()))
                 .exceptionHandling()
-                .authenticationEntryPoint((req, resp, ex) -> { //前后端分离的项目拦截请求之后不应该跳转到某个页面，应该给前端返回一个提示认证的json数据就行了，可以这样设置。
-                    Map<String, Object> result = new HashMap<String, Object>();
-                    result.put("msg", "必须认证之后才能访问, " + ex.getMessage());
-                    String s = new ObjectMapper().writeValueAsString(result);
-                    resp.setContentType("application/json;charset=UTF-8");
-                    resp.setStatus(HttpStatus.UNAUTHORIZED.value());
-                    resp.getWriter().println(s);
-                });
-
-        http.csrf().disable()  //关闭csrf
-                .addFilter(new JwtLoginFilter(super.authenticationManager(), rsaKeyProperties))
-                //.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)//禁用session
-        ;
+                .authenticationEntryPoint(authenticationEntryPoint())// 自定义身份验证入口点
+                .accessDeniedHandler(accessDeniedHandler()) // 自定义访问失败处理器
+                .and()
+                .formLogin()
+                .successHandler(authenticationSuccessHandler())// 认证成功处理器
+                .failureHandler(authenticationFailureHandler())// 认证失败处理器
+                .and()
+                .logout() // 默认注销行为为logout，可以通过下面的方式来修改
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login")// 设置注销成功后跳转页面，默认是跳转到登录页面;
+                .permitAll();
     }
+
+    // 该方法是登录的时候会进入
+    @Override
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        // 使用自定义身份验证组件
+        auth.authenticationProvider(new CustomAuthenticationProvider(mySecurityUserService, passwordEncoder()));
+    }
+
+    @Bean
+    public AuthenticationEntryPoint authenticationEntryPoint() {
+        return new CustomAuthenticationEntryPoint();
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler authenticationSuccessHandler() {
+        return new CustomAuthenticationSuccessHandler();
+    }
+
+    @Bean
+    public AuthenticationFailureHandler authenticationFailureHandler() {
+        return new CustomAuthenticationFailureHandler();
+    }
+
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+        return new CustomAccessDeniedHandler();
+    }
+
+
+//    /**
+//     * 认证用户的来源
+//     *
+//     * @param auth
+//     * @throws Exception
+//     */
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        //数据库中
+//        auth.userDetailsService(mySecurityUserService).passwordEncoder(passwordEncoder());
+//    }
+
+//    /**
+//     * 配置SpringSecurity相关信息
+//     */
+//    @Override
+//    public void configure(HttpSecurity http) throws Exception {
+//        http.authorizeRequests()
+//                .anyRequest().authenticated()
+//                .and()
+//                .exceptionHandling()
+//                .authenticationEntryPoint((req, resp, ex) -> { //前后端分离的项目拦截请求之后不应该跳转到某个页面，应该给前端返回一个提示认证的json数据就行了，可以这样设置。
+//                    Map<String, Object> result = new HashMap<String, Object>();
+//                    result.put("msg", "必须认证之后才能访问, " + ex.getMessage());
+//                    String s = new ObjectMapper().writeValueAsString(result);
+//                    resp.setContentType("application/json;charset=UTF-8");
+//                    resp.setStatus(HttpStatus.UNAUTHORIZED.value());
+//                    resp.getWriter().println(s);
+//                })
+//        ;
+//
+//        http.csrf().disable()  //关闭csrf
+//                .addFilter(new JwtLoginFilter(super.authenticationManager(), rsaKeyProperties))
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+//        ;
+//    }
 
 }
