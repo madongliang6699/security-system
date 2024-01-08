@@ -94,12 +94,24 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
             //Claims claims = Jwts.parser().setSigningKey(ConstantKey.SIGNING_KEY).parseClaimsJws(token.replace(ConstantKey.BEARER, "")).getBody();
             token = token.replace(ConstantKey.BEARER, "");
             Payload<SysUser> infoFromToken = JwtUtils.getInfoFromToken(token, rsaKeyProperties.getPublicKey(), SysUser.class);
-
+            //能走到这里,说明token校验通过了.
             SysUser sysUser = infoFromToken.getUserInfo();
             long issuedAt = infoFromToken.getIssuedAt().getTime();// token签发时间
             long currentTimeMillis = System.currentTimeMillis();// 当前时间
             long expirationTime = infoFromToken.getExpiration().getTime();// token过期时间
 
+
+            // region
+            /**
+             * todo 下面这段逻辑是做JWT token 续期的, 就是根据根据当前时间(本次请求的时间)重新生成一个token返回给前端,
+             *  前端后续的请求使用最新的token, 这样就能做到每次请求都会刷新一下token的过期时间(实际上是通过生成新的token做到刷新时间的,并不是给原有的token刷新了时间).
+             *
+             *  不过下面这里, 针对续期的时机点做了判断,即:并不是每次请求都立马生成新的token,而是看看当前token是不是快过期了再决定是否生成新token,
+             *  下面的判断的大致逻辑就是: 如果token的过期时间如果只剩一半时间了,就生成新token给前端刷新过期时间. 比如过期时间是1个小时,那就再半个小时内的请求不生成新token,半小时后的请求刷新token给前端.
+             *  这样是减少生成token的频率,但是这样也有问题: 如果某一次请求正好是在过期时间的一半的前面一点(半小时时间点的前面一点), 导致这次请求没有生成新token, 下次请求又正好是在刚过了有效期的时间点,
+             *  就会报token已经过期让重新登录,但是这两次请求的时间间隔只有半个小时多一点,导致用户认为过期时间只有半个小时.
+             *  所以还是每次请求都生成一个新token比较稳妥.
+             */
             // 1. 签发时间 < 当前时间 < (签发时间+((token过期时间-token签发时间)/2)) 不刷新token
             // 2. (签发时间+((token过期时间-token签发时间)/2)) < 当前时间 < token过期时间 刷新token并返回给前端
             // 3. tokne过期时间 < 当前时间 跳转登录，重新登录获取token
@@ -110,6 +122,10 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
                 // 主动刷新token，并返回给前端
                 response.addHeader("refreshToken", refreshToken);
             }
+            // endregion
+
+
+
             long end = System.currentTimeMillis();
             logger.info("执行时间: {}", (end - start) + " 毫秒");
             return new UsernamePasswordAuthenticationToken(sysUser, null, sysUser.getAuthorities());
