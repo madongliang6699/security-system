@@ -7,16 +7,52 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/mySecurityTest")
 public class MySecurityTestController {
 
-    @PreAuthorize("hasRole('ROLE_ADM')")
-    @Secured("ROLE_PRODUCT")
-    @GetMapping("/aa")
-    public String aa(){
+
+
+    @GetMapping("/all/a1")
+    public String alla1(){
         System.out.println("-----");
         return "nihao";
     }
 
+
+    @GetMapping("/all/a2")
+    public String alla2(){
+        System.out.println("-----");
+        return "nihao";
+    }
+
+    @GetMapping("/one/a1")
+    public String onea1(){
+        System.out.println("-----");
+        return "nihao";
+    }
+
+
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    //@Secured("ROLE_PRODUCT")
+    @GetMapping("/admin/a1")
+    public String admina1(){
+        System.out.println("-----");
+        return "nihao";
+    }
+
+
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    //@Secured("ROLE_PRODUCT")
+    @GetMapping("/admin/a2")
+    public String admina2(){
+        System.out.println("-----");
+        return "nihao";
+    }
+
+
+    @GetMapping("/user/a2")
+    public String usera2(){
+        System.out.println("-----");
+        return "nihao";
+    }
 
 }

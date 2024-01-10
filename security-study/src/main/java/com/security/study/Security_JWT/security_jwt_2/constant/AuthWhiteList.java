@@ -9,7 +9,10 @@ public class AuthWhiteList {
      * 需要放行的URL
      */
     public static final String[] AUTH_WHITELIST = {
-            // -- register url
+            // -- 测试权限放行相关url
+            "/all/**",
+            "/one/a1",
+            // -- 注册用户相关的url
             "/users/signup",
             "/users/addTask",
             "/users/userListV2",

@@ -48,10 +48,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         LogoutConfigurer<HttpSecurity> httpSecurityLogoutConfigurer = http.cors().and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)//既然使用JWT了就禁用session
-                .and()
+                .and() //好像是每个
                 .authorizeRequests()
-                .antMatchers(AuthWhiteList.AUTH_WHITELIST).permitAll()
-                .anyRequest().authenticated()  // 所有请求需要身份认证
+                .antMatchers(AuthWhiteList.AUTH_WHITELIST).permitAll() //给这些url放行, 这些地址能随意请求不需登录; permitAll()就是登不登录都能访问; anonymous():只允许匿名访问,登录后就不能访问;
+                .antMatchers("/admin/**").hasRole("ADMIN") //采用了 Ant 风格的路径匹配符 配置权限:admin/路径下的url需要有admin角色的用户才能访问;
+                .antMatchers("/user/**").hasRole("USER")
+                .anyRequest().authenticated()  // 所有请求需要身份认证; authenticated()就是需要认证的意思;
+                //mdl 注意 上面需要注意的是: anyRequest()必须在antMatchers()后面,否则启动就报错; springSecurity这里的设计原则是先匹配上的设置就直接生效,后面的匹配就不起作用了; 并且一般都是先指定放行的部分url,再控制其他所有url需要认证; 这样的设计是合理的;
                 .and()
                 .addFilter(new JwtLoginFilter(authenticationManager(), rsaKeyProperties))
                 .addFilter(new JWTAuthenticationFilter(authenticationManager(), rsaKeyProperties))
@@ -72,6 +75,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     // 该方法是登录的时候会进入
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        //临时添加内存用户
+        //auth.inMemoryAuthentication()
+        //        .withUser("xiaoming")
+        //        .password("123")
+        //        .roles("admin")
+        //        .and()
+        //        .withUser("江南一点雨")
+        //        .password("123")
+        //        .roles("user")
+        //;
         // 使用自定义身份验证组件
         auth.authenticationProvider(new CustomAuthenticationProvider(mySecurityUserService, passwordEncoder()));
     }
