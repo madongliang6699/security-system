@@ -51,8 +51,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and() //好像是每个
                 .authorizeRequests()
                 .antMatchers(AuthWhiteList.AUTH_WHITELIST).permitAll() //给这些url放行, 这些地址能随意请求不需登录; permitAll()就是登不登录都能访问; anonymous():只允许匿名访问,登录后就不能访问;
-                .antMatchers("/admin/**").hasRole("ADMIN") //采用了 Ant 风格的路径匹配符 配置权限:admin/路径下的url需要有admin角色的用户才能访问;
-                .antMatchers("/user/**").hasRole("USER")
+                .antMatchers("/admin/**").hasRole("admin") //采用了 Ant 风格的路径匹配符 配置权限:admin/路径下的url需要有admin角色的用户才能访问; 角色数据是区分大小写的,不能写错; 角色数据默认自带"ROLE_"前缀;
+                .antMatchers("/user/**").hasRole("user")  //一般admin角色都具备普通用户角色的权限,那怎么才能让上面的"admin"具备"user"的权限呢?SpringSecurity有一个角色继承的功能,见MSecurityConfig配置类;配置之后admin就能访问user的url了
                 .anyRequest().authenticated()  // 所有请求需要身份认证; authenticated()就是需要认证的意思;
                 //mdl 注意 上面需要注意的是: anyRequest()必须在antMatchers()后面,否则启动就报错; springSecurity这里的设计原则是先匹配上的设置就直接生效,后面的匹配就不起作用了; 并且一般都是先指定放行的部分url,再控制其他所有url需要认证; 这样的设计是合理的;
                 .and()

@@ -14,20 +14,20 @@ public class MySecurityTestController {
     @GetMapping("/all/a1")
     public String alla1(){
         System.out.println("-----");
-        return "nihao";
+        return "/all/a1";
     }
 
 
     @GetMapping("/all/a2")
     public String alla2(){
         System.out.println("-----");
-        return "nihao";
+        return "/all/a2";
     }
 
     @GetMapping("/one/a1")
     public String onea1(){
         System.out.println("-----");
-        return "nihao";
+        return "/one/a1";
     }
 
 
@@ -36,7 +36,7 @@ public class MySecurityTestController {
     @GetMapping("/admin/a1")
     public String admina1(){
         System.out.println("-----");
-        return "nihao";
+        return "/admin/a1";
     }
 
 
@@ -45,14 +45,14 @@ public class MySecurityTestController {
     @GetMapping("/admin/a2")
     public String admina2(){
         System.out.println("-----");
-        return "nihao";
+        return "/admin/a2";
     }
 
 
     @GetMapping("/user/a2")
     public String usera2(){
         System.out.println("-----");
-        return "nihao";
+        return "/user/a2";
     }
 
 }
