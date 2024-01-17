@@ -9,9 +9,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
@@ -24,10 +28,18 @@ import java.net.ConnectException;
  * @Date 2021/11/26 15:59
  * @Version 1.0
  */
-@ControllerAdvice
+//@ControllerAdvice
+@RestControllerAdvice
 public class GlobalExceptionHandler {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Result handlerMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        logger.error(e.getMessage(), e);
+        BindingResult bindingResult = e.getBindingResult();
+        return Result.error(422, "参数校验不通过:" + bindingResult.getFieldError().getDefaultMessage());
+    }
 
     @ExceptionHandler(NoHandlerFoundException.class)
     public Result handlerNoFoundException(Exception e) {

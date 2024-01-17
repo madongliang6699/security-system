@@ -51,26 +51,20 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
             String header = request.getHeader(ConstantKey.HEADER_KEY);
             if (ObjectUtil.isEmpty(header) || !header.startsWith(ConstantKey.BEARER)) {
                 // 如果请求路径是放行路径，则直接跳过认证
-                List<String> anonUrlList = Arrays.asList(AuthWhiteList.AUTH_WHITELIST);
-                if (anonUrlList.contains(requestURI)) {
-                    chain.doFilter(request, response);
-                    return;
-                } else {
-                    throw new IllegalArgumentException("Token参数异常");
-                }
-//                chain.doFilter(request, response);
-//                return;
+                //List<String> anonUrlList = Arrays.asList(AuthWhiteList.AUTH_WHITELIST);
+                //if (anonUrlList.contains(requestURI)) { //mdl TODO 这里这样判断有问题,因为有的白名单的写法是 "/ceshi/**" 这种通配符,这里做不到准确匹配
+                //    chain.doFilter(request, response);
+                //    return;
+                //} else {
+                //    throw new IllegalArgumentException("Token参数异常");
+                //}
+
+                //上面的判断是不准确的,因为有的白名单的写法是 "/ceshi/**" 这种通配符,这里没法准确匹配,其实这里如果检查到没有前端传token信息,
+                // 这里可以直接放行让Security去做, Security自然会检查到本次请求的用户认证信息不足(因为没有像下面一样生成有效的UsernamePasswordAuthenticationToken认证对象),然后拦截当前请求,如果是白名单里的url,Security自然会放行.
+                // 这里的调用逻辑也是模仿父类里的doFilterInternal方法,实现的.
+                chain.doFilter(request, response);
             }
 
-            // 如果token不为空，并且是以指定票据开头
-//            if (ObjectUtil.isNotEmpty(header) && header.startsWith(ConstantKey.BEARER)) {
-//                // 如果请求路径是放行路径，则直接跳过认证
-//                List<String> anonUrlList = Arrays.asList(AuthWhiteList.AUTH_WHITELIST);
-//                if (anonUrlList.contains(requestURI)) {
-//                    chain.doFilter(request, response);
-//                    return;
-//                }
-//            }
         } catch (IllegalArgumentException e) {
             // 异常捕获、发送到IllegalArgumentException
             request.setAttribute("illegalArgumentException", e);

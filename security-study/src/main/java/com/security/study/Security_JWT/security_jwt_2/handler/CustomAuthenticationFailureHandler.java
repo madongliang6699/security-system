@@ -12,9 +12,9 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.authentication.www.NonceExpiredException;
 import org.springframework.stereotype.Component;
 
-import javax.security.auth.login.AccountExpiredException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -46,7 +46,10 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
             map.put("code", HttpStatus.UNAUTHORIZED.value());
             map.put("msg", exception.getMessage());
 
-            //jwt验证的地方已经做了异常统一处理,这里就不需要了
+            //认证失败后, 这里进不来, 进 CustomAuthenticationEntryPoint 类里了,
+            // 上面说是这里是(适用表单登录方式)
+
+            //
             //if (exception instanceof LockedException) {
             //    map.put("msg", "账户被锁定，请联系管理员!");
             //} else if (exception instanceof CredentialsExpiredException) {
@@ -69,4 +72,5 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
             super.onAuthenticationFailure(request, response, exception);
         }
     }
+
 }

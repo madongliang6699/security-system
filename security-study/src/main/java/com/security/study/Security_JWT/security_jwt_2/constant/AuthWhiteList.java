@@ -9,6 +9,8 @@ public class AuthWhiteList {
      * 需要放行的URL
      */
     public static final String[] AUTH_WHITELIST = {
+            // -- 放行其他临时测试
+            "/ceshi/**",
             // -- 测试权限放行相关url
             "/all/**",
             "/one/a1",
