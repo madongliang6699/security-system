@@ -28,7 +28,7 @@ import javax.annotation.Resource;
 
 @Configuration
 @EnableWebSecurity //这个注解的意思是这个类是Spring Security的配置类
-@EnableGlobalMethodSecurity(securedEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true) //参数解释看 MySecurityTestController2类
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Resource
