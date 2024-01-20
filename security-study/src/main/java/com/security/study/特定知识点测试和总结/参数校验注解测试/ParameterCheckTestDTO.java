@@ -18,7 +18,7 @@ public class ParameterCheckTestDTO implements Serializable {
     private Integer age;
 
 
-    @Pattern(regexp = "/^1((34[0-8])|(8\\d{2})|(([35][0-35-9]|4[579]|66|7[35678]|9[1389])\\d{1}))\\d{7}$/", message = "手机号格式不正确")
+    @Pattern(regexp = "^1[3456789]\\d{9}$", message = "手机号格式不正确")
     private String phone;
 
 

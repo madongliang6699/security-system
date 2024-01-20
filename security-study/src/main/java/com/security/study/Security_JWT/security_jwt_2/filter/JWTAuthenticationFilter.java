@@ -63,6 +63,7 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
                 // 这里可以直接放行让Security去做, Security自然会检查到本次请求的用户认证信息不足(因为没有像下面一样生成有效的UsernamePasswordAuthenticationToken认证对象),然后拦截当前请求,如果是白名单里的url,Security自然会放行.
                 // 这里的调用逻辑也是模仿父类里的doFilterInternal方法,实现的.
                 chain.doFilter(request, response);
+                return;
             }
 
         } catch (IllegalArgumentException e) {
