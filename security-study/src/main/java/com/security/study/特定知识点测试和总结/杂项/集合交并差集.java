@@ -1,4 +1,4 @@
-package com.security.study.特定知识点测试和总结.aa;
+package com.security.study.特定知识点测试和总结.杂项;
 
 import org.apache.commons.collections.CollectionUtils;
 
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class B {
+public class 集合交并差集 {
 
     public static void main(String[] args) {
 

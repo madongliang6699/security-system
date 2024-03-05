@@ -1,16 +1,16 @@
-package com.security.study.特定知识点测试和总结.aa;
+package com.security.study.特定知识点测试和总结.杂项;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class AA {
+public class 时间处理 {
 
     public static void main(String[] args) throws ParseException {
         //System.out.println(null == 1);
         System.out.println(null == null);
-        System.out.println(null == new AA());
+        System.out.println(null == new 时间处理());
         System.out.println(null + "");
 
         String format = "HH:mm:ss";
