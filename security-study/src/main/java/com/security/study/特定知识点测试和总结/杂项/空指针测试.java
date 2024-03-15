@@ -37,9 +37,6 @@ public class 空指针测试 {
         System.out.println(strList);
 
 
-
-
-
         User0304 user = new User0304();
         //类似这样,工作当中的集合中就可能被添加进了null元素
         strList.add(user.getName());
