@@ -1,0 +1,31 @@
+pipeline {
+	agent any
+
+	stages {
+		stage('拉取代码') {
+		steps {
+			echo '拉取代码......'
+		}
+		}
+		stage('编译构建') {
+		steps {
+		echo '编译构建......'
+		}
+		}
+		stage('项目部署') {
+		steps {
+		echo '项目部署......'
+		}
+		}
+	}
+	post {
+        always {
+            emailext(
+            subject: '构建通知：${PROJECT_NAME} - Build # ${BUILD_NUMBER} -
+            ${BUILD_STATUS}!',
+            body: '${FILE,path="execFile/Jenkins/email.html"}',
+            to: '1129708413@qq.com'
+            )
+        }
+	}
+}
