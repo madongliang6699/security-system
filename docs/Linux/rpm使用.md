@@ -28,4 +28,5 @@ rpm -Uvh --oldpackage gaim-1.3.0-1.fc4.i386.rpm 新版本降级为旧版本
 rpm -e jenkins-2.319.2-1.1.noarch.rpm  -e是erase：清除
 
 
+## rpm安装和tar压缩包安装的区别
 
