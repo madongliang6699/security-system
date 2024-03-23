@@ -23,7 +23,7 @@ pipeline {
             emailext(
             subject: '构建通知：${PROJECT_NAME} - Build # ${BUILD_NUMBER} - ${BUILD_STATUS}!',
             body: '${FILE,path="execFile/Jenkins/email.html"}',
-            to: '1129708413@qq.com'
+            to: 'madongliang6699@163.com'
             )
         }
 	}
