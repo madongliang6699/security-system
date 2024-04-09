@@ -28,6 +28,8 @@ rpm -ivh jenkins-2.319.2-1.1.noarch.rpm 安装Jenkins包
 * -i 是安装的意思 install
 * -v 显示安装过程 verbose
 * -h 显示进度 hash
+*  —nodeps	就是安装时不检查依赖关系，比如你这个rpm需要A，但是你没装A，这样你的包就装不上，用了—nodeps你就能装上了
+*  —force	就是强制安装，比如你装过这个rpm的版本1，如果你想装这个rpm的版本2，就需要用—force强制安装
 
 rpm -ivh --test jenkins-2.319.2-1.1.noarch.rpm 用来检查依赖关系，并不是真正的安装
 
@@ -44,6 +46,9 @@ rpm -Uvh --oldpackage gaim-1.3.0-1.fc4.i386.rpm 新版本降级为旧版本
 ## rpm 反安装：卸载
 
 rpm -e jenkins-2.319.2-1.1.noarch.rpm  -e是erase：清除
+
+rpm -e —nodeps jenkins-2.319.2-1.1.noarch.rpm  :  
+—nodeps	卸载软件时，不检查依赖，这样的话，那些使用该软件包的软件在此之后可能就不能正常工作了。
 
 
 ## rpm安装和tar压缩包安装的区别
