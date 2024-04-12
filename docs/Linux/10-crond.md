@@ -101,7 +101,7 @@ no crontab for root
 
 #### 公司定时任务
 
-![img.png](img.png)
+![img.png](imgs/公司定时任务.png)
 
 上图中是公司218机器的定时任务，执行的文件在上面的crondFile文件夹中。
 
