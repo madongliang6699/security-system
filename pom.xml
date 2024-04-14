@@ -22,9 +22,6 @@
     <modules>
         <module>security-common</module>
         <module>security-study</module>
-        <module>security-wasteGeneration</module>
-        <module>security-wasteWarehousing</module>
-        <module>security-wasteGeneration-api</module>
         <module>security-order</module>
         <module>security-order-api</module>
         <module>security-market-api</module>
