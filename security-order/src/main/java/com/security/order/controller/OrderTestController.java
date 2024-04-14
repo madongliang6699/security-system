@@ -11,10 +11,7 @@ import com.security.order.domain.dto.GenOrderIdDTO;
 import com.security.order.domain.request.CreateOrderRequest;
 import com.security.order.domain.request.GenOrderIdRequest;
 import org.apache.dubbo.config.annotation.DubboReference;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/order/test")
@@ -28,6 +25,12 @@ public class OrderTestController {
     
     @DubboReference(version = "1.0.0", retries = 0) //使用dubbo注入，拿到的对象不是OrderApiImpl对象，是一个Proxy0的代理对象
     OrderApi orderApi;
+
+
+    @DubboReference(version = "1.0.0", retries = 0, timeout = 10000)
+    MarketApi marketApi;
+
+
     
     /**
      * 生成订单id
@@ -46,5 +49,15 @@ public class OrderTestController {
     public JsonResult<CreateOrderDTO> createOrder(@RequestBody CreateOrderRequest createOrderRequest) {
         return orderApi.createOrder(createOrderRequest);
     }
-    
+
+
+    /**
+     * 测试zk挂掉后能不能使用
+     */
+    @GetMapping("/ceshi1")
+    public JsonResult<String> ceshi1() {
+        return marketApi.ceshi1("123");
+    }
+
+
 }

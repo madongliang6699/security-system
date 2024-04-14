@@ -22,4 +22,10 @@ public interface OrderApi {
     JsonResult<CreateOrderDTO> createOrder(CreateOrderRequest createOrderRequest);
 
 
+    /**
+     * 测试zk挂了
+     */
+    JsonResult<String> ceshi1(String aa);
+
+
 }

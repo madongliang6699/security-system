@@ -79,4 +79,22 @@ public class MarketApiImpl implements MarketApi {
             return JsonResult.buildError(e.getMessage());
         }
     }
+
+    @Override
+    public JsonResult<String> ceshi1(String userId) {
+        try {
+            return JsonResult.buildSuccess("nihao啊");
+        } catch (MarketBizException e) {
+            log.error("biz error", e);
+            return JsonResult.buildError(e.getErrorCode(), e.getErrorMsg());
+        } catch (Exception e) {
+            log.error("system error", e);
+            return JsonResult.buildError(e.getMessage());
+        }
+    }
+
+
+
+
+
 }

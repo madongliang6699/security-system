@@ -10,6 +10,7 @@ import com.security.order.exception.OrderBizException;
 import com.security.order.exception.OrderErrorCodeEnum;
 import com.security.order.service.OrderService;
 import org.apache.dubbo.config.annotation.DubboService;
+import org.apache.dubbo.registry.support.AbstractRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ public class OrderApiImpl implements OrderApi {
     
     @Autowired
     OrderService orderService;
+
     
     
     @Override
@@ -60,5 +62,10 @@ public class OrderApiImpl implements OrderApi {
             logger.error("system error", exception);
             return JsonResult.buildError(exception.getMessage());
         }
+    }
+
+    @Override
+    public JsonResult<String> ceshi1(String aa) {
+        return JsonResult.buildSuccess("order返回数据22。。。。");
     }
 }

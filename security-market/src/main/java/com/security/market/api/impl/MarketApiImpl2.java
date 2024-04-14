@@ -20,14 +20,14 @@ import java.util.List;
  */
 @Slf4j
 // version = "2.0.0"
-@DubboService(version = "2.0.0", interfaceClass = MarketApi.class, retries = 0)
-public class MarketApiImpl2 implements MarketApi {
+//@DubboService(version = "2.0.0", interfaceClass = MarketApi.class, retries = 0)
+public class MarketApiImpl2 /*implements MarketApi*/ {
 
 
     @Autowired
     MarketService marketService;
 
-    @Override
+//    @Override
     public JsonResult<Long> calculateOrderAmount(CalculateOrderAmountRequest calculateOrderAmountRequest) {
         try {
 //            CalculateOrderAmountDTO calculateOrderAmountDTO = marketService.calculateOrderAmount(calculateOrderAmountRequest);
@@ -66,7 +66,7 @@ public class MarketApiImpl2 implements MarketApi {
 
     }
 
-    @Override
+//    @Override
     public JsonResult<Boolean> lockUserCoupon(String userId) {
         return null;
     }
