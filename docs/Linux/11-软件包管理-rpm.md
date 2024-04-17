@@ -48,7 +48,7 @@ rpm -Uvh --oldpackage gaim-1.3.0-1.fc4.i386.rpm 新版本降级为旧版本
 rpm -e jenkins-2.319.2-1.1.noarch.rpm  -e是erase：清除
 
 rpm -e —nodeps jenkins-2.319.2-1.1.noarch.rpm  :  
-—nodeps	卸载软件时，不检查依赖，这样的话，那些使用该软件包的软件在此之后可能就不能正常工作了。
+—nodeps	卸载软件时，不检查依赖，强制卸载，这样的话，那些使用该软件包的软件在此之后可能就不能正常工作了，所以不推荐这样卸载。
 
 
 ## rpm安装和tar压缩包安装的区别
