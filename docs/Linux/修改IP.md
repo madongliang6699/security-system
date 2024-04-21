@@ -3,3 +3,5 @@
 3. 将BOOTPROTO的值改为static，将ONBOOT的值改为yes，同时在文字下方添加新的IP地址、子网掩码和网关等信息，保存并关闭文件。
 4. 重启网络服务以应用更改，命令为`sudo systemctl restart network`。
 5. 使用`ip addr`
+
+hostname -I 或 hostname -i 也可以显示ip信息
