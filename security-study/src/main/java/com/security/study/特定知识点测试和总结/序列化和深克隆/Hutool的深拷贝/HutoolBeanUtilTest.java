@@ -1,6 +1,7 @@
 package com.security.study.特定知识点测试和总结.序列化和深克隆.Hutool的深拷贝;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.extra.cglib.CglibUtil;
 import com.security.study.特定知识点测试和总结.序列化和深克隆.pojo.HseUser240428DTO;
 import com.security.study.特定知识点测试和总结.序列化和深克隆.pojo.HseUser240428RpcDTO;
 import com.security.study.特定知识点测试和总结.序列化和深克隆.序列化深克隆.TestDeepClone;
@@ -47,6 +48,13 @@ public class HutoolBeanUtilTest {
 
         System.out.println(list);
         System.out.println(hseUser240428RpcDTOS);
+
+        HseUser240428RpcDTO cglibCopy = CglibUtil.copy(huangshang, HseUser240428RpcDTO.class);
+        HseUser240428RpcDTO cglibCopyList = CglibUtil.copy(list, HseUser240428RpcDTO.class);
+
+        //看结果只能浅拷贝,还不能类型转换
+        System.out.println("cglibCopy==>" + cglibCopy);
+        System.out.println("cglibCopyList==>" + cglibCopyList);
     }
 
 
