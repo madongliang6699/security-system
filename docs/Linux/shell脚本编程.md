@@ -121,3 +121,127 @@ bash -x /path/to/some_script
 语法错误: 会导致后续的命令不继续执行，可以用bash -n 检查错误，提示的出错行数不一定是准确的.  
 命令错误: 命令不小心写错了，默认后续的命令还会继续执行，用bash -n 无法检查出来 ，可以使用 bash -x 进行观察.  
 逻辑错误: 只能使用 bash -x 进行观察.
+
+
+
+## 变量
+
+####  命名要求
+区分大小写  
+不能使程序中的保留字和内置变量：如：if, for  
+只能使用数字、字母及下划线，且不能以数字开头，注意：不支持短横线 “ - ”，和主机名相反
+
+#### 命名习惯
+见名知义，用英文单词命名，并体现出实际作用，不要用简写，如：ATM  
+变量名大写  
+局部变量小写  
+函数名小写  
+大驼峰StudentFirstName  
+小驼峰studentFirstName  
+下划线: student_name  
+
+####  变量定义和引用
+
+- 普通变量：生效范围为当前shell进程；对当前shell之外的其它shell进程，包括当前shell的子shell进程均无效
+- 环境变量：生效范围为当前shell进程及其子进程，所以当你写的脚本中又启动执行了其他脚本，那就是你的子进程，但是默认子进程没法使用父进程的普通变量， 如果想使用父进程的变量，那父进程可以定义一个环境变量。
+- 本地变量：生效范围为当前shell进程中某代码片断，通常指函数
+
+
+变量定义或赋值：name='value'
+
+value 可以是以下多种形式：  
+直接字串：name='root'  
+变量引用：name="$USER"  或 变量引用：name=$USER
+命令引用：name=`COMMAND` 或者 name=$(COMMAND)  
+
+变量引用：$name  或  ${name}
+
+弱引用和强引用
+"$name" 弱引用，其中的变量引用会被替换为变量值
+'$name' 强引用，其中的变量引用不会被替换为变量值，而保持原字符串
+
+~~~shell
+[root@centos8 ~]#TITLE='cto'
+[root@centos8 ~]#echo $TITLE
+cto
+[root@centos8 ~]#echo I am $TITLE
+I am cto
+[root@centos8 ~]#echo "I am $TITLE"
+I am cto
+[root@centos8 ~]#echo 'I am $TITLE'
+I am $TITLE
+[root@centos8 ~]#NAME=$USER
+[root@centos8 ~]#echo $NAME
+root
+[root@centos8 ~]#USER=`whoami`
+[root@centos8 ~]#echo $USER
+root
+[root@centos8 ~]#FILE=`ls /run`
+[root@centos8 ~]#echo $FILE
+
+
+[root@centos8 ~]#NUM=`seq 10`
+[root@centos8 ~]#echo $NUM
+1 2 3 4 5 6 7 8 9 10
+[root@centos8 ~]#echo "$NUM"
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+~~~
+上面这里注意的是：echo $NUM 和 echo "$NUM" 一般情况下是加不加双引号是一样的结果， 但是结果有换行的时候就有细节区别了。
+
+
+显示已定义的所有变量：
+set
+
+set | grep name1
+
+删除变量：
+unset 变量名
+
+
+####  环境变量
+环境变量： 
+上面说了，子进程是没法使用父进程的普通变量的，但是可以使用父进程的环境变量。
+环境变量就是可以使子进程（包括孙子进程）继承父进程的变量，但是无法让父进程使用子进程的变量   
+一旦子进程修改从父进程继承的变量，将会新的值传递给孙子进程  
+一般只在系统配置文件中使用，在脚本中较少使用  
+
+【查看父子进程关系可以使用pstree -p命令查看，或在脚本中打印出当前进程id和父进程id查看。】
+~~~shell
+#声明并赋值
+export name=VALUE
+declare -x name=VALUE
+#或者分两步实现
+name=VALUE
+export name
+~~~
+
+但是实际生产中，脚本中很少使用环境变量，环境变量一般都是配置文件中使用。脚本中使用环境变量的话会很容易混淆。
+
+#### 只读变量
+只读变量：只能声明定义，但后续不能修改和删除，即常量
+
+声明：  
+readonly name  
+declare -r name
+
+查看只读变量：  
+readonly [-p]  
+declare -r
+
+
+#### 位置变量
+
+
+
+
+
+
