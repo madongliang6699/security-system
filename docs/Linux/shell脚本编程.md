@@ -239,9 +239,69 @@ declare -r
 
 
 #### 位置变量
+位置变量：在bash shell中内置的变量, 在脚本代码中调用通过命令行传递给脚本的参数
+~~~
+$1, $2, ... 对应第1个、第2个等参数，shift [n]换位置
+$0 命令本身,包括路径
+$* 传递给脚本的所有参数，全部参数合为一个字符串
+$@ 传递给脚本的所有参数，每个参数为独立字符串
+$# 传递给脚本的参数的个数
+注意：$@ $* 只在被双引号包起来的时候才会有差异
+~~~
+
+清空所有位置变量：set --
+
+范例：
+~~~shell
+下面是一个案例脚本：
+[root@centos8 ~]#cat /data/scripts/arg.sh 
+#!/bin/bash
+
+echo "1st arg is $1"
+echo "2st arg is $2"
+echo "3st arg is $3"
+echo "10st arg is ${10}"
+echo "11st arg is ${11}"
+echo "The number of arg is $#"
+echo "All args are $*"
+echo "All args are $@"
+echo "The scriptname is `basename $0`"
+
+执行脚本的结果：
+[root@centos8 ~]#bash /data/scripts/arg.sh {a..z}
+1st arg is a
+2st arg is b
+3st arg is c
+10st arg is j
+11st arg is k
+The number of arg is 26
+All args are a b c d e f g h i j k l m n o p q r s t u v w x y z
+All args are a b c d e f g h i j k l m n o p q r s t u v w x y z
+The scriptname is arg.sh
+~~~
+其实位置变量就是执行脚本的时候可以带参数（就像执行命令后面可以带参数一样），参数会自动赋值给脚本内部的
+$1 和 $2 和 $3 等变量，第一个参数赋值给$1,第二个参数给$2，以此类推。
 
 
+####  退出状态码变量
+当我们浏览网页时，有时会看到404，500的数字，表示网页的错误信息，我们称为状态码，在shell脚
+本中也有相似的技术表示程序执行的相应状态。
+进程执行后，将使用变量 $? 保存状态码的相关数字，不同的值反应成功或失败，$?取值范例 0-255
 
+案例：
+[root@centos8 ~]#curl -fs http://www.wangxiaochun.com >/dev/null
+[root@centos8 ~]#echo $?
+0
+
+
+用户可以在脚本中使用以下命令自定义退出状态码：exit [n]
+
+注意： 
+脚本中一旦遇到exit命令，脚本会立即终止；终止退出状态取决于exit命令后面的数字
+
+如果exit后面无数字,终止退出状态取决于exit命令前面命令执行结果
+
+如果没有exit命令, 即未给脚本指定退出状态码，整个脚本的退出状态码取决于脚本中执行的最后一条命令的状态码
 
 
 
