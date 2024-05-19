@@ -3,7 +3,7 @@ package com.security.study;
 import com.security.study.Security_JWT.security_jwt_2.config.RsaKeyProperties;
 import com.security.study.spring.注解.Import.demo2.CacheType;
 import com.security.study.spring.注解.Import.demo2.EnableMyCacheService;
-import com.security.webSocket.CybstarWebSocketConfigurer;
+//import com.security.webSocket.CybstarWebSocketConfigurer;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
