@@ -136,18 +136,40 @@
         </resources>
         <!--  下面的插件配置是什么作用 -->
         <plugins>
+            <!-- spring-boot-maven-plugin 插件是专门给springboot项目打fat jar包的，就是把所有依赖的jar包和类加载的依赖包，都一并打成一个jar包，形成一个可直接执行的jar包。注意，可执行jar包就不能当作普通jar包被其他项目包依赖了。-->
+            <!--   需要知道的是，打fat jar包的插件还有其他插件，比如 maven-jar-plugin 插件， 而spring-boot-maven-plugin插件是专门给springboot打fat jar包的。       -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>2.3.2.RELEASE</version>
-                <configuration>
-                    <includeSystemScope>true</includeSystemScope>
-                    <fork>true</fork>
-                </configuration>
+                <!-- <configuration>-->
+                <!--    <includeSystemScope>true</includeSystemScope>-->
+                <!--    <fork>true</fork>-->
+                <!-- </configuration>-->
                 <executions>
                     <execution>
                         <goals>
+                            <!--  插件的这个”目标“的作用是“再打包”：我们知道默认打的jar包只有我们自己的代码，而spring-boot-maven-plugin插件配置了repackage目标后，就会再次打包，就是打成上面说的可执行的jar包。因此这个repackage配置不能少。
+                                配置repackage后，打包的时候会把默认打的xxx.jar包改成xxx.jar.original的一个文件作为无用备份，再次打出一个xxx.jar的可执行jar包。
+                                在target文件夹中可以看到这两个文件。这样打出的fat jar包内部，BOOT-INF目录下有两个子目录：classes和lib目录。lib目录存放的是应用依赖的jar包，
+                                classes目录下存放的是项目CLASS_PATH下的内容，包括应用代码和配置文件（比如application.yml等），可以理解为repackage将原始Maven打包的jar文件中的除META-INF以外的内容放置到该目录下打包。
+                                并且MANIFEST.MF文件中有指明main方法的启动类，但是可执行的jar包不能作为普通jar包依赖引入，引入这样的jar会报错找不到类。报错：com.oceansite.system.config.ShipImoConfig。
+                                打包插件版本应该和springboot版本一致，否则会报版本报错。如果子模块有引入其他模块。直接子模块打包会报错找不到这个依赖（因为会从仓库里去找），需要整个项目一起打包，才能打成功。-->
                             <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- maven-source-plugin 插件的作用是打包的时候同时打出一个源码包，比如：security-order-1.0.0-SNAPSHOT-sources.jar，把源码包也上传到私服，这样其他同事查看你代码的时候，可以下载源码查看注释-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
                         </goals>
                     </execution>
                 </executions>

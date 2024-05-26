@@ -37,7 +37,7 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>2.3.2.RELEASE</version>
+                <version>2.6.7</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -46,7 +46,7 @@
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <version>Hoxton.SR9</version>
+                <version>2021.0.4</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -234,6 +234,11 @@
                 <version>2.10.5</version>
                 <scope>compile</scope>
             </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-compress</artifactId>
+                <version>1.21</version> <!-- 使用最新版本 -->
+            </dependency>
 
         </dependencies>
 
@@ -278,5 +283,19 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>2.6.7</version>
+
+<!--                    <version>2.3.2.RELEASE</version>-->
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 
 </project>

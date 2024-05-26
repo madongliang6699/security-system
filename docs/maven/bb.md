@@ -125,3 +125,7 @@ mvn org.apache.maven.plugins:maven-clean-plugin:help -Dgoal=help -Ddetail
 
 mvn org.apache.maven.plugins:maven-clean-plugin:help -Dgoal=help -Ddetail=false
 
+
+
+这里先不总结了，详情看Java充电社。
+

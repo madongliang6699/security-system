@@ -1,24 +1,21 @@
 package com.security.inventory.api.impl;
 
 import com.security.common.core.JsonResult;
-import com.security.common.exception.BaseBizException;
-import com.security.common.exception.BaseErrorCodeEnum;
-import com.security.common.exception.CommonErrorCodeEnum;
 import com.security.inventory.api.InventoryApi;
 import com.security.inventory.domain.request.CancelOrderReleaseProductStockRequest;
 import com.security.inventory.domain.request.LockProductStockRequest;
 import com.security.inventory.exception.InventoryBizException;
-import com.security.inventory.exception.InventoryErrorCodeEnum;
 import com.security.inventory.service.InventoryService;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.Resource;
+
 @DubboService(version = "1.0.0", interfaceClass = InventoryApi.class, retries = 0)
 public class InventoryApiImpl implements InventoryApi {
 
-    @Autowired
+    @Resource
     InventoryService inventoryService;
-
 
 
     @Override
