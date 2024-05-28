@@ -14,7 +14,7 @@ import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/order/test")
+@RequestMapping("/test")
 public class OrderTestController {
     
     
