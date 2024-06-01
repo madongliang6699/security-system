@@ -1,8 +1,6 @@
 package com.security.market.service;
 
 
-import com.security.market.domain.request.CalculateOrderAmountRequest;
-
 /**
  * 营销管理service接口
  *

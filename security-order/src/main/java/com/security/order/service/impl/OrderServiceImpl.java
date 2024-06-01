@@ -15,15 +15,16 @@ import com.security.common.utils.RandomUtil;
 import com.security.inventory.api.InventoryApi;
 import com.security.inventory.domain.request.LockProductStockRequest;
 import com.security.market.api.MarketApi;
-import com.security.order.domain.OrderInfoDO;
-import com.security.order.domain.response.CreateOrderResponse;
-import com.security.order.domain.response.GenOrderIdResponse;
 import com.security.order.domain.request.CreateOrderRequest;
 import com.security.order.domain.request.GenOrderIdRequest;
+import com.security.order.domain.response.CreateOrderResponse;
+import com.security.order.domain.response.GenOrderIdResponse;
+import com.security.order.mapper.OrderInfoMapper;
+import com.security.order.model.dto.OrderInfoDTO;
+import com.security.order.model.entity.OrderInfoEntity;
 import com.security.order.other.enums.*;
 import com.security.order.other.exception.OrderBizException;
 import com.security.order.other.exception.OrderErrorCodeEnum;
-import com.security.order.mapper.OrderInfoMapper;
 import com.security.order.other.mq.DefaultProducer;
 import com.security.order.service.OrderService;
 import io.seata.spring.annotation.GlobalTransactional;
@@ -39,10 +40,11 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
-public class OrderServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfoDO> implements OrderService {
+public class OrderServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfoEntity> implements OrderService {
 
     private static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
@@ -55,6 +57,24 @@ public class OrderServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfoDO> 
     DefaultProducer defaultProducer;
     @Autowired
     OrderInfoMapper orderInfoMapper;
+
+
+    /**
+     * 下订单
+     */
+    public String placeOrder(OrderInfoDTO orderInfoDTO) {
+        OrderInfoEntity orderInfoEntity = orderInfoDTO.clone(OrderInfoEntity.class);
+        orderInfoEntity.setOrderId(UUID.randomUUID().toString());
+
+        JsonResult<Boolean> jsonResult = marketApi.lockUserCoupon(orderInfoDTO.getUserId());
+        if (!jsonResult.getSuccess()) {
+            logger.error("调用营销服务 锁定优惠券失败，错误码：{}，错误信息：{}", jsonResult.getErrorCode(), jsonResult.getErrorMessage());
+            throw new OrderBizException(jsonResult.getErrorCode(), jsonResult.getErrorMessage());
+        }
+
+
+        return "";
+    }
 
 
     /**
@@ -97,17 +117,17 @@ public class OrderServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfoDO> 
         // 2、风控检查。这里省略
         // 3、获取商品信息。这里省略
 
-        //region 4、计算订单价格。
-        // 调用营销服务计算订单价格
-        JsonResult<Long> jsonResult = marketApi.calculateOrderAmount(null);
-        if (!jsonResult.getSuccess()) {
-            throw new OrderBizException(jsonResult.getErrorCode(), jsonResult.getErrorMessage());
-        }
-        Long data = jsonResult.getData();
-        if (data == null) {
-            throw new OrderBizException(OrderErrorCodeEnum.CALCULATE_ORDER_AMOUNT_ERROR);
-        }
-        //endregion
+//        //region 4、计算订单价格。
+//        // 调用营销服务计算订单价格
+//        JsonResult<Long> jsonResult = marketApi.calculateOrderAmount(null);
+//        if (!jsonResult.getSuccess()) {
+//            throw new OrderBizException(jsonResult.getErrorCode(), jsonResult.getErrorMessage());
+//        }
+//        Long data = jsonResult.getData();
+//        if (data == null) {
+//            throw new OrderBizException(OrderErrorCodeEnum.CALCULATE_ORDER_AMOUNT_ERROR);
+//        }
+//        //endregion
 
 
         //region 5、锁定优惠券。
@@ -129,7 +149,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfoDO> 
 
 
         //region 6、生成订单入库。
-        save(new OrderInfoDO() {{
+        save(new OrderInfoEntity() {{
             setOrderId(createOrderRequest.getOrderId());
             setOrderStatus(OrderStatusEnum.CREATED.getCode());
             setOrderType(OrderTypeEnum.NORMAL.getCode());

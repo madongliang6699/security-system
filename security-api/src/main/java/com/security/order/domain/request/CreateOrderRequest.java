@@ -14,7 +14,7 @@ import java.util.List;
  * @version 1.0
  */
 @Data
-public class CreateOrderRequest  extends AbstractObject implements Serializable {
+public class CreateOrderRequest extends AbstractObject implements Serializable {
 
     private static final long serialVersionUID = -3719117561480569064L;
 

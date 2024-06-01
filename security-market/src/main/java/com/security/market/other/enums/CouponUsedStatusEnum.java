@@ -30,16 +30,16 @@ public enum CouponUsedStatusEnum {
         return msg;
     }
 
-    public static Map<Integer, String> toMap(){
+    public static Map<Integer, String> toMap() {
         Map<Integer, String> map = new HashMap<>(16);
-        for (CouponUsedStatusEnum element : CouponUsedStatusEnum.values() ){
-            map.put(element.getCode(),element.getMsg());
+        for (CouponUsedStatusEnum element : CouponUsedStatusEnum.values()) {
+            map.put(element.getCode(), element.getMsg());
         }
         return map;
     }
 
-    public static CouponUsedStatusEnum getByCode(Integer code){
-        for(CouponUsedStatusEnum element : CouponUsedStatusEnum.values()){
+    public static CouponUsedStatusEnum getByCode(Integer code) {
+        for (CouponUsedStatusEnum element : CouponUsedStatusEnum.values()) {
             if (code.equals(element.getCode())) {
                 return element;
             }

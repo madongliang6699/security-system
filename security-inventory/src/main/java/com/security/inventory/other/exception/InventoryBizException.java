@@ -6,6 +6,7 @@ import com.security.common.exception.BaseErrorCodeEnum;
 
 /**
  * 库存服务自定义业务异常
+ *
  * @author zhonghuashishan
  * @version 1.0
  */

@@ -2,10 +2,8 @@ package com.security.market.api.impl;
 
 import com.security.common.core.JsonResult;
 import com.security.market.api.MarketApi;
-import com.security.market.domain.request.CalculateOrderAmountRequest;
 import com.security.market.other.exception.MarketBizException;
 import com.security.market.service.CouponService;
-import com.security.market.service.MarketService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,28 +21,13 @@ public class MarketApiImpl implements MarketApi {
 
 
     @Autowired
-    MarketService marketService;
-    @Autowired
     CouponService couponService;
 
-    @Override
-    public JsonResult<Long> calculateOrderAmount(CalculateOrderAmountRequest calculateOrderAmountRequest) {
-        try {
-            return JsonResult.buildSuccess(marketService.calculateOrderAmount(calculateOrderAmountRequest));
-        } catch (MarketBizException e) {
-            log.error("biz error", e);
-            return JsonResult.buildError(e.getErrorCode(), e.getErrorMsg());
-        } catch (Exception e) {
-            log.error("system error", e);
-            return JsonResult.buildError(e.getMessage());
-        }
-
-    }
 
     @Override
-    public JsonResult<Boolean> lockUserCoupon(String userName) {
+    public JsonResult<Boolean> lockUserCoupon(String userId) {
         try {
-            Boolean b = couponService.lockUserCoupon(userName);
+            Boolean b = couponService.lockUserCoupon(userId);
             return JsonResult.buildSuccess(b);
         } catch (MarketBizException e) {
             log.error("biz error", e);
@@ -67,9 +50,6 @@ public class MarketApiImpl implements MarketApi {
             return JsonResult.buildError(e.getMessage());
         }
     }
-
-
-
 
 
 }

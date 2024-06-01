@@ -28,10 +28,10 @@ public class DefaultProducer {
         this.defaultMQProducer = new DefaultMQProducer();
         this.defaultMQProducer.setProducerGroup(RocketMqConstant.ORDER_DEFAULT_PRODUCER_GROUP);
         this.defaultMQProducer.setNamesrvAddr(rocketMQProperties.getNameServer());
-        System.out.println("==========="+ JSONObject.toJSONString(defaultMQProducer));
+        System.out.println("===========" + JSONObject.toJSONString(defaultMQProducer));
         //todo 这里先注释掉,因为还没有rocketMQ服务
         //start();
-        System.out.println("==========="+ JSONObject.toJSONString(defaultMQProducer));
+        System.out.println("===========" + JSONObject.toJSONString(defaultMQProducer));
 
     }
 

@@ -32,16 +32,16 @@ public enum BusinessIdentifierEnum {
         return msg;
     }
 
-    public static Map<Integer,String> toMap(){
+    public static Map<Integer, String> toMap() {
         Map<Integer, String> map = new HashMap<>(16);
-        for (BusinessIdentifierEnum element : BusinessIdentifierEnum.values() ){
-            map.put(element.getCode(),element.getMsg());
+        for (BusinessIdentifierEnum element : BusinessIdentifierEnum.values()) {
+            map.put(element.getCode(), element.getMsg());
         }
         return map;
     }
 
-    public static BusinessIdentifierEnum getByCode(Integer code){
-        for(BusinessIdentifierEnum element : BusinessIdentifierEnum.values()){
+    public static BusinessIdentifierEnum getByCode(Integer code) {
+        for (BusinessIdentifierEnum element : BusinessIdentifierEnum.values()) {
             if (code.equals(element.getCode())) {
                 return element;
             }

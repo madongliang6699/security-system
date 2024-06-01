@@ -6,7 +6,6 @@ import com.security.common.exception.BaseErrorCodeEnum;
 
 /**
  * 订单中心自定义业务异常类
- *
  */
 public class OrderBizException extends BaseBizException {
 

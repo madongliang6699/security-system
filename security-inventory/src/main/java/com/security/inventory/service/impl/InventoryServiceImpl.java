@@ -1,10 +1,10 @@
 package com.security.inventory.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.security.inventory.model.entity.ProductStockDO;
 import com.security.inventory.domain.request.LockProductStockRequest;
 import com.security.inventory.domain.request.ReleaseProductStockRequest;
 import com.security.inventory.mapper.InventoryMapper;
+import com.security.inventory.model.entity.ProductStockDO;
 import com.security.inventory.service.InventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

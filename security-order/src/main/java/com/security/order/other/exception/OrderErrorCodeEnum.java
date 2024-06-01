@@ -1,6 +1,5 @@
 package com.security.order.other.exception;
 
-import com.security.common.exception.BaseBizException;
 import com.security.common.exception.BaseErrorCodeEnum;
 
 public enum OrderErrorCodeEnum implements BaseErrorCodeEnum {
@@ -72,7 +71,7 @@ public enum OrderErrorCodeEnum implements BaseErrorCodeEnum {
     AFTER_SALE_REFUND_ID_IS_NULL("105054", "售后支付ID不能为空"),
     ORDER_STATUS_ERROR("105049", "订单状态异常"),
     ORDER_PAY_STATUS_IS_PAID("105050", "订单已经是已完成支付状态"),
-    
+
     /**
      * 逆向订单错误码106开头
      */
@@ -138,42 +137,42 @@ public enum OrderErrorCodeEnum implements BaseErrorCodeEnum {
     AFTER_SALE_FAILED("106112", "申请售后失败"),
     REVOKE_AFTER_SALE_REQUEST_IS_NULL("106113", "撤销售后入参不能为空"),
     CANNOT_REVOKE_AFTER_SALE("106114", "不能撤销售后"),
-    
+
     /**
      * 通用异常
      */
     COLLECTION_PARAM_CANNOT_BEYOND_MAX_SIZE("108001", "[{0}]大小不能超过{1}"),
     ENUM_PARAM_MUST_BE_IN_ALLOWABLE_VALUE("108002", "[{0}]的取值必须为{1}"),
     DELIVERY_TYPE_ERROR("105080", "配送类型错误"),
-    
+
     ORDER_ID_PATTERN_ERROR("106000", "订单ID格式不正确"),
     ORDER_AUTO_NO_GEN_ERROR("106001", "订单号内存段号申请失败"),
     ENUM_STATUS_IS_NULL("106002", "枚举状态值不能是空"),
     ;
-    
+
     private String errorCode;
-    
+
     private String errorMsg;
-    
+
     OrderErrorCodeEnum(String errorCode, String errorMsg) {
         this.errorCode = errorCode;
         this.errorMsg = errorMsg;
     }
-    
+
     @Override
     public String getErrorCode() {
         return errorCode;
     }
-    
+
     public void setErrorCode(String errorCode) {
         this.errorCode = errorCode;
     }
-    
+
     @Override
     public String getErrorMsg() {
         return errorMsg;
     }
-    
+
     public void setErrorMsg(String errorMsg) {
         this.errorMsg = errorMsg;
     }

@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * 锁定商品库存入参
+ *
  * @author zhonghuashishan
  * @version 1.0
  */

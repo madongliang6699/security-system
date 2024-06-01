@@ -3,11 +3,11 @@ package com.security.market.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.security.market.model.entity.YouhuiquanDO;
+import com.security.market.mapper.CouponMapper;
+import com.security.market.model.entity.YouhuiquanEntity;
 import com.security.market.other.enums.CouponUsedStatusEnum;
 import com.security.market.other.exception.MarketBizException;
 import com.security.market.other.exception.MarketErrorCodeEnum;
-import com.security.market.mapper.CouponMapper;
 import com.security.market.service.CouponService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,18 +22,18 @@ import java.util.Objects;
  * @author zhonghuashishan
  */
 @Service
-public class CouponServiceImpl extends ServiceImpl<CouponMapper, YouhuiquanDO> implements CouponService {
+public class CouponServiceImpl extends ServiceImpl<CouponMapper, YouhuiquanEntity> implements CouponService {
 
     @Autowired
     CouponMapper couponMapper;
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Boolean lockUserCoupon(String userName) {
+    public Boolean lockUserCoupon(String userId) {
 
-        QueryWrapper<YouhuiquanDO> tWrapper = new QueryWrapper<>();
-        tWrapper.eq("user_name", userName);
-        YouhuiquanDO couponDO = couponMapper.selectOne(tWrapper);
+        QueryWrapper<YouhuiquanEntity> tWrapper = new QueryWrapper<>();
+        tWrapper.eq("user_id", userId);
+        YouhuiquanEntity couponDO = couponMapper.selectOne(tWrapper);
 
         if (couponDO == null) {
             throw new MarketBizException(MarketErrorCodeEnum.USER_COUPON_IS_NULL);

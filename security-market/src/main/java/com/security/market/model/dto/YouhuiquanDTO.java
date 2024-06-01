@@ -1,8 +1,8 @@
-package com.security.market.model.entity;
+package com.security.market.model.dto;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.security.common.domain.BaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -15,15 +15,15 @@ import java.util.Date;
  * @author zhonghuashishan
  */
 @Data
-@TableName("market_youhuiquan")
-public class YouhuiquanDO extends BaseEntity implements Serializable {
+@EqualsAndHashCode(callSuper = true)
+public class YouhuiquanDTO extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 用户ID
+     * 用户编号
      */
-    private String userName;
+    private String userId;
 
     /**
      * 是否使用过这个优惠券，1：使用了，0：未使用
