@@ -1,7 +1,7 @@
 package com.security.order.service;
 
-import com.security.order.domain.dto.CreateOrderDTO;
-import com.security.order.domain.dto.GenOrderIdDTO;
+import com.security.order.domain.response.CreateOrderResponse;
+import com.security.order.domain.response.GenOrderIdResponse;
 import com.security.order.domain.request.CreateOrderRequest;
 import com.security.order.domain.request.GenOrderIdRequest;
 
@@ -14,7 +14,7 @@ public interface OrderService {
      * @param genOrderIdRequest 生成订单号入参
      * @return 订单号
      */
-    GenOrderIdDTO genOrderId(GenOrderIdRequest genOrderIdRequest);
+    GenOrderIdResponse genOrderId(GenOrderIdRequest genOrderIdRequest);
     
     
     /**
@@ -23,6 +23,6 @@ public interface OrderService {
      * @param createOrderRequest 提交订单请求入参
      * @return 订单号
      */
-    CreateOrderDTO createOrder(CreateOrderRequest createOrderRequest);
+    CreateOrderResponse createOrder(CreateOrderRequest createOrderRequest);
 
 }

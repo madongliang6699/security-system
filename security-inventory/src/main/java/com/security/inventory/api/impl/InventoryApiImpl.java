@@ -4,13 +4,15 @@ import com.security.common.core.JsonResult;
 import com.security.inventory.api.InventoryApi;
 import com.security.inventory.domain.request.CancelOrderReleaseProductStockRequest;
 import com.security.inventory.domain.request.LockProductStockRequest;
-import com.security.inventory.exception.InventoryBizException;
+import com.security.inventory.other.exception.InventoryBizException;
 import com.security.inventory.service.InventoryService;
 import org.apache.dubbo.config.annotation.DubboService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Resource;
 
+/**
+ * 库存服务 dubbo对外服务实现类
+ */
 @DubboService(version = "1.0.0", interfaceClass = InventoryApi.class, retries = 0)
 public class InventoryApiImpl implements InventoryApi {
 

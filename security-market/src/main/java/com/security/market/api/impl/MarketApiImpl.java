@@ -3,7 +3,7 @@ package com.security.market.api.impl;
 import com.security.common.core.JsonResult;
 import com.security.market.api.MarketApi;
 import com.security.market.domain.request.CalculateOrderAmountRequest;
-import com.security.market.exception.MarketBizException;
+import com.security.market.other.exception.MarketBizException;
 import com.security.market.service.CouponService;
 import com.security.market.service.MarketService;
 import lombok.extern.slf4j.Slf4j;
@@ -30,31 +30,6 @@ public class MarketApiImpl implements MarketApi {
     @Override
     public JsonResult<Long> calculateOrderAmount(CalculateOrderAmountRequest calculateOrderAmountRequest) {
         try {
-//            CalculateOrderAmountDTO calculateOrderAmountDTO = marketService.calculateOrderAmount(calculateOrderAmountRequest);
-
-
-//            List<CalculateOrderAmountDTO.OrderAmountDetailDTO> orderAmountDetailDTOS = new ArrayList<>();
-//            orderAmountDetailDTOS.add(new CalculateOrderAmountDTO.OrderAmountDetailDTO() {{
-//                setAmount(12);
-//                setOrderId(calculateOrderAmountRequest.getOrderId());
-//                setAmountType(1);
-//                setSalePrice(1234);
-//                setSkuCode("234");
-//                setProductType(12);
-//                setSaleQuantity(1234);
-//            }});
-//
-//            List<CalculateOrderAmountDTO.OrderAmountDTO> orderAmountDTOS = new ArrayList<>();
-//            orderAmountDTOS.add(new CalculateOrderAmountDTO.OrderAmountDTO() {{
-//                setAmount(123);
-//                setOrderId(calculateOrderAmountRequest.getOrderId());
-//                setAmountType(2);
-//            }});
-//
-//            CalculateOrderAmountDTO calculateOrderAmountDTO = new CalculateOrderAmountDTO();
-//            calculateOrderAmountDTO.setOrderAmountDetail(orderAmountDetailDTOS);
-//            calculateOrderAmountDTO.setOrderAmountList(orderAmountDTOS);
-
             return JsonResult.buildSuccess(marketService.calculateOrderAmount(calculateOrderAmountRequest));
         } catch (MarketBizException e) {
             log.error("biz error", e);

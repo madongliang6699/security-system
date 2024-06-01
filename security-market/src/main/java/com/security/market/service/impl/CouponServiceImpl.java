@@ -3,10 +3,10 @@ package com.security.market.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.security.market.entity.YouhuiquanDO;
-import com.security.market.enums.CouponUsedStatusEnum;
-import com.security.market.exception.MarketBizException;
-import com.security.market.exception.MarketErrorCodeEnum;
+import com.security.market.model.entity.YouhuiquanDO;
+import com.security.market.other.enums.CouponUsedStatusEnum;
+import com.security.market.other.exception.MarketBizException;
+import com.security.market.other.exception.MarketErrorCodeEnum;
 import com.security.market.mapper.CouponMapper;
 import com.security.market.service.CouponService;
 import org.springframework.beans.factory.annotation.Autowired;

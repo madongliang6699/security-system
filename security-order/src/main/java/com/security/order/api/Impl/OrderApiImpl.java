@@ -2,19 +2,17 @@ package com.security.order.api.Impl;
 
 import com.security.common.core.JsonResult;
 import com.security.order.api.OrderApi;
-import com.security.order.domain.dto.CreateOrderDTO;
-import com.security.order.domain.dto.GenOrderIdDTO;
+import com.security.order.domain.response.CreateOrderResponse;
+import com.security.order.domain.response.GenOrderIdResponse;
 import com.security.order.domain.request.CreateOrderRequest;
 import com.security.order.domain.request.GenOrderIdRequest;
-import com.security.order.exception.OrderBizException;
-import com.security.order.exception.OrderErrorCodeEnum;
+import com.security.order.other.exception.OrderBizException;
+import com.security.order.other.exception.OrderErrorCodeEnum;
 import com.security.order.service.OrderService;
 import org.apache.dubbo.config.annotation.DubboService;
-import org.apache.dubbo.registry.support.AbstractRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @DubboService(version = "1.0.0", interfaceClass = OrderApi.class, retries = 0)
 public class OrderApiImpl implements OrderApi {
@@ -27,14 +25,14 @@ public class OrderApiImpl implements OrderApi {
     
     
     @Override
-    public JsonResult<GenOrderIdDTO> genOrderNo(GenOrderIdRequest genOrderIdRequest) {
+    public JsonResult<GenOrderIdResponse> genOrderNo(GenOrderIdRequest genOrderIdRequest) {
         try {
             String userId = genOrderIdRequest.getUserId();
             if (userId == null || "".equals(userId)) {
                 return JsonResult.buildError(OrderErrorCodeEnum.USER_ID_IS_NULL);
             }
-            GenOrderIdDTO genOrderIdDTO = orderService.genOrderId(genOrderIdRequest);
-            return JsonResult.buildSuccess(genOrderIdDTO);
+            GenOrderIdResponse genOrderIdResponse = orderService.genOrderId(genOrderIdRequest);
+            return JsonResult.buildSuccess(genOrderIdResponse);
         }catch (OrderBizException exception){
             logger.error("biz error", exception);
             return JsonResult.buildError(exception.getErrorCode(), exception.getErrorMsg());
@@ -51,10 +49,10 @@ public class OrderApiImpl implements OrderApi {
     }
     
     @Override
-    public JsonResult<CreateOrderDTO> createOrder(CreateOrderRequest createOrderRequest) {
+    public JsonResult<CreateOrderResponse> createOrder(CreateOrderRequest createOrderRequest) {
         try {
-            CreateOrderDTO createOrderDTO = orderService.createOrder(createOrderRequest);
-            return JsonResult.buildSuccess(createOrderDTO);
+            CreateOrderResponse createOrderResponse = orderService.createOrder(createOrderRequest);
+            return JsonResult.buildSuccess(createOrderResponse);
         }catch (OrderBizException exception){
             logger.error("biz error", exception);
             return JsonResult.buildError(exception.getErrorCode(), exception.getErrorMsg());

@@ -1,7 +1,7 @@
 package com.security.market.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.security.market.entity.YouhuiquanDO;
+import com.security.market.model.entity.YouhuiquanDO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

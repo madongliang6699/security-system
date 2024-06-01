@@ -1,7 +1,7 @@
 package com.security.inventory.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.security.inventory.domain.ProductStockDO;
+import com.security.inventory.model.entity.ProductStockDO;
 import com.security.inventory.domain.request.LockProductStockRequest;
 import com.security.inventory.domain.request.ReleaseProductStockRequest;
 import com.security.inventory.mapper.InventoryMapper;

@@ -3,11 +3,10 @@ package com.security.order.controller;
 
 import com.security.common.core.JsonResult;
 import com.security.market.api.MarketApi;
-import com.security.market.domain.dto.CalculateOrderAmountDTO;
 import com.security.market.domain.request.CalculateOrderAmountRequest;
 import com.security.order.api.OrderApi;
-import com.security.order.domain.dto.CreateOrderDTO;
-import com.security.order.domain.dto.GenOrderIdDTO;
+import com.security.order.domain.response.CreateOrderResponse;
+import com.security.order.domain.response.GenOrderIdResponse;
 import com.security.order.domain.request.CreateOrderRequest;
 import com.security.order.domain.request.GenOrderIdRequest;
 import org.apache.dubbo.config.annotation.DubboReference;
@@ -36,7 +35,7 @@ public class OrderTestController {
      * 生成订单id
      */
     @RequestMapping("/genOrderId")
-    public JsonResult<GenOrderIdDTO> genOrderId(@RequestBody GenOrderIdRequest genOrderIdRequest) {
+    public JsonResult<GenOrderIdResponse> genOrderId(@RequestBody GenOrderIdRequest genOrderIdRequest) {
         CalculateOrderAmountRequest calculateOrderAmountRequest = new CalculateOrderAmountRequest();
         calculateOrderAmountRequest.setOrderId("12121212121");
         return orderApi.genOrderNo(genOrderIdRequest);
@@ -46,7 +45,7 @@ public class OrderTestController {
      * 测试提交订单
      */
     @PostMapping("/createOrder")
-    public JsonResult<CreateOrderDTO> createOrder(@RequestBody CreateOrderRequest createOrderRequest) {
+    public JsonResult<CreateOrderResponse> createOrder(@RequestBody CreateOrderRequest createOrderRequest) {
         return orderApi.createOrder(createOrderRequest);
     }
 

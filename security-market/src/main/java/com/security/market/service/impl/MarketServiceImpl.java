@@ -2,7 +2,7 @@ package com.security.market.service.impl;
 
 
 import com.security.market.domain.request.CalculateOrderAmountRequest;
-import com.security.market.entity.FreightTemplateDO;
+import com.security.market.model.entity.FreightTemplateDO;
 import com.security.market.mapper.FreightTemplateMapper;
 import com.security.market.service.MarketService;
 import org.springframework.beans.factory.annotation.Autowired;

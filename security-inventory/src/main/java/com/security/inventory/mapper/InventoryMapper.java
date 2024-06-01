@@ -1,7 +1,7 @@
 package com.security.inventory.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.security.inventory.domain.ProductStockDO;
+import com.security.inventory.model.entity.ProductStockDO;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

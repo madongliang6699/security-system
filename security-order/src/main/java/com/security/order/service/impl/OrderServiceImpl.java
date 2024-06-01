@@ -16,15 +16,15 @@ import com.security.inventory.api.InventoryApi;
 import com.security.inventory.domain.request.LockProductStockRequest;
 import com.security.market.api.MarketApi;
 import com.security.order.domain.OrderInfoDO;
-import com.security.order.domain.dto.CreateOrderDTO;
-import com.security.order.domain.dto.GenOrderIdDTO;
+import com.security.order.domain.response.CreateOrderResponse;
+import com.security.order.domain.response.GenOrderIdResponse;
 import com.security.order.domain.request.CreateOrderRequest;
 import com.security.order.domain.request.GenOrderIdRequest;
-import com.security.order.enums.*;
-import com.security.order.exception.OrderBizException;
-import com.security.order.exception.OrderErrorCodeEnum;
+import com.security.order.other.enums.*;
+import com.security.order.other.exception.OrderBizException;
+import com.security.order.other.exception.OrderErrorCodeEnum;
 import com.security.order.mapper.OrderInfoMapper;
-import com.security.order.mq.DefaultProducer;
+import com.security.order.other.mq.DefaultProducer;
 import com.security.order.service.OrderService;
 import io.seata.spring.annotation.GlobalTransactional;
 import org.apache.commons.lang3.StringUtils;
@@ -63,7 +63,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfoDO> 
      * @param genOrderIdRequest 生成订单号入参
      * @return 订单号
      */
-    public GenOrderIdDTO genOrderId(GenOrderIdRequest genOrderIdRequest) {
+    public GenOrderIdResponse genOrderId(GenOrderIdRequest genOrderIdRequest) {
         logger.info(LoggerFormat.build().remark("genOrderId->request").data("request", genOrderIdRequest).finish());
 
         // 参数检查
@@ -75,10 +75,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfoDO> 
         //todo 这里单号的生成逻辑先不研究，里面挺复杂的。先临时造一个随机的。
         // String orderId = orderNoManager.genOrderId(OrderNoTypeEnum.SALE_ORDER.getCode(), userId);
         String orderId = RandomUtil.genRandomNumberStr(12);
-        GenOrderIdDTO genOrderIdDTO = new GenOrderIdDTO();
-        genOrderIdDTO.setOrderId(orderId);
+        GenOrderIdResponse genOrderIdResponse = new GenOrderIdResponse();
+        genOrderIdResponse.setOrderId(orderId);
 
-        return genOrderIdDTO;
+        return genOrderIdResponse;
     }
 
 
@@ -91,7 +91,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfoDO> 
     @GlobalTransactional
     @Transactional
     @Override
-    public CreateOrderDTO createOrder(CreateOrderRequest createOrderRequest) {
+    public CreateOrderResponse createOrder(CreateOrderRequest createOrderRequest) {
         // 1、入参检查
         checkCreateOrderRequestParam(createOrderRequest);
         // 2、风控检查。这里省略
@@ -157,9 +157,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfoDO> 
         //endregion
 
         //返回订单创建成功
-        CreateOrderDTO createOrderDTO = new CreateOrderDTO();
-        createOrderDTO.setOrderId(createOrderRequest.getOrderId());
-        return createOrderDTO;
+        CreateOrderResponse createOrderResponse = new CreateOrderResponse();
+        createOrderResponse.setOrderId(createOrderRequest.getOrderId());
+        return createOrderResponse;
     }
 
 
