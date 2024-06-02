@@ -20,11 +20,6 @@ public class ProductStockDO extends BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 商品sku编号
-     */
-    private Long skuCode;
-
-    /**
      * 销售库存
      */
     private Long saleStockQuantity;

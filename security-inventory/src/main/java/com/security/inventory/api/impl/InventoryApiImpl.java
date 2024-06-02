@@ -2,7 +2,6 @@ package com.security.inventory.api.impl;
 
 import com.security.common.core.JsonResult;
 import com.security.inventory.api.InventoryApi;
-import com.security.inventory.domain.request.CancelOrderReleaseProductStockRequest;
 import com.security.inventory.domain.request.LockProductStockRequest;
 import com.security.inventory.other.exception.InventoryBizException;
 import com.security.inventory.service.InventoryService;
@@ -22,6 +21,7 @@ public class InventoryApiImpl implements InventoryApi {
 
     @Override
     public JsonResult<Boolean> lockProductStock(LockProductStockRequest lockProductStockRequest) {
+        System.out.println("lockProductStock进入："+System.currentTimeMillis());
         try {
 
             Boolean b = inventoryService.lockProductStock(lockProductStockRequest);
@@ -35,8 +35,4 @@ public class InventoryApiImpl implements InventoryApi {
         }
     }
 
-    @Override
-    public JsonResult<Boolean> cancelOrderReleaseProductStock(CancelOrderReleaseProductStockRequest cancelOrderReleaseProductStockRequest) {
-        return null;
-    }
 }

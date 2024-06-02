@@ -34,6 +34,8 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, YouhuiquanEntit
         QueryWrapper<YouhuiquanEntity> tWrapper = new QueryWrapper<>();
         tWrapper.eq("user_id", userId);
         YouhuiquanEntity couponDO = couponMapper.selectOne(tWrapper);
+//        YouhuiquanEntity couponDO = new YouhuiquanEntity();
+        couponDO.setUsedTag(0);
 
         if (couponDO == null) {
             throw new MarketBizException(MarketErrorCodeEnum.USER_COUPON_IS_NULL);
@@ -43,7 +45,7 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, YouhuiquanEntit
             throw new MarketBizException(MarketErrorCodeEnum.USER_COUPON_IS_USED);
         }
 
-        couponDO.setUsedTag(CouponUsedStatusEnum.USED.getCode());
+//        couponDO.setUsedTag(CouponUsedStatusEnum.USED.getCode());
         couponDO.setUsedTime(new Date());
         couponMapper.updateById(couponDO);
         return true;

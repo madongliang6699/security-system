@@ -17,46 +17,9 @@ public class LockProductStockRequest extends AbstractObject implements Serializa
 
     private static final long serialVersionUID = 8229493558996271243L;
 
-    /**
-     * 业务线标识
-     */
-    private Integer businessIdentifier;
-
-    /**
-     * 订单ID
-     */
-    private String orderId;
-
-    /**
-     * 用户ID
-     */
-    private String userId;
-
-    /**
-     * 卖家ID
-     */
-    private String sellerId;
-
-    /**
-     * 订单条目
-     */
-    private List<OrderItemRequest> orderItemRequestList;
-
-    @Data
-    public static class OrderItemRequest extends AbstractObject implements Serializable {
-
-        private static final long serialVersionUID = 6870559288334853954L;
-
-        /**
-         * 商品sku编号
-         */
-        private String skuCode;
-
-        /**
-         * 销售数量
-         */
-        private Integer saleQuantity;
-
-    }
+    //商品id
+    private String productId;
+    //销售数量（需要锁的库存数量）
+    private Integer quantity;
 
 }

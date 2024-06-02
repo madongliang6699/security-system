@@ -6,6 +6,8 @@ import com.security.order.domain.response.CreateOrderResponse;
 import com.security.order.domain.response.GenOrderIdResponse;
 import com.security.order.model.dto.OrderInfoDTO;
 
+import java.util.List;
+
 public interface OrderService {
 
 
@@ -30,4 +32,9 @@ public interface OrderService {
      * 下订单
      */
     String placeOrder(OrderInfoDTO orderInfoDTO);
+
+    /**
+     * 查询所有订单
+     */
+    List<OrderInfoDTO> selectAllOrder();
 }

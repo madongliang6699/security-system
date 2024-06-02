@@ -119,6 +119,13 @@
             <artifactId>hibernate-validator</artifactId>
         </dependency>
 
+        <!--druid 依赖 构建多版本SQL支持包， 如果不自己加入连接池依赖，springboot就使用默认的号称史上最快连接池的Hikari-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>1.2.11</version>
+        </dependency>
+
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>

@@ -1,5 +1,10 @@
 package com.security.order.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.date.StopWatch;
+import com.baomidou.mybatisplus.core.conditions.AbstractWrapper;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.security.common.constants.RocketDelayedLevel;
 import com.security.common.constants.RocketMqConstant;
@@ -21,6 +26,7 @@ import com.security.order.domain.response.CreateOrderResponse;
 import com.security.order.domain.response.GenOrderIdResponse;
 import com.security.order.mapper.OrderInfoMapper;
 import com.security.order.model.dto.OrderInfoDTO;
+import com.security.order.model.dto.OrderItemDTO;
 import com.security.order.model.entity.OrderInfoEntity;
 import com.security.order.other.enums.*;
 import com.security.order.other.exception.OrderBizException;
@@ -41,6 +47,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,13 +55,15 @@ public class OrderServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfoEnti
 
     private static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
-    @DubboReference(version = "1.0.0", retries = 0)
-    //@Autowired  //这里直接报错，找不到需要注入的bean
+    @DubboReference(version = "1.0.0", retries = 0, timeout = 30 * 1000)
     MarketApi marketApi;
-    @DubboReference(version = "1.0.0")
+
+    @DubboReference(version = "1.0.0", retries = 0, timeout = 30 * 1000)
     InventoryApi inventoryApi;
+
     @Autowired
     DefaultProducer defaultProducer;
+
     @Autowired
     OrderInfoMapper orderInfoMapper;
 
@@ -65,15 +74,43 @@ public class OrderServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfoEnti
     public String placeOrder(OrderInfoDTO orderInfoDTO) {
         OrderInfoEntity orderInfoEntity = orderInfoDTO.clone(OrderInfoEntity.class);
         orderInfoEntity.setOrderId(UUID.randomUUID().toString());
-
+        StopWatch stopWatch = new StopWatch("测试时间2");
+        stopWatch.start("1");
         JsonResult<Boolean> jsonResult = marketApi.lockUserCoupon(orderInfoDTO.getUserId());
         if (!jsonResult.getSuccess()) {
             logger.error("调用营销服务 锁定优惠券失败，错误码：{}，错误信息：{}", jsonResult.getErrorCode(), jsonResult.getErrorMessage());
             throw new OrderBizException(jsonResult.getErrorCode(), jsonResult.getErrorMessage());
         }
+        stopWatch.stop();
 
+        stopWatch.start("2");
+        List<OrderItemDTO> itemDTOList = orderInfoDTO.getItemDTOList();
+        for (OrderItemDTO orderItemDTO : itemDTOList) {
+            LockProductStockRequest request = new LockProductStockRequest();
+            request.setProductId(orderItemDTO.getProductId());
+            request.setQuantity(orderItemDTO.getSaleQuantity());
+            System.out.println("lockProductStock未进："+System.currentTimeMillis());
+            JsonResult<Boolean> lockProductStockJsonRes = inventoryApi.lockProductStock(request);
+            if (!lockProductStockJsonRes.getSuccess()) {
+                logger.error("调用库存服务 锁定库存失败，错误码：{}，错误信息：{}", lockProductStockJsonRes.getErrorCode(), lockProductStockJsonRes.getErrorMessage());
+                throw new OrderBizException(lockProductStockJsonRes.getErrorCode(), lockProductStockJsonRes.getErrorMessage());
+            }
+        }
+        stopWatch.stop();
 
-        return "";
+        stopWatch.start("3");
+        orderInfoMapper.insert(orderInfoEntity);
+        stopWatch.stop();
+        System.out.println(stopWatch.prettyPrint(TimeUnit.MILLISECONDS));
+        return orderInfoEntity.getOrderId();
+    }
+
+    @Override
+    public List<OrderInfoDTO> selectAllOrder() {
+        QueryWrapper<OrderInfoEntity> tWrapper = new QueryWrapper<>();
+        List<OrderInfoEntity> orderInfoEntities = orderInfoMapper.selectList(tWrapper);
+        List<OrderInfoDTO> orderInfoDTOS = BeanUtil.copyToList(orderInfoEntities, OrderInfoDTO.class);
+        return orderInfoDTOS;
     }
 
 

@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 订单表
@@ -48,6 +49,9 @@ public class OrderInfoDTO extends BaseEntity {
     private Integer commentStatus;
     //扩展信息
     private String extJson;
+
+    //订单明细
+    List<OrderItemDTO> itemDTOList;
 
 
 }

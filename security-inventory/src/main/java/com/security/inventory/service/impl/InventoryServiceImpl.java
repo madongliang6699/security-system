@@ -2,7 +2,6 @@ package com.security.inventory.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.security.inventory.domain.request.LockProductStockRequest;
-import com.security.inventory.domain.request.ReleaseProductStockRequest;
 import com.security.inventory.mapper.InventoryMapper;
 import com.security.inventory.model.entity.ProductStockDO;
 import com.security.inventory.service.InventoryService;
@@ -33,9 +32,9 @@ public class InventoryServiceImpl extends ServiceImpl<InventoryMapper, ProductSt
          这里固定使用id为1和2的数据，模拟当前订单中买了两个商品，分别是两种sku的具体商品，锁定这两个sku的库存。
          */
 
-        ProductStockDO byId = getById(1);
-        byId.setSaleStockQuantity(byId.getSaleStockQuantity() - 1);
-        byId.setLockedStockQuantity(byId.getLockedStockQuantity() + 1);
+        ProductStockDO byId = getById(lockProductStockRequest.getProductId());
+        byId.setSaleStockQuantity(byId.getSaleStockQuantity() - lockProductStockRequest.getQuantity());
+        byId.setLockedStockQuantity(byId.getLockedStockQuantity() + lockProductStockRequest.getQuantity());
         updateById(byId);
 
         /*
@@ -43,20 +42,7 @@ public class InventoryServiceImpl extends ServiceImpl<InventoryMapper, ProductSt
          */
 //        int i = 9 / 0;
 
-        ProductStockDO byId2 = getById(2);
-        byId2.setSaleStockQuantity(byId2.getSaleStockQuantity() - 1);
-        byId2.setLockedStockQuantity(byId2.getLockedStockQuantity() + 1);
-        updateById(byId2);
-
         return true;
-    }
-
-    /**
-     * 释放商品库存
-     */
-    public Boolean releaseProductStock(ReleaseProductStockRequest releaseProductStockRequest) {
-        return null;
-
     }
 
 }

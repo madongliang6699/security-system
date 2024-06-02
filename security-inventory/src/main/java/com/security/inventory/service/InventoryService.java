@@ -2,7 +2,6 @@ package com.security.inventory.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.security.inventory.domain.request.LockProductStockRequest;
-import com.security.inventory.domain.request.ReleaseProductStockRequest;
 import com.security.inventory.model.entity.ProductStockDO;
 
 /**
@@ -13,15 +12,7 @@ public interface InventoryService extends IService<ProductStockDO> {
 
     /**
      * 锁定商品库存
-     *
-     * @param lockProductStockRequest
-     * @return
      */
     Boolean lockProductStock(LockProductStockRequest lockProductStockRequest);
-
-    /**
-     * 释放商品库存
-     */
-    Boolean releaseProductStock(ReleaseProductStockRequest releaseProductStockRequest);
 
 }

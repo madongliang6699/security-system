@@ -2,6 +2,7 @@ package com.security.common.exception;
 
 import com.security.common.core.JsonResult;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.rpc.RpcException;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
@@ -33,8 +34,22 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     public JsonResult<Object> handle(Exception e) {
         log.error("[ 系统未知错误 ]", e);
-        return JsonResult.buildError(CommonErrorCodeEnum.SYSTEM_UNKNOWN_ERROR);
+        return JsonResult.buildError("-1", e.getMessage());
     }
+
+
+    /**
+     * dubbo框架调用异常
+     *
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(value = RpcException.class)
+    public JsonResult<Object> handle(RpcException e) {
+        log.error("[dubbo框架调用异常]", e);
+        return JsonResult.buildError(e.getCode()+"", "dubbo框架调用异常: " + e.getMessage());
+    }
+
 
     // =========== 客户端异常 =========
 
