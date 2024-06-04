@@ -134,7 +134,7 @@
                 这样打包后配置文件才会打到jar包外部,
                 不过这里指定之后应该是把上面所有配置的所有文件都打包到这个目录了,
                 没有做到只把properties文件打包到jar外部. 不指定targetPath的话默认到target/classes目录下,也就打包把资源文件打到jar包里面了.
-                虽然配置文件在jar包外部, 在java -jar myApp.jar 启动程序的时候,springboot会默认找到同级文件夹下的配置文件的.  -->
+                虽然配置文件在jar包外部, 在java -jar myApp.jar 启动程序的时候,会默认找当前目录(执行java -jar命令的目录)下的配置文件的.  -->
                 <targetPath>${project.build.directory}</targetPath>
                 <!-- 指定是否开启替换标签，若文件中有类似${key}这样的配置，就会根据maven的pom中profiles配置的变量值进行覆盖，true表示开启替换，默认为false, 一般应该用不到这个功能 -->
                 <filtering>true</filtering>
