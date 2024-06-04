@@ -78,8 +78,6 @@
     </dependencies>
 
     <build>
-        <!--  这里的 <resources> 标签一定要配置，不然运行之后properties文件和xml文件都无法导出到
-               target文件夹下，编译运行之后，没有必要的xml，mybatis就不能使用（报找不到绑定Mapper方法的xml定义）   -->
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -87,6 +85,7 @@
                     <include>**/*.properties</include>
                     <include>**/*.xml</include>
                 </includes>
+                <targetPath>${project.build.directory}</targetPath>
                 <filtering>true</filtering>
             </resource>
             <resource>
@@ -98,7 +97,7 @@
                 <filtering>true</filtering>
             </resource>
         </resources>
-        <!--  下面的插件配置是什么作用 -->
+
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -112,6 +111,26 @@
                     <execution>
                         <goals>
                             <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- maven-source-plugin 插件的作用是打包的时候同时打出一个源码包，比如：security-order-1.0.0-SNAPSHOT-sources.jar，把源码包也上传到私服，这样其他同事查看你代码的时候，可以下载源码查看注释-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>attach-test-sources</id>
+                        <goals>
+                            <goal>test-jar</goal>
                         </goals>
                     </execution>
                 </executions>

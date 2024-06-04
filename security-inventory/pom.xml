@@ -107,8 +107,6 @@
     </dependencies>
 
     <build>
-        <!--  这里的 <resources> 标签一定要配置，不然运行之后properties文件和xml文件都无法导出到
-               target文件夹下，编译运行之后，没有必要的xml，mybatis就不能使用（报找不到绑定Mapper方法的xml定义）   -->
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -116,15 +114,16 @@
                     <include>**/*.properties</include>
                     <include>**/*.xml</include>
                 </includes>
-                <!--                <filtering>true</filtering>-->
+                <targetPath>${project.build.directory}</targetPath>
+                <filtering>true</filtering>
             </resource>
             <resource>
                 <directory>src/main/java</directory>
                 <includes>
-                    <!--                    <include>**/*.properties</include>-->
+                    <include>**/*.properties</include>
                     <include>**/*</include>
                 </includes>
-                <!--                <filtering>true</filtering>-->
+                <filtering>true</filtering>
             </resource>
         </resources>
         <!--  springboot打包插件 -->

@@ -103,28 +103,61 @@
         </dependency>
     </dependencies>
 
+
+
+
     <build>
-        <!--  这里的 <resources> 标签一定要配置，不然运行之后properties文件和xml文件都无法导出到
-               target文件夹下，编译运行之后，没有必要的xml，mybatis就不能使用（报找不到绑定Mapper方法的xml定义）   -->
+
+        <!-- <resources>标签的作用就是指定编译的时候把哪些文件(src/main/resources下的文件和src/main/java的文件)复制(或者说打包)到项目target目录下的哪个目录位置,
+        而文件存放在哪个目录位置就决定了打项目jar包后该文件所在jar包中的位置, maven的package命令的作用是把编译后的target目录下的classes目录打成jar包放在target目录下,因此,
+        如果这里配置成把相关文件复制到classes文件的外面,那打jar包的时候就不会打进jar包了.
+
+        如果这里配置没有把相关资源配置文件打进jar包中,
+        那启动的时候可能会报错,
+        因为缺少springboot的properties配置文件或mybatis的xml文件等文件,
+        但是如果把spring的properties配置文件也打进jar包,在线上运行的时候就没法随时改properties文件的配置了,配置文件就失去了意义.
+         因此,常用的做法应该是把特定的文件(xml或sql或doc或ft等)打包进jar包,properties配置文件打包在jar包外面,这样就可以随时修改配置了.
+         而<resources>标签默认会把资源文件复制到classes目录内部,进而打包的时候就打到jar包里面了. 因此就要用到<resources>内的<targetPath>标签,指定资源文件存放的位置,
+         进而决定配置文件在不到jar包内部.
+         具体看下面的配置
+          -->
         <resources>
             <resource>
+                <!-- 指定src/main/resources下的哪些文件打包到哪个位置,如果不配置默认把src/main/resources下的所有文件打包到target/classes目录下 -->
                 <directory>src/main/resources</directory>
                 <includes>
+                    <!-- 指定把resources文件夹下的properties配置文件 和 xml文件打包到jar包中 -->
                     <include>**/*.properties</include>
-                    <include>**/*.xml</include>
+                    <include>**/*</include>
                 </includes>
+                <!-- 指定资源配置文件复制到${project.build.directory}目录(就是target目录,和jar包同级的目录), 而不是classes目录,
+                这样打包后配置文件才会打到jar包外部,
+                不过这里指定之后应该是把上面所有配置的所有文件都打包到这个目录了,
+                没有做到只把properties文件打包到jar外部. 不指定targetPath的话默认到target/classes目录下,也就打包把资源文件打到jar包里面了.
+                虽然配置文件在jar包外部, 在java -jar myApp.jar 启动程序的时候,springboot会默认找到同级文件夹下的配置文件的.  -->
+                <targetPath>${project.build.directory}</targetPath>
+                <!-- 指定是否开启替换标签，若文件中有类似${key}这样的配置，就会根据maven的pom中profiles配置的变量值进行覆盖，true表示开启替换，默认为false, 一般应该用不到这个功能 -->
                 <filtering>true</filtering>
             </resource>
             <resource>
+                <!-- 指定src/main/java下的哪些文件复制到哪个位置,如果不配置默认只把src/main/java下对应的的所有.class文件复制到target/classes目录下 -->
                 <directory>src/main/java</directory>
                 <includes>
+                    <!-- 指定把java文件夹下的properties配置文件 和 xml文件等文件复制到classes目录下,进而能打进jar包中,
+                    这里最好不要配置成 <include>**/*</include>, 因为这样会把.java文件和临时文件都打包进去
+                     -->
                     <include>**/*.properties</include>
                     <include>**/*.xml</include>
+                    <include>**/*.ftl</include>
+                    <include>**/*.doc</include>
+                    <include>**/*.docx</include>
                 </includes>
-                <filtering>true</filtering>
             </resource>
         </resources>
-        <!--  下面的插件配置是什么作用 -->
+
+
+
+
         <plugins>
             <!-- spring-boot-maven-plugin 插件是专门给springboot项目打fat jar包的，就是把所有依赖的jar包和类加载的依赖包，都一并打成一个jar包，形成一个可直接执行的jar包。注意，可执行jar包就不能当作普通jar包被其他项目包依赖了。-->
             <!--   需要知道的是，打fat jar包的插件还有其他插件，比如 maven-jar-plugin 插件， 而spring-boot-maven-plugin插件是专门给springboot打fat jar包的。       -->
@@ -150,6 +183,7 @@
                     </execution>
                 </executions>
             </plugin>
+
             <!-- maven-source-plugin 插件的作用是打包的时候同时打出一个源码包，比如：security-order-1.0.0-SNAPSHOT-sources.jar，把源码包也上传到私服，这样其他同事查看你代码的时候，可以下载源码查看注释-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -157,13 +191,22 @@
                 <version>3.0.1</version>
                 <executions>
                     <execution>
+                        <!-- 该"目标"的作用是把源码也打成jar包,有源码包之后就可以上传到私服供别人下载查看了 -->
                         <id>attach-sources</id>
                         <goals>
                             <goal>jar</goal>
                         </goals>
                     </execution>
+                    <execution>
+                        <id>attach-test-sources</id>
+                        <goals>
+                            <!-- 把测试用例代码也打进jar包 -->
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
                 </executions>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -187,7 +230,11 @@
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
+
         </plugins>
+
+
+
     </build>
 
 
