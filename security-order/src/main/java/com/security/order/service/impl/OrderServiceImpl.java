@@ -74,34 +74,26 @@ public class OrderServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfoEnti
     public String placeOrder(OrderInfoDTO orderInfoDTO) {
         OrderInfoEntity orderInfoEntity = orderInfoDTO.clone(OrderInfoEntity.class);
         orderInfoEntity.setOrderId(UUID.randomUUID().toString());
-        StopWatch stopWatch = new StopWatch("测试时间2");
-        stopWatch.start("1");
         JsonResult<Boolean> jsonResult = marketApi.lockUserCoupon(orderInfoDTO.getUserId());
         if (!jsonResult.getSuccess()) {
             logger.error("调用营销服务 锁定优惠券失败，错误码：{}，错误信息：{}", jsonResult.getErrorCode(), jsonResult.getErrorMessage());
             throw new OrderBizException(jsonResult.getErrorCode(), jsonResult.getErrorMessage());
         }
-        stopWatch.stop();
-
-        stopWatch.start("2");
         List<OrderItemDTO> itemDTOList = orderInfoDTO.getItemDTOList();
         for (OrderItemDTO orderItemDTO : itemDTOList) {
             LockProductStockRequest request = new LockProductStockRequest();
             request.setProductId(orderItemDTO.getProductId());
             request.setQuantity(orderItemDTO.getSaleQuantity());
-            System.out.println("lockProductStock未进："+System.currentTimeMillis());
             JsonResult<Boolean> lockProductStockJsonRes = inventoryApi.lockProductStock(request);
             if (!lockProductStockJsonRes.getSuccess()) {
                 logger.error("调用库存服务 锁定库存失败，错误码：{}，错误信息：{}", lockProductStockJsonRes.getErrorCode(), lockProductStockJsonRes.getErrorMessage());
                 throw new OrderBizException(lockProductStockJsonRes.getErrorCode(), lockProductStockJsonRes.getErrorMessage());
             }
         }
-        stopWatch.stop();
 
-        stopWatch.start("3");
+        orderInfoEntity.setGmtCreate(new Date());
+        orderInfoEntity.setGmtModified(new Date());
         orderInfoMapper.insert(orderInfoEntity);
-        stopWatch.stop();
-        System.out.println(stopWatch.prettyPrint(TimeUnit.MILLISECONDS));
         return orderInfoEntity.getOrderId();
     }
 

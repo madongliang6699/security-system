@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
 @RequestMapping("/order")
@@ -18,16 +19,16 @@ public class OrderController {
     @Resource
     OrderService orderService;
 
+    public AtomicLong atomicLong = new AtomicLong();
+
     /**
      * 下订单
      */
     @PostMapping("/placeOrder")
     public String placeOrder(@Valid @RequestBody OrderInfoDTO orderInfoDTO) {
-        StopWatch stopWatch = new StopWatch("测试时间");
-        stopWatch.start("controller时间");
         String orderId = orderService.placeOrder(orderInfoDTO);
-        stopWatch.stop();
-        System.out.println(stopWatch.prettyPrint(TimeUnit.MILLISECONDS));
+
+        System.out.println("atomicLong="+atomicLong.incrementAndGet());
         return orderId;
     }
 

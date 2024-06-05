@@ -21,7 +21,6 @@ public class InventoryApiImpl implements InventoryApi {
 
     @Override
     public JsonResult<Boolean> lockProductStock(LockProductStockRequest lockProductStockRequest) {
-        System.out.println("lockProductStock进入："+System.currentTimeMillis());
         try {
 
             Boolean b = inventoryService.lockProductStock(lockProductStockRequest);

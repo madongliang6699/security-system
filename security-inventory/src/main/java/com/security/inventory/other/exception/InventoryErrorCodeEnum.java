@@ -11,7 +11,7 @@ import com.security.common.exception.BaseErrorCodeEnum;
  */
 public enum InventoryErrorCodeEnum implements BaseErrorCodeEnum {
 
-    PRODUCT_SKU_STOCK_Insufficient("100005", "商品库存记录不存在"),
+    PRODUCT_SKU_STOCK_Insufficient("100005", "商品库存不足"),
     PRODUCT_SKU_STOCK_ERROR("100001", "商品库存记录不存在"),
     LOCK_PRODUCT_SKU_STOCK_ERROR("100002", "锁定商品库存失败"),
     RELEASE_PRODUCT_SKU_STOCK_ERROR("100003", "释放商品库存失败"),
