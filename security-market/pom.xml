@@ -83,10 +83,14 @@
                 <directory>src/main/resources</directory>
                 <includes>
                     <include>**/*.properties</include>
-                    <include>**/*.xml</include>
                 </includes>
                 <targetPath>${project.build.directory}</targetPath>
-                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*</include>
+                </includes>
             </resource>
             <resource>
                 <directory>src/main/java</directory>
@@ -104,8 +108,8 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <mainClass>com.security.market.MarketApplication</mainClass> <!-- 这里指定你的主类 -->
-<!--                    <includeSystemScope>true</includeSystemScope>-->
-<!--                    <fork>true</fork>-->
+                    <!--                    <includeSystemScope>true</includeSystemScope>-->
+                    <!--                    <fork>true</fork>-->
                 </configuration>
                 <executions>
                     <execution>
@@ -115,7 +119,18 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- maven-source-plugin 插件的作用是打包的时候同时打出一个源码包，比如：security-order-1.0.0-SNAPSHOT-sources.jar，把源码包也上传到私服，这样其他同事查看你代码的时候，可以下载源码查看注释-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.0.2</version>
+                <configuration>
+                    <excludes>
+                        <exclude>**/*.properties</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>

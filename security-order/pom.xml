@@ -104,8 +104,6 @@
     </dependencies>
 
 
-
-
     <build>
 
         <!-- <resources>标签的作用就是指定编译的时候把哪些文件(src/main/resources下的文件和src/main/java的文件)复制(或者说打包)到项目target目录下的哪个目录位置,
@@ -123,21 +121,28 @@
           -->
         <resources>
             <resource>
-                <!-- 指定src/main/resources下的哪些文件打包到哪个位置,如果不配置默认把src/main/resources下的所有文件打包到target/classes目录下 -->
+                <!-- 指定src/main/resources下的哪些文件打包到哪个位置,如果不配置默认把src/main/resources下的所有文件复制到target/classes目录下 -->
                 <directory>src/main/resources</directory>
                 <includes>
-                    <!-- 指定把resources文件夹下的properties配置文件 和 xml文件打包到jar包中 -->
+                    <!-- 指定只复制resources文件夹下的properties配置文件 -->
                     <include>**/*.properties</include>
-                    <include>**/*</include>
                 </includes>
-                <!-- 指定资源配置文件复制到${project.build.directory}目录(就是target目录,和jar包同级的目录), 而不是classes目录,
-                这样打包后配置文件才会打到jar包外部,
-                不过这里指定之后应该是把上面所有配置的所有文件都打包到这个目录了,
-                没有做到只把properties文件打包到jar外部. 不指定targetPath的话默认到target/classes目录下,也就打包把资源文件打到jar包里面了.
+                <!-- 指定资源配置文件复制到${project.build.directory}目录(就是target目录,和jar包同级的目录), 而不是classes目录,这样打包后配置文件才会打到jar包外部.
+                不指定targetPath的话, 所有资源配置文件默认复制到target/classes目录下,也就打包把资源文件打到jar包里面了.
                 虽然配置文件在jar包外部, 在java -jar myApp.jar 启动程序的时候,会默认找当前目录(执行java -jar命令的目录)下的配置文件的.  -->
                 <targetPath>${project.build.directory}</targetPath>
                 <!-- 指定是否开启替换标签，若文件中有类似${key}这样的配置，就会根据maven的pom中profiles配置的变量值进行覆盖，true表示开启替换，默认为false, 一般应该用不到这个功能 -->
                 <filtering>true</filtering>
+            </resource>
+            <resource>
+                <!-- 上面这个<resource>标签的作用是控制把.properties文件复制到target目录下,达到配置文件打包到jar外面的效果,
+                但是复制到target后classes目录下就没有properties配置文件了, 在本地idea中启动的时候就报错(因为找不到配置文件,所有东西就使用其默认的配置参数),
+                所以当前这个<resource>标签是再次指定一下所有文件都需要复制到classes目录下.
+                 -->
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*</include>
+                </includes>
             </resource>
             <resource>
                 <!-- 指定src/main/java下的哪些文件复制到哪个位置,如果不配置默认只把src/main/java下对应的的所有.class文件复制到target/classes目录下 -->
@@ -154,8 +159,6 @@
                 </includes>
             </resource>
         </resources>
-
-
 
 
         <plugins>
@@ -182,6 +185,18 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.0.2</version>
+                <configuration>
+                    <excludes>
+                        <!-- 因上面需要有两个<resource>标签的缘故, 导致目前classes目录的内外都有properties配置文件,而打出的jar包我们只想要外部的配置文件,
+                        因此这里使用 maven-jar-plugin插件 把默认的内部的properties配置文件在打包的时候排除掉(没法直接使用spring-boot-maven-plugin插件排除)-->
+                        <exclude>**/*.properties</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
 
             <!-- maven-source-plugin 插件的作用是打包的时候同时打出一个源码包，比如：security-order-1.0.0-SNAPSHOT-sources.jar，把源码包也上传到私服，这样其他同事查看你代码的时候，可以下载源码查看注释-->
@@ -226,13 +241,11 @@
                             <artifactId>lombok</artifactId>
                             <version>${lombok.version}</version>
                         </path>
-                        <!-- other annotation processors -->
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
 
         </plugins>
-
 
 
     </build>
