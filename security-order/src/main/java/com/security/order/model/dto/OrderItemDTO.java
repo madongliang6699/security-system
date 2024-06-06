@@ -18,7 +18,7 @@ public class OrderItemDTO extends BaseEntity {
     //订单明细编号
     private String orderItemId;
     //商品编号
-    private String productId;
+    private Long productId;
     //商品名称
     private String productName;
     //销售数量

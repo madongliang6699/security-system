@@ -1,7 +1,6 @@
 package com.security.order.controller;
 
 
-import cn.hutool.core.date.StopWatch;
 import com.security.order.model.dto.OrderInfoDTO;
 import com.security.order.service.OrderService;
 import org.springframework.web.bind.annotation.*;
@@ -9,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
@@ -24,11 +22,19 @@ public class OrderController {
     /**
      * 下订单
      */
+    @PostMapping("/atomicLongTo0")
+    public void atomicLongTo0(Long num) {
+        atomicLong.set(num);
+    }
+
+    /**
+     * 下订单
+     */
     @PostMapping("/placeOrder")
     public String placeOrder(@Valid @RequestBody OrderInfoDTO orderInfoDTO) {
         String orderId = orderService.placeOrder(orderInfoDTO);
 
-        System.out.println("atomicLong="+atomicLong.incrementAndGet());
+        System.out.println("atomicLong=" + atomicLong.incrementAndGet());
         return orderId;
     }
 

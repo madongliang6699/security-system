@@ -8,6 +8,6 @@ import org.apache.ibatis.annotations.Mapper;
 public interface InventoryMapper extends BaseMapper<ProductStockDO> {
 
 
-    ProductStockDO selectStockForUpdate(String id);
+    ProductStockDO selectStockForUpdate(Long id);
 
 }

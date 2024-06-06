@@ -18,7 +18,7 @@ public class LockProductStockRequest extends AbstractObject implements Serializa
     private static final long serialVersionUID = 8229493558996271243L;
 
     //商品id
-    private String productId;
+    private Long productId;
     //销售数量（需要锁的库存数量）
     private Integer quantity;
 

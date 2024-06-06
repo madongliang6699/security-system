@@ -15,4 +15,6 @@ public interface InventoryService extends IService<ProductStockDO> {
      */
     Boolean lockProductStock(LockProductStockRequest lockProductStockRequest);
 
+    void testDeadlock(Boolean order) throws InterruptedException;
+
 }

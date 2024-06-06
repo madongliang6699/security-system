@@ -4,6 +4,7 @@ import com.security.common.core.JsonResult;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.rpc.RpcException;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
@@ -12,11 +13,14 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 默认的Controller全局异常处理增强组件
@@ -33,8 +37,27 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = Exception.class)
     public JsonResult<Object> handle(Exception e) {
-        log.error("[ 系统未知错误 ]", e);
-        return JsonResult.buildError("-1", e.getMessage());
+        // 创建一个Map来存储异常信息
+        Map<String, Object> responseBody = new HashMap<>();
+        // 获取异常类型
+        responseBody.put("异常类型", e.getClass().getName());
+        // 获取异常消息
+        responseBody.put("异常信息", e.getMessage());
+        // 获取异常堆栈信息
+        //StackTraceElement[] stackTrace = e.getStackTrace();
+        //StringBuilder stackTraceString = new StringBuilder();
+        //for (StackTraceElement element : stackTrace) {
+        //    stackTraceString.append(element.toString()).append("\n");
+        //}
+        //responseBody.put("stackTrace", stackTraceString.toString());
+        responseBody.put("堆栈", e.getStackTrace()[0].toString());
+
+        // 获取请求路径
+        //responseBody.put("path", request.getDescription(false));
+
+        // 返回响应实体
+        log.error("系统未知异常: {}", responseBody);
+        return JsonResult.buildError("-1", "系统未知异常: " + responseBody);
     }
 
 

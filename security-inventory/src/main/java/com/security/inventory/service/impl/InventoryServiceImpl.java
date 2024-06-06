@@ -10,6 +10,7 @@ import com.security.inventory.service.InventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 
 /**
  * @author zhonghuashishan
@@ -40,6 +41,23 @@ public class InventoryServiceImpl extends ServiceImpl<InventoryMapper, ProductSt
          *  第一种:查询的时候使用select for update的sql. (要小心避免死锁)
          *  第二种:直接一个sql完成修改操作, 不过这种方式不好判断库存是不是不足, 也需要sql判断.
          *  第三种:使用锁, 把查询和修改的过程放在一个原子锁里.
+         *
+         *  知识点补充:select ... for update 在 MySQL 中通常是行锁，锁定查询条件选中的行，以防止其他事务在同一行上进行并发的 UPDATE 或 DELETE 操作。
+         *  在某些情况下，如全表扫描或未使用索引(查询条件没有使用索引导致需要全表扫描的情况)，可能会升级为表锁。
+         *  另外使用 select ... for update 时, 和后面的update操作一定要在同一个事务中,否则起不到for update的作用。
+         *
+         *  使用 for update 语句进行行锁定时，如果多个事务以不正确的顺序获取锁，可能会导致死锁。比如事务1先锁定了a这条数据,然后又用for update去获取b数据, 而事务2和事务1相反,先锁定b,又去获取a,就可能导致死锁.
+         * MySQL 的 InnoDB 存储引擎可以自动检测到死锁，并通过回滚其中一个事务来解决死锁。被回滚的事务会收到一个错误消息，类似于：ERROR 1213 (40001): Deadlock found when trying to get lock; try restarting transaction
+         *
+         * 避免死锁的方法:
+         *      一致的锁定顺序,
+         *      缩短事务执行时间以降低发生死锁的概率,
+         *      合理使用索引以减少锁定的行数,
+         *      批量处理:将多个小的事务合并成一个批量处理操作以减少并发事务的数量,
+         *      适当使用锁机制:如果可能，使用表锁而不是行锁，或者反过来，具体取决于你的应用场景和并发模式。
+         *
+         *
+         * 死锁是在数据库并发处理中常见的问题，通过合理的锁定顺序、优化事务设计和使用适当的锁机制，可以有效地预防和解决死锁问题。
          */
         ProductStockDO productStockDO = inventoryMapper.selectStockForUpdate(lockProductStockRequest.getProductId());
         if(productStockDO.getSaleStockQuantity() <= lockProductStockRequest.getQuantity()){
@@ -52,5 +70,23 @@ public class InventoryServiceImpl extends ServiceImpl<InventoryMapper, ProductSt
 
         return true;
     }
+
+    @Override
+    @Transactional
+    public void testDeadlock(Boolean order) throws InterruptedException {
+
+        if(order){
+            inventoryMapper.selectStockForUpdate(1L);
+            Thread.sleep(5000);
+            inventoryMapper.selectStockForUpdate(2L);
+        } else {
+            inventoryMapper.selectStockForUpdate(2L);
+            Thread.sleep(5000);
+            inventoryMapper.selectStockForUpdate(1L);
+        }
+
+
+    }
+
 
 }
