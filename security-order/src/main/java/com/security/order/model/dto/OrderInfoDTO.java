@@ -15,6 +15,9 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class OrderInfoDTO extends BaseEntity {
 
+    Integer pageNum;
+    Integer pageSize;
+
     //订单编号
     private String orderId;
     //订单类型 1:⼀般订单 255:其它

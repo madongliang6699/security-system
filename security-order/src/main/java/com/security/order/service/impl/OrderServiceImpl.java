@@ -1,10 +1,10 @@
 package com.security.order.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.date.StopWatch;
-import com.baomidou.mybatisplus.core.conditions.AbstractWrapper;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.security.common.constants.RocketDelayedLevel;
 import com.security.common.constants.RocketMqConstant;
@@ -25,9 +25,11 @@ import com.security.order.domain.request.GenOrderIdRequest;
 import com.security.order.domain.response.CreateOrderResponse;
 import com.security.order.domain.response.GenOrderIdResponse;
 import com.security.order.mapper.OrderInfoMapper;
+import com.security.order.mapper.OrderItemMapper;
 import com.security.order.model.dto.OrderInfoDTO;
 import com.security.order.model.dto.OrderItemDTO;
 import com.security.order.model.entity.OrderInfoEntity;
+import com.security.order.model.entity.OrderItemEntity;
 import com.security.order.other.enums.*;
 import com.security.order.other.exception.OrderBizException;
 import com.security.order.other.exception.OrderErrorCodeEnum;
@@ -42,12 +44,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -66,6 +68,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfoEnti
 
     @Autowired
     OrderInfoMapper orderInfoMapper;
+    @Resource
+    OrderItemMapper orderItemMapper;
 
 
     /**
@@ -90,6 +94,17 @@ public class OrderServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfoEnti
                 throw new OrderBizException(lockProductStockJsonRes.getErrorCode(), lockProductStockJsonRes.getErrorMessage());
             }
         }
+        for (OrderItemDTO orderItemDTO : itemDTOList) {
+            OrderItemEntity orderItemEntity = orderItemDTO.clone(OrderItemEntity.class);
+            orderItemEntity.setOrderId(orderInfoEntity.getOrderId());
+            orderItemEntity.setOrderItemId(UUID.randomUUID().toString());
+            orderItemEntity.setPayAmount(new BigDecimal("100.23"));
+            orderItemEntity.setSalePrice(12.4);
+            orderItemEntity.setPayAmount(new BigDecimal(12.1234));
+            orderItemEntity.setGmtCreate(new Date());
+            orderItemEntity.setGmtModified(new Date());
+            orderItemMapper.insert(orderItemEntity);
+        }
 
         orderInfoEntity.setGmtCreate(new Date());
         orderInfoEntity.setGmtModified(new Date());
@@ -103,6 +118,21 @@ public class OrderServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfoEnti
         List<OrderInfoEntity> orderInfoEntities = orderInfoMapper.selectList(tWrapper);
         List<OrderInfoDTO> orderInfoDTOS = BeanUtil.copyToList(orderInfoEntities, OrderInfoDTO.class);
         return orderInfoDTOS;
+    }
+
+    public IPage<OrderInfoDTO> selectByPage(Page<OrderInfoEntity> page, OrderInfoDTO orderInfoDTO) {
+        QueryWrapper<OrderInfoEntity> tWrapper = new QueryWrapper<>();
+        Page orderInfoEntityPage = orderInfoMapper.selectPage(page, tWrapper);
+        List<OrderInfoEntity> records = orderInfoEntityPage.getRecords();
+        List<OrderInfoDTO> orderInfoDTOS = BeanUtil.copyToList(records, OrderInfoDTO.class);
+        for (OrderInfoDTO infoDTO : orderInfoDTOS) {
+            QueryWrapper<OrderItemEntity> itemEntityQueryWrapper = new QueryWrapper<>();
+            List<OrderItemEntity> orderItemEntities = orderItemMapper.selectList(itemEntityQueryWrapper);
+            List<OrderItemDTO> orderItemDTOS = BeanUtil.copyToList(orderItemEntities, OrderItemDTO.class);
+            infoDTO.setItemDTOList(orderItemDTOS);
+        }
+        orderInfoEntityPage.setRecords(orderInfoDTOS);
+        return orderInfoEntityPage;
     }
 
 
