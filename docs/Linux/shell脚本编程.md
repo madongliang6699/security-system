@@ -268,15 +268,15 @@ echo "All args are $@"
 echo "The scriptname is `basename $0`"
 
 执行脚本的结果：
-[root@centos8 ~]#bash /data/scripts/arg.sh {a..z}
-1st arg is a
+[root@centos8 ~]#bash /data/scripts/arg.sh {jvm启动参数.md..z}
+1st arg is jvm启动参数.md
 2st arg is b
 3st arg is c
 10st arg is j
 11st arg is k
 The number of arg is 26
-All args are a b c d e f g h i j k l m n o p q r s t u v w x y z
-All args are a b c d e f g h i j k l m n o p q r s t u v w x y z
+All args are jvm启动参数.md b c d e f g h i j k l m n o p q r s t u v w x y z
+All args are jvm启动参数.md b c d e f g h i j k l m n o p q r s t u v w x y z
 The scriptname is arg.sh
 ~~~
 其实位置变量就是执行脚本的时候可以带参数（就像执行命令后面可以带参数一样），参数会自动赋值给脚本内部的

@@ -12,7 +12,9 @@ public class MyBatisPlusConfig {
 
     @Bean
     public PaginationInterceptor paginationInterceptor() {
-        return new PaginationInterceptor();
+        PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
+        paginationInterceptor.setLimit(-1);
+        return paginationInterceptor;
     }
 
 }

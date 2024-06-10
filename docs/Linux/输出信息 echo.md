@@ -29,8 +29,8 @@ echo '$VAR_NAME’  #变量不会替换，强引用
 
 范例：  
 ~~~shell
-root@centos8 ~]#echo -e 'a\x0Ab'
-a
+root@centos8 ~]#echo -e 'jvm启动参数.md\x0Ab'
+jvm启动参数.md
 b
 [root@centos8 ~]#echo -e '\033[43;31;1;5mmagedu\e[0m'
 magedu
