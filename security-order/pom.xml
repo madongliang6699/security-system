@@ -136,7 +136,8 @@
             </resource>
             <resource>
                 <!-- 上面这个<resource>标签的作用是控制把.properties文件复制到target目录下,达到配置文件打包到jar外面的效果,
-                但是复制到target后classes目录下就没有properties配置文件了, 在本地idea中启动的时候就报错(因为找不到配置文件,所有东西就使用其默认的配置参数),
+                但是复制到target后classes目录下就没有properties配置文件了, 在本地idea中启动项目的的时候就可能报错,因为idea启动默认是在classes目录下找配置文件(因为找不到配置文件,
+                在没有配置文件的情况下启动,所有组件(比如Redis的自动装配,mybatis-plus的自动装配等)就使用其默认的配置参数,服务的端口就使用默认的8080),
                 所以当前这个<resource>标签是再次指定一下所有文件都需要复制到classes目录下.
                  -->
                 <directory>src/main/resources</directory>
