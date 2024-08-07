@@ -19,6 +19,10 @@ public class 集合交并差集 {
         list2.add(2);
         list2.add(4);
 
+        List<Integer> list3 = new ArrayList<>();
+        list3.add(2);
+        list3.add(4);
+
         //获取并集
         Collection<Integer> unionList = CollectionUtils.union(list, list2);
         System.out.println(unionList);
@@ -31,13 +35,17 @@ public class 集合交并差集 {
         Collection<Integer> disjunctionList = CollectionUtils.disjunction(list, list2);
         System.out.println(disjunctionList);
 
-        //获取差集
+        //获取差集(list集合中有但list2集合中没有的)
         Collection<Integer> subtractList = CollectionUtils.subtract(list, list2);
         System.out.println(subtractList);
 
-        //获取差集
+        //获取差集(list2集合中有但list集合中没有的)
         Collection<Integer> subtractList2 = CollectionUtils.subtract(list2, list);
         System.out.println(subtractList2);
+
+        //获取差集(list2集合中有但list集合中没有的)
+        Collection<Integer> subtractList3 = CollectionUtils.subtract(list2, list3);
+        System.out.println(subtractList3);
 
     }
 
