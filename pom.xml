@@ -26,6 +26,7 @@
         <module>security-market</module>
         <module>security-inventory</module>
         <module>security-api</module>
+        <module>rate-limiter-starter</module>
     </modules>
 
     <dependencyManagement>
