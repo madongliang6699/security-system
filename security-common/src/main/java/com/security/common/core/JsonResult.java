@@ -1,6 +1,7 @@
 package com.security.common.core;
 
 import com.security.common.exception.BaseErrorCodeEnum;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.Serializable;
@@ -12,6 +13,7 @@ import java.io.Serializable;
  * @version 1.0
  */
 @Slf4j
+@Data
 public class JsonResult<T> implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -30,6 +32,11 @@ public class JsonResult<T> implements Serializable {
      * 默认错误码
      */
     private static final String DEFAULT_ERROR_CODE = "-1";
+
+
+
+
+
 
     /**
      * 请求是否成功
@@ -50,9 +57,17 @@ public class JsonResult<T> implements Serializable {
      * 错误提示语
      */
     private String errorMessage;
+    /**
+     * 日志追踪traceId
+     */
+    private String traceId;
+
+
+
 
 
     public JsonResult() {
+
     }
 
     public JsonResult(Boolean success, T data, String errorCode, String errorMessage) {
@@ -112,35 +127,4 @@ public class JsonResult<T> implements Serializable {
         return new JsonResult<>(REQUEST_FAIL, null, baseErrorCodeEnum.getErrorCode(), baseErrorCodeEnum.getErrorMsg());
     }
 
-    public Boolean getSuccess() {
-        return success;
-    }
-
-    public void setSuccess(Boolean success) {
-        this.success = success;
-    }
-
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
-    }
-
-    public String getErrorCode() {
-        return errorCode;
-    }
-
-    public void setErrorCode(String errorCode) {
-        this.errorCode = errorCode;
-    }
-
-    public String getErrorMessage() {
-        return errorMessage;
-    }
-
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
-    }
 }
