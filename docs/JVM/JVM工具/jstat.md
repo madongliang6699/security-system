@@ -30,7 +30,7 @@ jstat -gc 程序的pid
 | FGCT | 	从应用程序启动到采集时老年代gc所用的时间（秒）           |
 | GCT  | 	从应用程序启动到采集时gc所用的总时间（秒）             |
 
-![img.png](img.png)
+![img.png](imgs/img.png)
 
 另外：
 jstat -gc PID 1000 10 这个命令可以每1000毫秒刷新一下，共刷新10次。
