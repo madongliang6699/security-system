@@ -1,23 +1,23 @@
-
 ## 首先官网下载
+
 mysql-5.7.36-1.el7.x86_64.rpm-bundle.tar
 
 已经在阿里云盘。
 
-
 ## 在Linux上安装
+
 tar -xvf mysql-5.7.36-1.el7.x86_64.rpm-bundle.tar
 解压后有很多rpm包：
 ![img.png](img.png)
 
-只安装这几个就行了：
-rpm -ivh mysql-community-common-5.7.36-1.el7.x86_64.rpm  
-rpm -ivh mysql-community-libs-5.7.36-1.el7.x86_64.rpm   
-rpm -ivh mysql-community-client-5.7.36-1.el7.x86_64.rpm   
-rpm -ivh mysql-community-server-5.7.36-1.el7.x86_64.rpm 
+只安装这几个就行了（按下面顺序安装，因为有依赖关系）：
+rpm -ivh mysql-community-common-5.7.36-1.el7.x86_64.rpm
+rpm -ivh mysql-community-libs-5.7.36-1.el7.x86_64.rpm
+rpm -ivh mysql-community-client-5.7.36-1.el7.x86_64.rpm
+rpm -ivh mysql-community-server-5.7.36-1.el7.x86_64.rpm
 
-安装之前先卸载冲突的mariadb包：  
-rpm -qa | grep mariadb  
+安装之前先卸载冲突的mariadb包：
+rpm -qa | grep mariadb
 rpm -e mariadb-libs-5.5.68-1.el7.x86_64 --nodeps
 
 根据提示，可能还要安装一些基础包：libaio.x86_64  "perl(Data::Dumper)" 等。
@@ -25,6 +25,7 @@ rpm -e mariadb-libs-5.5.68-1.el7.x86_64 --nodeps
 上面安装没有指定安装的目录，就是安装到了mysql默认的目录。
 
 ## 启动服务 和 修改root密码
+
 安装完之后：
 systemctl status mysqld
 systemctl start mysqld
@@ -38,11 +39,11 @@ A temporary password is generated for root@localhost: gI7zDjb<)vIr
 登录：
 mysql -uroot -p 回车输入密码
 
-登录后修改密码：alter user 'root'@'localhost' identified by '123987456Mdl';  
-会提示：ERROR 1819 (HY000): Your password does not satisfy the current policy requirements  
+登录后修改密码：alter user 'root'@'localhost' identified by '123987456Mdl';
+会提示：ERROR 1819 (HY000): Your password does not satisfy the current policy requirements
 因为mysql5.6之后会校验密码安全，太简单的密码不给通过。
 
-在 /etc/my.cnf的[mysqld]下面添加一行关闭安全校验的配置：validate_password=off  
+在 /etc/my.cnf的[mysqld]下面添加一行关闭安全校验的配置：validate_password=off
 重启mysql：systemctl restart mysqld
 
 在登录MySQL后执行修改密码就可以了。
@@ -50,7 +51,8 @@ mysql -uroot -p 回车输入密码
 /etc/my.cnf配置文件里的配置可以看一下。
 
 ### 知识点补充
-~~~text 
+
+~~~text
 在 MySQL 中，当你通过命令行连接到 MySQL 服务器时，即使没有选择具体的数据库，
 你仍然可以执行一些特定的 SQL 语句，例如 ALTER USER、SET、CREATE DATABASE 等。
 这是因为这些语句不依赖于某个具体的数据库，而是与数据库服务器本身的全局管理有关。
@@ -101,9 +103,8 @@ MySQL 中某些命令（如 ALTER USER）是与数据库服务器的全局配置
 因此，即使在没有选择数据库的情况下，也可以执行这些命令，因为它们不依赖于某个数据库上下文。
 ~~~
 
-
-默认root用户只能本地连接, 如果其他ip连接会报这样的错误(该ip不允许连接):  
+默认root用户只能本地连接, 如果其他ip连接会报这样的错误(该ip不允许连接):
 1130 -Host'115.196.229.195' is not allowed to connect to this MySQL server
 
 出于安全考虑,root用户就控制只能本地访问, 然后创建一些特定的用户,给外部访问.
-创建用户的方式,看下面的管理员常用命令.
+创建用户的方式,以及给用户授权，看下面的管理员常用命令.
