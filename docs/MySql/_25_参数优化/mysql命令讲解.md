@@ -1,0 +1,11 @@
+
+
+# mysqldump
+
+
+
+
+
+# 水电费 
+FLUSH TABLES WITH READ LOCK;
+SHOW MASTER STATUS;
