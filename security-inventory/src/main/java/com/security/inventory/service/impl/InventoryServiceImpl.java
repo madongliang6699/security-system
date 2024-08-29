@@ -47,7 +47,10 @@ public class InventoryServiceImpl extends ServiceImpl<InventoryMapper, ProductSt
          *  另外使用 select ... for update 时, 和后面的update操作一定要在同一个事务中,否则起不到for update的作用。
          *
          *  使用 for update 语句进行行锁定时，如果多个事务以不正确的顺序获取锁，可能会导致死锁。比如事务1先锁定了a这条数据,然后又用for update去获取b数据, 而事务2和事务1相反,先锁定b,又去获取a,就可能导致死锁.
-         * MySQL 的 InnoDB 存储引擎可以自动检测到死锁，并通过回滚其中一个事务来解决死锁。被回滚的事务会收到一个错误消息，类似于：ERROR 1213 (40001): Deadlock found when trying to get lock; try restarting transaction
+         * MySQL 的 InnoDB 存储引擎可以自动检测到死锁，检测到死锁之后会立马通过回滚其中一个事务来解决死锁。被回滚的事务会收到一个错误消息，类似于：ERROR 1213 (40001): Deadlock found when trying to get lock; try restarting transaction.
+         * 另外,如果msyql InnoDB 存储引擎有默认的事务等待锁超时的机制(通过innodb_lock_wait_timeout参数设置超时时间,默认50秒),如果事务A要获取某行数据的锁, 但是这行数据已经被事务A锁定, 而这两个事务又不是死锁关系,只是单纯的等待关系,
+         * 那事务A就会一直等待事务B释放锁,但是超过innodb_lock_wait_timeout参数时间后,会返回:Lock wait timeout exceeded; try restarting transaction的错误.
+         *
          *
          * 避免死锁的方法:
          *      一致的锁定顺序,
