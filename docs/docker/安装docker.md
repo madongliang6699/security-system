@@ -27,7 +27,9 @@ yum-config-manager --enable docker-ce-edge
 
 
 ### 5）安装指定版本（这里使用18.0.1版本）
-yum install docker-ce-18.06.1.ce
+yum install docker-ce-18.06.1.ce 
+或使用这个版本:
+yum install docker-ce-3:20.10.14-3.el7 docker-ce-cli-3:20.10.14-3.el7 containerd.io
 
 ### 6）查看版本
 docker -v 简单查看docker版本；  
