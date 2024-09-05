@@ -27,6 +27,7 @@
         <module>security-inventory</module>
         <module>security-api</module>
         <module>rate-limiter-starter</module>
+        <module>docker-swarm-demo</module>
     </modules>
 
     <dependencyManagement>

@@ -1,11 +1,12 @@
 
 ## Dockerfile的文件名称
 只要文件名是“Dockerfile”（无论大小写，没有文件格式后缀）的文件， 
-或是 以“Dockerfile”开头的文件（比如：Dockerfile-dev、Dockerfile-test），
 就是Dockerfile文件.
 
 在某个文件夹里使用docker build 构建镜像的时候， docker会默认使用当前文件夹下面的Dockerfile文件
 进行构建，如果当前文件夹下有多个Dockerfile文件，就需要明确指定使用哪个。
+
+docker build 的用法看下面的讲解.
 
 
 
@@ -50,7 +51,8 @@ ARG 用于定义在构建过程中可以使用的变量。与 ENV 不同，ARG �
 ARG jdkVersion=8
 
 这个指令定义了一个名为 VERSION 的变量，默认值为 1.0。你可以在 Dockerfile 中通过 ${VERSION} 使用这个变量。
-ARG的值还可以再build镜像的时候通过传入参数（docker build -t --build-arg jdkVersion=11）替换掉文件中的值，所以文件中的指定的（jdkVersion=8）这个8的值可以认为是默认值。
+ARG的值还可以再build镜像的时候通过传入参数（docker build -t --build-arg jdkVersion=11）替换掉文件中的值，所以文件中的指定的（jdkVersion=8）这个8的值可以认为是默认值, 
+或者文件中不指定值, 在命令参数中必须输入值。
 因此，同一个Dockerfile文件，可以通过指定参数的方式构建出不同内涵的镜像。
 
 ------------------------------------------------------------------------------------------------
@@ -83,7 +85,7 @@ WORKDIR $APP_HOME
 
 COPY . .
 
-这行代码将当前目录下的所有文件复制到镜像的工作目录（在上面的例子中是 /usr/src/app）。
+这行代码将当前上下文目录下的所有文件复制到镜像的工作目录（在上面的例子中是 /usr/src/app）。
 
 #### 另一种 ADD 的用法：
 ADD app.tar.gz /app
@@ -212,7 +214,8 @@ SHELL ["powershell", "-Command"]
 FROM openjdk:8
 
 # 设置标签（工作中一般不写写个，或不写自己的信息，写开源镜像的时候可以写上自己的信息）
-LABEL maintainer="yourname@example.com"
+LABEL maintainer="madongliang"
+LABEL email="mdl6699@163.com"
 
 # 设置构建时变量
 ARG VERSION=1.0
@@ -246,7 +249,76 @@ HEALTHCHECK --interval=5m --timeout=3s \
 这个 Dockerfile 定义了一个基于 Ubuntu 20.04 的镜像，它会安装 Python 3，并将项目文件复制到 `/usr/src/app` 目录下。容器启动时会运行 `python3 app.py`，并监听 8080 端口。
 
 
-## 构建镜像
+## docker build 构建镜像
+docker build [OPTIONS] PATH | URL | -
+
+OPTIONS:是构建时的参数,比如-t指定镜像名称和标签(-t 镜像名:tag).  
+PATH或URL或-: 是制定需要构建的上下文路径,可以是本地的路径,可以是git仓库地址的url,也可以是标准输入的方式.
+
+一般使用:`docker  build  -t 镜像名:tag  . `的方式构建镜像. 
+
+上面命令解析:
+docker build: 这是构建 Docker 镜像的基本命令。它会根据给定的上下文（即构建所依赖的文件和目录），默认在上下文目录中找Dockerfile文件, 并按照Dockerfile文件中的指令构建镜像。
+
+-t 镜像名:tag: 这个选项用来为构建的镜像命名并打标签。 镜像名：你想给镜像起的名字。比如，my-app。 tag：镜像的版本号或标签。比如，1.0。如果不指定，默认会使用 latest 作为标签。
+例如，-t my-app:1.0 会将构建的镜像命名为 my-app，并给它分配一个 1.0 的标签。
+
+. :这个点表示 构建上下文 的路径。上下文包含Dockerfile文件及其构建镜像要使用的文件和目录。在这个命令中的 . 代表当前目录，也就是告诉Docker在当前目录中查找 Dockerfile 和相关资源来构建镜像。
+
+
+注意: 如果你的Dockerfile文件不是默认的名称,或者可能不在上下文目录中, 可以使用-f指定Dockerfile路径和名称, 但是上下文还是可以使用.来使用当前目录构建:
+docker  build  -t 镜像名:tag -f /app/myDockerfile .
+
+当然也可以指定上下文的路径:
+docker  build  -t 镜像名:tag -f /app/myDockerfile /app/aaa
+
+
+#### 其他参数
+--build-arg:  给Dockerfile文件中的ARG的参数赋值,可以做到通过命令动态修改文件内的参数:
+docker build --build-arg VERSION=1.0 -t my-image .
+
+
+–target：指定阶段构建，对应多阶段构建的场景,使用 --target 指定多阶段构建中的某个构建阶段，通常用于优化和缩小最终镜像大小。
+docker build --target builder -t my-builder-image .
+
+--no-cache:禁用缓存，强制 Docker 每一层都重新构建，而不使用之前构建时的缓存。适用于需要完全干净构建的场景。
+docker build --no-cache -t my-image .
+
+
+
+
+## 镜像推送仓库
+新构建的镜像,如果想用于Docker swarm, 那必须把镜像推送到远程仓库, 因为刚构建的镜像只在本地, 其他节点的docker里是没有这个镜像的, 因此,如果想让swarm集群中的所有节点都使用相同版本的镜像,
+swarm集群对某个镜像启动容器的时候, 各个节点都是从远程仓库拉取镜像并启动容器的. 所以,构建的镜像必须先推送的远程仓库.
+
+自己已经申请了阿里云仓库:
+https://cr.console.aliyun.com/cn-hangzhou/instance/repositories
+
+先把本地docker登录阿里云仓库:  
+docker login --username=tb9233262_11 registry.cn-hangzhou.aliyuncs.com   
+回车输入密码:  
+123987456Mdl  
+这个密码应该是给镜像仓库设置的密码,不是阿里云的密码.
+
+cat ~/.docker/config.json 命令可以查看一下登录后保存的登录信息.
+
+
+
+登录成功后，需要将本地的镜像打上符合阿里云仓库格式的标签：
+docker tag 要打tag的本地镜像  阿里云的地址/命名空间/镜像名(镜像名应该是要和仓库名字相同):1.1 
+即:
+docker tag  security-order:1.1  registry.cn-hangzhou.aliyuncs.com/mdl_study/security-order:1.1
+
+docker images 就能看到刚打过标签的镜像. 
+
+
+完成打标签后，使用以下命令将新标签的镜像推送到阿里云：
+docker push 阿里云的地址/命名空间/镜像名(镜像名应该是要和仓库名字相同):1.1
+即:
+docker push registry.cn-hangzhou.aliyuncs.com/mdl_study/security-order:1.1   
+![img.png](img.png)
+![img_1.png](img_1.png)
+![img_2.png](img_2.png)
 
 
 

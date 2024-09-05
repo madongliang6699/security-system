@@ -102,13 +102,52 @@ task(任务):
 ## 常用命令 
 ### 部署服务
 Docker Swarm 的一个核心功能是服务部署。你可以在 Swarm 集群上部署分布式服务。
+
+
 1.创建服务:
 使用以下命令创建一个服务，例如部署一个 Nginx 服务：
 docker service create --name my-nginx -p 80:80 --replicas 3 nginx
-`--name my-nginx：指定服务的名称。
--p 80:80：将 Swarm 节点的端口 80 映射到容器的端口 80。
---replicas 3：指定在集群中运行 3 个 Nginx 实例。
-nginx：指定使用的镜像。`
+
+--name my-nginx：指定服务的名称。  
+-p 80:80：将 Swarm 节点的端口 80 映射到容器的端口 80。如果不指定, 应该是使用节点机器的随机端口映射到容器内暴露的端口.   
+--replicas 3：指定在集群中运行 3 个 Nginx 实例。    
+nginx：指定使用的镜像。  
+
+
+
+注意: 下面的例子:  
+
+docker service create --name my-order --replicas 2 --with-registry-auth registry.cn-hangzhou.aliyuncs.com/mdl_study/security-order:1.1
+
+是从自己的阿里云仓库拉取镜像创建swarm服务(节点已经登录了阿里云仓库, 仓库已经有registry.cn-hangzhou.aliyuncs.com/mdl_study/security-order:1.1镜像了), 
+刚开始是使用这样的命令创建的:  
+docker service create --name my-order --replicas 2 registry.cn-hangzhou.aliyuncs.com/mdl_study/security-order:1.1
+不带--with-registry-auth参数,就总是报错:
+image registry.cn-hangzhou.aliyuncs.com/mdl_study/security-order:1.1 could not be accessed on a registry to record
+its digest. Each node will access registry.cn-hangzhou.aliyuncs.com/mdl_study/security-order:1.1 independently,
+possibly leading to different nodes running different
+versions of the image.
+大概的意思就是某个节点无法访问阿里云仓库,但是各个节点单独通过docker pull 下载阿里云仓库的这个镜像是没问题的, 说明每个阶段确实都登录上阿里云仓库了. 
+但是就是通过docker service create --name my-order --replicas 2 registry.cn-hangzhou.aliyuncs.
+com/mdl_study/security-order:1.1集群拉取镜像创建服务就报访问错误. 不知道是不是因为两个节点上的docker的版本不一致导致manager节点操控worker节点的时候,存在传递信息的问题.
+反正命令加上--with-registry-auth后就不报错了:
+~~~
+GPT给的答案:
+如果各个节点都能使用 docker pull 命令成功拉取镜像，但在 docker service create 时仍然报 "image could not be accessed on a registry to record its digest" 错误，那么问题可能出现在Docker Swarm的镜像管理机制或者注册认证传递上。
+
+根据错误信息，Swarm在拉取镜像时无法记录镜像的 digest，这可能是由于以下几个原因导致的。接下来我会针对这种场景提供几个更具体的解决方案：
+
+1. 使用 --with-registry-auth 传递认证信息
+在Swarm服务中，虽然各个节点可以手动拉取镜像，但在 docker service create 时，Swarm集群的各个节点需要知道如何从镜像仓库拉取镜像的凭据。
+因此，需要通过 --with-registry-auth 参数将登录信息传递给Swarm集群的其他节点。
+
+解决方案： 使用 --with-registry-auth 创建服务，它会将你当前登录的阿里云仓库的凭证传递给每一个节点.  你只需要在Swarm管理节点上登录镜像仓库，Docker会自动将认证信息传播到其他节点，而不需要手动在每个节点上登录。
+
+2.如果问题持续存在，你也可以尝试手动指定镜像的 digest 而不是标签。使用 Digest 让 Swarm 服务直接拉取镜像的特定版本。
+
+3.检查Docker版本一致性：确保Swarm集群中的所有节点Docker版本一致
+~~~
+
 
 
 2.查看服务状态
@@ -166,6 +205,9 @@ sudo tar -czvf swarm-backup.tar.gz /var/lib/docker/swarm/
 sudo systemctl stop docker  
 sudo tar -xzvf swarm-backup.tar.gz -C /  
 sudo systemctl start docker  
+
+
+
 
 
 ## 总结

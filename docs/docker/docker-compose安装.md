@@ -8,7 +8,7 @@ Compose,是用于定义和运行多容器 Docker 应用程序的工具。
 
 ## Compose 安装
 Compose版本与docker版本的大致对应:  
-![img.png](img.png)
+![img.png](picture/img版本对应.png)
 
 下载方式:  
 sudo curl -L "https://github.com/docker/compose/releases/download/v2.10.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
