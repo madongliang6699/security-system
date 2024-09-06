@@ -3,6 +3,10 @@
 Docker swarm 是docker自带的,不需要安装,可以直接使用.
 
 
+====================================================================================================================
+
+
+
 ## 搭建docker swarm集群要求
 Docker Swarm 集群在生产环境中的最佳实践建议是使用至少 3 台机器 来确保高可用性（HA）。
 然而，从技术上讲，Swarm 集群可以在两台机器上运行，尽管这种配置会有一些限制和风险。
@@ -20,6 +24,10 @@ Docker Swarm 使用 Raft 协议来管理集群的状态和数据一致性。Raft
 为什么在两台机器上也能搭建 Swarm？
 虽然最佳实践是 3 台或更多机器，但 Docker Swarm 的设计允许你在只有 2 台机器的情况下初始化和运行集群。这种配置在小规模开发环境或测试环境中是可行的，并且能够提供基本的 Swarm 功能。
 但是，使用 2 台机器意味着你必须承受没有高可用性保障的风险。如果其中一台机器（尤其是管理节点）不可用，整个集群将失效，无法继续进行服务调度和管理。
+
+
+====================================================================================================================
+
 
 
 ## 搭建docker swarm集群
@@ -62,25 +70,25 @@ sudo docker node ls
 
 你应该能看到两台机器的列表，其中一台为管理节点，另一台为工作节点。
 
-## 部署服务:
-现在你已经成功搭建了一个包含两台机器的 Swarm 集群，可以通过 docker service create 命令在 Swarm 集群中部署服务。
-例如，部署一个简单的 Nginx 服务：
-sudo docker service create --name my-nginx --replicas 2 -p 80:80 nginx
 
-这将会在两台机器上各部署一个 Nginx 容器。
+现在你已经成功搭建了一个包含两台机器的 Swarm 集群，可以通过下面讲解的 docker service create 命令创建服务.
+
+
+====================================================================================================================
+
 
 
 ## swarm中的几个概念
-swarm:
+### swarm:  
 就是集群,可以理解成一个docker集群的整体,管理整个swarm集群的引擎. 其包含了使用swarm的命令.
 
-node:
+### node:  
 就是加入swarm集群的一台机器,服务器.  分为管理者节点(manager)和工作节点(worker).
 管理者节点是用来管理和维护集群的,swarm的命令只能在管理者节点使用.
 (节点退出集群的命令docker swarm leave是在worker节点使用的,表示当前节点退出该集群),
 两种节点都可以有多台机器,管理节点可以有多个,但是leader只有一个.
 
-service(服务):
+### service(服务):  
 服务(Services)是指一组任务的集合，服务定义了任务的属性。
 服务有两种模式:
 replicated services 按照一定规则在各个工作节点上运行指定个数的任务。
@@ -94,17 +102,52 @@ global services 每个工作节点上运行一个任务.
 所有service服务就像是一个项目模板, task任务是这个项目部署出的多个服务实例.
 即:一个服务对应一个或多个任务.
 
-task(任务):
+### task(任务):  
 任务就是要去做的一个事, swarm中最小的调度单位, 任务当然需要一个容器去执行的, 所有一个任务一般就是一个容器, 理解成一个容器就行了. 
 
 
 
-## 常用命令 
-### 部署服务
+====================================================================================================================
+
+
+
+
+## 管理 Swarm
+1. 离开 Swarm ,如果你想让某个节点离开 Swarm，可以在该节点上运行：
+   docker swarm leave
+   如果这是最后一个管理节点，使用 --force 选项强制离开：
+   docker swarm leave --force
+
+2. 删除节点
+   要从 Swarm 中删除某个节点（不在该节点上运行命令），可以在管理节点上执行：
+   docker node rm <NODE-ID>
+
+
+3. 节点可用性管理
+   可以管理节点的可用性状态，例如将某个节点设置为不可用：
+   docker node update --availability drain <NODE-ID>  
+   这将停止在该节点上运行的新任务，并将现有任务移到其他节点。
+
+
+====================================================================================================================
+
+
+## 集群监控
+你可以通过 Docker 提供的命令监控集群的状态，如：
+
+docker node ls：列出所有节点及其状态。
+docker service ls：列出所有服务及其状态。
+docker service ps 服务名称 ：查看服务任务的状态。
+
+
+====================================================================================================================
+
+
+## 部署服务 和 维护服务
 Docker Swarm 的一个核心功能是服务部署。你可以在 Swarm 集群上部署分布式服务。
 
 
-1.创建服务:
+### 创建服务:
 使用以下命令创建一个服务，例如部署一个 Nginx 服务：
 docker service create --name my-nginx -p 80:80 --replicas 3 nginx
 
@@ -148,54 +191,163 @@ GPT给的答案:
 3.检查Docker版本一致性：确保Swarm集群中的所有节点Docker版本一致
 ~~~
 
+上面的命令创建服务并启动正常的返回消息是:  
+![img_3.png](img_3.png)
+
+查看:
+![img_4.png](img_4.png)
 
 
-2.查看服务状态
+如果有问题, 会一直卡在进度条那里. 如果一直卡着, 那就Ctrl+Z退出命令, 通过
+
+
+
+### 查看服务状态
 要查看服务的状态，可以运行：
 docker service ls
 这将显示集群中所有服务的状态。
 
-要查看某个服务的任务的信息：
+这个命令会列出服务的所有任务，显示每个任务的状态。可以通过任务状态来判断当前服务的大概状态：
 docker service ps my-nginx
 
-3. 更新服务
-可以使用以下命令更新服务，例如增加或减少副本数：
+
+使用 inspect 可以获取详细的服务状态信息,其中包括当前的更新进度、失败的任务和更新的策略等:
+docker service inspect <service-name>
+
+
+通过查看服务的日志，可以了解任务容器的启动和终止状态，从而评估更新的进展情况。
+docker service logs <service-name>
+
+
+### 更新服务
+
+docker service update 命令用于更新服务的配置，其功能更为广泛。它可以对服务的各种参数进行修改，
+更新后会触发服务的滚动更新, 即逐步停止旧版本的任务容器并启动新版本的任务容器，确保服务平稳更新。
+
+主要功能：
+更新镜像：可以更改服务的容器镜像，例如从 v1 更新到 v2。
+更新环境变量：修改或增加容器启动时的环境变量。
+更新资源限制：修改 CPU 和内存的资源限制。
+更新端口映射：更改服务公开的端口。
+更新副本数：虽然下面的 scale 也可以修改副本数，但update功能范围更广，不仅限于副本数的调整。
+
+使用场景：
+当需要更新服务的镜像版本、配置、资源限制等参数时，使用 update 命令。例如，发布新版本的应用，或调整服务的资源分配策略。
+
+示例：  
+
+更新镜像：将 my-service 服务的镜像更新为 my-image:v2, 通常用于发布新版本的应用：
+docker service update --image my-image:v2 my-service
+
+增加环境变量,你可以添加、修改或删除服务的环境变量。：
+docker service update --env-add "NEW_ENV=prod" my-service  添加环境变量,如果环境变量已存在,那就是修改其值
+docker service update --env-rm "OLD_ENV" my-service  删除环境变量
+
+增加或减少副本数(任务数)：
+docker service update --replicas 5 my-service
+注意:当你想停止一个服务,而又不想删除这个服务的时候, 可以修改副本数为0
+
+更新资源限制:
+你可以调整服务的资源限制，如 CPU 和内存。通过 --limit-cpu 和 --limit-memory 选项可以设置容器运行时的资源上限。  
+docker service update --limit-cpu 0.5 --limit-memory 512M my-service   将 my-service 服务的 CPU 限制为 50%（0.5 核）和内存限制为 512MB
+
+更新端口映射:  
+使用 --publish-add 和 --publish-rm 选项可以添加或删除服务的端口映射。  
+docker service update --publish-add <host-port>:<container-port> <service-name>  
+docker service update --publish-rm <host-port> <service-name>
+
+
+滚动更新策略:  
+滚动更新策略决定了更新过程中，Swarm 如何逐步替换旧的容器实例。你可以使用 --update-parallelism 和 --update-delay 来控制更新速度。
+
+--update-parallelism：指定一次最多同时更新多少个任务容器。
+--update-delay：在更新每批任务之间添加的延迟时间。
+
+docker service update --update-parallelism 2 --update-delay 10s my-service  一次更新 2 个任务容器，批次间等待 10 秒
+
+重启策略:  
+使用 --restart-condition 选项可以设置容器的重启策略，包括 none、on-failure 和 any。你还可以指定最大重启次数和延迟。  
+docker service update --restart-condition <none|on-failure|any> <service-name>  
+docker service update --restart-condition on-failure my-service  将服务配置为在失败时自动重启容器  
+
+
+认证信息传递:
+在使用私有镜像仓库时，你可以通过 --with-registry-auth 选项将镜像仓库的认证信息传递给 Swarm 集群的所有节点。
+docker service update --with-registry-auth <service-name>
+
+
+查看服务更新进度和状态:
+
+docker service ls  
+
+使用 inspect 可以获取详细的服务状态信息，其中包括当前的更新进度、失败的任务和更新的策略等。
+docker service inspect <service-name>
+
+这个命令会列出服务的所有任务，显示每个任务的状态。可以通过任务状态来判断更新是否正在进行或已经完成。
+docker service ps <service-name>
+
+
+通过查看服务的日志，可以了解任务容器的启动和终止状态，从而评估更新的进展情况。
+docker service logs <service-name>
+
+
+
+
+
+### 回滚服务更新(针对上面的更新) 待总结
+如果上面的更新操作出问题了,那就需要回滚.
+
+docker service update --rollback
+
+docker service update --image my-image:v2 --rollback my-service
+    
+
+
+docker service rollback
+
+
+
+
+
+
+### 扩展或缩减
+可以使用以下命令更新服务的副本数量,例如增加或减少副本数, 即增加该服务要启动的容器实例的个数:
 docker service scale my-nginx=5
 这会将 my-nginx 服务的副本数增加到 5。
 
-4. 删除服务
+docker service scale 命令的主要功能是调整服务的副本数，也就是决定服务有多少个任务实例在运行。它主要用于快速横向扩展或收缩服务的任务数量。
+Swarm 会自动在集群的各个节点上分配或停止这些副本。当需要动态调整服务的负载能力时，比如当用户访问量增加或减少时，可以快速增加副本来扩展服务。当负载下降时，可以缩减副本节约资源。
+
+虽然这也算是在更新服务, 但是没有 update 强大, update也可以调节副本数.
+
+
+
+
+
+### 删除服务
 要删除一个服务，可以运行：
 docker service rm my-nginx
 
+在 Docker Swarm 中，当你想删除一个 Docker Swarm 服务时，只需执行 docker service rm 命令，不需要先手动停止服务的任务容器或删除服务的任务。
+Docker Swarm 会自动管理这些过程。当你删除服务时，Swarm 会自动停止并删除该服务的所有任务容器。
 
-### 管理 Swarm
- 1. 离开 Swarm ,如果你想让某个节点离开 Swarm，可以在该节点上运行：
-docker swarm leave
-如果这是最后一个管理节点，使用 --force 选项强制离开：
-docker swarm leave --force
+当执行docker service rm 命令,Swarm会:
+停止任务容器：Swarm 会自动停止与该服务相关的所有任务容器。
+清除任务：所有任务容器会被清理，节点上不再运行该服务的副本。
+移除服务：服务会被从 Swarm 集群中删除。
 
-2. 删除节点
-要从 Swarm 中删除某个节点（不在该节点上运行命令），可以在管理节点上执行：
-docker node rm <NODE-ID>
+删除服务不会影响你的其他服务，它只会影响当前被删除的服务。
 
-
-3. 节点可用性管理
-可以管理节点的可用性状态，例如将某个节点设置为不可用：
-docker node update --availability drain <NODE-ID>  
-这将停止在该节点上运行的新任务，并将现有任务移到其他节点。
+如果你希望保留服务，但只是停止它的任务，可以通过将副本数设置为 0 来停止服务，而不是完全删除服务:  
+docker service update --replicas 0 my-service  
+这将保留服务的定义，但会停止所有容器运行。
 
 
 
-### 集群监控
-你可以通过 Docker 提供的命令监控集群的状态，如：
-
-docker node ls：列出所有节点及其状态。
-docker service ls：列出所有服务及其状态。
-docker service ps 服务名称 ：查看服务任务的状态。
+====================================================================================================================
 
 
-
-###  备份与恢复
+##  备份与恢复
 1. 备份
 要备份 Swarm 的数据，可以备份 /var/lib/docker/swarm/ 目录。你可以使用常见的文件系统备份工具，如 tar：
 sudo tar -czvf swarm-backup.tar.gz /var/lib/docker/swarm/
@@ -207,9 +359,16 @@ sudo tar -xzvf swarm-backup.tar.gz -C /
 sudo systemctl start docker  
 
 
+====================================================================================================================
 
 
 
 ## 总结
 Docker Swarm 是一个功能强大的容器编排工具，提供了简单易用的命令来管理容器化应用。
 通过 Swarm，用户可以轻松地部署、管理和扩展分布式应用程序，并且 Docker 的原生支持使得它特别适合现有 Docker 用户。
+
+
+
+## 问题:
+### 如果客户现场不能使用外网, 我们的镜像怎么带到客户环境中使用, 每次更新会不会很麻烦.
+ChatGPT给的答案中有一条是通过离线导出导入镜像的方式.

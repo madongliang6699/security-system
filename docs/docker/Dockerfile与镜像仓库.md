@@ -316,6 +316,8 @@ docker images 就能看到刚打过标签的镜像.
 docker push 阿里云的地址/命名空间/镜像名(镜像名应该是要和仓库名字相同):1.1
 即:
 docker push registry.cn-hangzhou.aliyuncs.com/mdl_study/security-order:1.1   
+
+
 ![img.png](img.png)
 ![img_1.png](img_1.png)
 ![img_2.png](img_2.png)
