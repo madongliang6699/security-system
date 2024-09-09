@@ -149,7 +149,7 @@ Docker Swarm 的一个核心功能是服务部署。你可以在 Swarm 集群上
 
 ### 创建服务:
 使用以下命令创建一个服务，例如部署一个 Nginx 服务：
-docker service create --name my-nginx -p 80:80 --replicas 3 nginx
+docker service create --name my-nginx -p 80:80 --replicas 3 --net nginx
 
 --name my-nginx：指定服务的名称。  
 -p 80:80：将 Swarm 节点的端口 80 映射到容器的端口 80。如果不指定, 应该是使用节点机器的随机端口映射到容器内暴露的端口.   
@@ -199,6 +199,20 @@ GPT给的答案:
 
 
 如果有问题, 会一直卡在进度条那里. 如果一直卡着, 那就Ctrl+Z退出命令, 通过
+
+
+
+端口映射特别说明:
+根据大概的测试和查资料发现, 使用swarm创建的某个服务的副本容器, 比如指定的端口映射是 -p 8084:8084 (docker service create --name docker-demo -p 8084:8084 
+--replicas 2 --network my-overlay-net registry.cn-hangzhou.aliyuncs.com/mdl_study/docker-demo:1.2), 
+启动后,即便多个副本都运行在同一个节点上(比如其他节点出现问题,导致多个副本都转移到了同一个节点上),
+那也不会因为多个副本容器都映射宿主机的8084端口而出现错误,因为swarm里的负载均衡器和调度器的工作原理是:
+Swarm 的负载均衡机制确保所有请求都经过一个虚拟 IP (VIP) 地址，而不是直接访问各个副本的 IP 地址和端口。负载均衡器会将请求分发到各个副本，并处理副本之间的流量。
+宿主机的端口映射是针对整个服务的而不是针对服务下面的副本(一个容器就是服务的一个副本)，Swarm 确保每个服务(而不是副本容器)的端口映射到宿主机的唯一端口，因此不会出现冲突。
+当然,如果你再启动一个服务,宿主机的端口映射还是8084,那就会报错端口已经占用.
+
+
+
 
 
 
