@@ -33,11 +33,11 @@ Docker Swarm 使用 Raft 协议来管理集群的状态和数据一致性。Raft
 ## 搭建docker swarm集群
 首先每台机器必须先安装docker
 
-选择一台机器作为 Swarm 管理节点（manager），在该机器上执行以下命令：
+选择一台机器作为 Swarm 管理节点（manager），在该机器上执行以下命令初始化swarm集群,即创建一个集群,执行初始化命令的节点会成为manager节点：
 
 sudo docker swarm init --advertise-addr 124.222.246.77
 
-ip地址就是本机的ip,供work节点连接使用.
+--advertise-addr参数后面的ip地址就是本机的ip,供work节点连接使用.(下面有详细讲解--advertise-addr参数)
 
 执行该命令后，你将看到类似以下的输出：
 
@@ -57,14 +57,45 @@ To add a manager to this swarm, run 'docker swarm join-token manager' and follow
 在第二台机器上，执行在上一步中生成的 docker swarm join 命令。例如：
 docker swarm join --token SWMTKN-1-2mifyeylwlpqhkm61f49wngjsk1sxrpa7kag6g7eiu43915csq-8zvjf1y1on8vv08ev7yiwe37r 124.222.246.77:2377
 
-如果找不到了上面的这个命令,也可以使用:docker swarm join-token worker 命令再次查看.
+注意1: 如果找不到了上面的这个命令,也可以使用:docker swarm join-token worker 命令再次查看加入worker节点的命令.
+或者使用:docker swarm join-token manager 命令查看加入manager节点的命令.
 
 执行完该命令后，你应该会看到类似以下的确认消息：This node joined a swarm as a worker.
-(注意:如果执行上面的命令因为网络或防火墙的问题,没能把当前节点成功添加到swarm的主节点下的话, 调整完网络问题后,再次执行添加work节点的命令会发现报错:
-"Error response from daemon: This node is already part of a swarm. Use "docker swarm leave" to leave this swarm and join another one."
-意思是当前节点已经是一个work节点,只不过这个节点没有成功添加到主节点下,需要先执行""docker swarm leave"从集群移除当前节点,才能重新添加.)
 
-验证 Swarm 状态:
+注意2: 如果第一次执行上面的命令因为网络或防火墙的问题没能把当前节点成功添加到swarm的主节点下的话, 调整完网络问题后, 再次执行添加work节点的命令会发现报错:
+"Error response from daemon: This node is already part of a swarm. Use "docker swarm leave" to leave this swarm and join another one."
+意思是当前节点已经是一个work节点(就是刚才第一次执行出问题导致的,虽然出问题了,但是当前机器docker已经把自己标记为worker节点了),只不过这个节点没有成功添加到主节点下,
+因此需要先执行""docker swarm leave"命令,把当前节点从集群移除, 然后重新添加.)
+
+注意3: 上面的命令(docker swarm join --token SWMTKN-1-2mifyeylwlpqhkm61f49wngjsk1sxrpa7kag6g7eiu43915csq
+-8zvjf1y1on8vv08ev7yiwe37r 124.222.246.77:2377)一般情况下是没问题的, 
+但是如果你当前的机器有两个ip(比如我的阿里云的服务器,有公网ip和私网ip),那这个命令就存在问题了, 这个命令虽然吧当前阿里云的服务器作为worker节点加入了swarm集群,
+但是它可能使用了阿里云服务器的私网ip作为广告出去的ip,即它默认拿到了服务器的私网ip给其他节点,让其他节点给自己通信的时候使用这个广告的ip, 如果其他节点也是私网中的阿里云节点应该也没问题,
+但是我的其他节点是腾讯云的服务器, 这就导致其他节点(我的腾讯云主节点)与阿里云节点通信的时候使用的是阿里云服务器的私网ip,导致无法通信(好像导致的是容器与容器直接的访问服务有问题,
+而主节点还是可以控制worker节点做副本的创建和删除操作的,应该是docker集群中的通信分多种,一种是集群管理的通信,一种是容器服务之前的访问通信等,
+这里导致的通信问题是服务访问通信问题,比如影响负载均衡,容器与容器互调等).   
+因此:这个命令应该加一个参数:   
+--advertise-addr  需要广告出去的自己的ip
+
+这个参数指定把自己哪个ip广告出去,得到下面的完整命令:   
+docker swarm join --token SWMTKN-1-2mifyeylwlpqhkm61f49wngjsk1sxrpa7kag6g7eiu43915csq-8zvjf1y1on8vv08ev7yiwe37r 124.222.246.77:2377 --advertise-addr 121.40.156.98
+
+指定广告出去的是公网ip, 这样其他节点,或者说相关的docker网络里记录的就是你广告的公网ip, 就使用这个ip与你通信. 
+
+~~~
+--advertise-addr 参数用于指定当前节点在 Swarm 集群中向外广播的 IP 地址，确保其他节点通过这个地址能够加入到 Swarm 集群中并进行通信。
+
+指定通信 IP：如果你的服务器有多个网络接口（如有内网 IP 和公网 IP），通过这个参数你可以明确告诉 Swarm 集群应该通过哪个 IP 地址与其他节点通信。
+多网络接口的情况：有些服务器有多个 IP 地址，可能是因为它们同时接入了不同的网络（如内网和公网）。在这种情况下，Docker Swarm 需要知道哪个 IP 应该被用来和集群中的其他节点通信，而不是默认使用一个不适合的网络接口。
+NAT/防火墙环境：如果节点在 NAT 或防火墙之后，也可以使用 --advertise-addr 来指定一个可以被外部访问的地址。
+如果不加 --advertise-addr 参数：
+自动选择 IP：如果你不加这个参数，Docker 会自动选择一个 IP 地址来作为广告地址（Advertise Address）。通常，Docker 会根据网络接口的优先级自动选择第一个可用的 IP 地址。
+不加的情况下可能的问题：在有多个网络接口的机器上，比如有公网和内网 IP，Docker 可能会选择错误的网络接口（比如内网 IP），导致外部节点无法通过正确的 IP 地址连接到管理节点。因此，在多网卡、多 IP 环境下，建议明确指定 --advertise-addr 参数。
+~~~
+
+
+
+加入worker节点完成之后, 验证 Swarm 状态:
 回到管理节点，执行以下命令查看 Swarm 的状态：
 sudo docker node ls
 
@@ -139,6 +170,46 @@ docker node ls：列出所有节点及其状态。
 docker service ls：列出所有服务及其状态。
 docker service ps 服务名称 ：查看服务任务的状态。
 
+docker network ls
+docker network inspect 网络名或id: 查看Docker网络的详情
+
+docker inspect 容器id或名称: 查看容器的详情
+
+
+
+
+
+
+
+====================================================================================================================
+
+## 创建docker网络和使用网络
+说明，通过docker网络的很多知识点的综合决定, 使用docker swarm一般必须先创建一个overlay驱动类型的docker网络,
+这个类型的网络可以实现容器的跨节点访问,也就是: swarm使用overlay驱动类型的网络, 可以保证不同节点的容器在一个网络里(说的应该就是不同节点的副本容器ip在一个网段里).
+可以实现容器通过swarm集群做到跨节点访问,并且,有服务自动发现的功能, 当你在 Swarm 中启动多个容器时，Docker 网络会为它们提供一个内置的DNS解析服务。
+容器可以通过服务名称（而不是 IP 地址）进行相互访问。这种自动的服务发现使得容器间的通信更加动态和灵活，避免了手动配置 IP 地址。
+例如，你可以通过 my-service 的名称直接访问这个服务，而不需要知道其IP地址(因为ip地址是随着容器的扩容缩容动态变化的,不固定)：
+curl http://my-service.  
+并且可以负载均衡：当服务中有多个副本时，Swarm 通过虚拟 IP (VIP) 的方式实现负载均衡。
+请求会通过 overlay 网络发送到同一个虚拟 IP 地址，Docker Swarm 会自动将流量分发给多个副本。
+
+以上等原因,所以一般创建swarm集群之前先给集群创建一个overlay的网络,集群启动的时候,指定使用这个网络.
+
+
+创建overlay网络:
+docker network create -d overlay my-overlay-net
+
+创建swarm集群的时候指定该网络:
+docker service create --name my-nginx -p 80:80 --replicas 3 --network my-overlay-net --with-registry-auth 镜像名称
+
+
+创建网络之后,可以使用下面的命令管理网络:  
+docker network ls  列出所有网络
+docker network inspect 网络名称或id  查看该网络的详情,这个很有用,在其"Containers"选项里可以查看该网络里有哪些容器,
+"Peers"里查看有哪些节点ip加入了这个网络(下面创建服务的时候指定使用这个网络,这个网络里就能显示出相关的容器信息和相关的节点ip信息等)
+
+
+
 
 ====================================================================================================================
 
@@ -212,6 +283,10 @@ Swarm 的负载均衡机制确保所有请求都经过一个虚拟 IP (VIP) 地�
 当然,如果你再启动一个服务,宿主机的端口映射还是8084,那就会报错端口已经占用.
 
 
+
+
+创建服务的完整命令:  
+docker service create --name docker-demo -p 8084:8084 --replicas 2 --network my-overlay-net --with-registry-auth registry.cn-hangzhou.aliyuncs.com/mdl_study/docker-demo:1.2
 
 
 
@@ -358,9 +433,13 @@ docker service update --replicas 0 my-service
 
 
 
+
+
+### 访问服务
+当你启动了一个服务, 这个服务有多个副本容器运行在多台节点上, 无论你访问哪个节点, 都会负载均衡的吧请求分发到多个节点上. 
+前提是你上面的集群创建的没问题,网络通信配置的也没问题.
+
 ====================================================================================================================
-
-
 
 ## 网络相关
 
@@ -368,6 +447,10 @@ docker service update --replicas 0 my-service
 
 
 
+
+
+
+=============================================================================================================
 
 
 ##  备份与恢复
@@ -390,7 +473,7 @@ sudo systemctl start docker
 Docker Swarm 是一个功能强大的容器编排工具，提供了简单易用的命令来管理容器化应用。
 通过 Swarm，用户可以轻松地部署、管理和扩展分布式应用程序，并且 Docker 的原生支持使得它特别适合现有 Docker 用户。
 
-
+=============================================================================================================
 
 ## 问题:
 ### 如果客户现场不能使用外网, 我们的镜像怎么带到客户环境中使用, 每次更新会不会很麻烦.
