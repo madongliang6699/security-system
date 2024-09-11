@@ -249,6 +249,13 @@ HEALTHCHECK --interval=5m --timeout=3s \
 这个 Dockerfile 定义了一个基于 Ubuntu 20.04 的镜像，它会安装 Python 3，并将项目文件复制到 `/usr/src/app` 目录下。容器启动时会运行 `python3 app.py`，并监听 8080 端口。
 
 
+
+
+
+
+
+
+
 ## docker build 构建镜像
 docker build [OPTIONS] PATH | URL | -
 

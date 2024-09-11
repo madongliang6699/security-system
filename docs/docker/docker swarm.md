@@ -163,19 +163,28 @@ global services 每个工作节点上运行一个任务.
 ====================================================================================================================
 
 
-## 集群监控
+## 集群监控 和 容器监控
 你可以通过 Docker 提供的命令监控集群的状态，如：
 
 docker node ls：列出所有节点及其状态。
 docker service ls：列出所有服务及其状态。
 docker service ps 服务名称 ：查看服务任务的状态。
+docker service inspect 服务名称 ：查看服务详情。
 
 docker network ls
 docker network inspect 网络名或id: 查看Docker网络的详情
 
 docker inspect 容器id或名称: 查看容器的详情
 
+docker logs 容器名或id  查看容器日志
+docker logs 服务名或id  查看服务日志(服务内所有容器日志)
 
+docker top 容器id 查看容器内的进程
+
+docker volume ls 列出所有卷
+docker volume create VOLUME_NAME  创建新卷
+docker volume rm VOLUME_NAME  删除卷
+docker volume inspect VOLUME_NAME  查看卷详细信息
 
 
 

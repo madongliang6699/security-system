@@ -73,3 +73,23 @@
 
 
 - docker inspect 容器id  查看容器信息
+
+
+
+
+## 系统管理
+查看 Docker 版本
+docker version
+
+查看 Docker 系统信息
+docker info
+
+清理未使用的镜像、容器、网络和卷
+docker system prune
+
+删除所有未使用的镜像、容器、网络和卷
+docker system prune -a --volumes
+
+
+
+
