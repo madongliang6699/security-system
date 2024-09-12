@@ -69,8 +69,8 @@ stages:
     executor: []
     steps:
       - step: build@docker
-        name: build_docker
-        displayName: dockerSwarmdemo镜像构建
+        name: build_docker1
+        displayName: docker-swarm-demo镜像构建
         type: cert
         certificate: 30fb7aa0-4e5a-013d-a26b-2a4f25a690ec
         tag: ${GITEE_PIPELINE_BUILD_NUMBER}
@@ -78,6 +78,51 @@ stages:
         context: ./docker_swarm_demo/dockerfile
         artifacts:
           - ${docker_swarm_demo}
+        isCache: false
+        parameter: {}
+        notify: []
+        strategy:
+          retry: '0'
+      - step: build@docker
+        name: build_docker2
+        displayName: security-order镜像构建
+        type: cert
+        certificate: 30fb7aa0-4e5a-013d-a26b-2a4f25a690ec
+        tag: ${GITEE_PIPELINE_BUILD_NUMBER}
+        dockerfile: ./security-order/dockerfile/Dockerfile
+        context: ./security-order/dockerfile
+        artifacts:
+          - ${security-order}
+        isCache: false
+        parameter: {}
+        notify: []
+        strategy:
+          retry: '0'
+      - step: build@docker
+        name: build_docker3
+        displayName: security-market镜像构建
+        type: cert
+        certificate: 30fb7aa0-4e5a-013d-a26b-2a4f25a690ec
+        tag: ${GITEE_PIPELINE_BUILD_NUMBER}
+        dockerfile: ./security-market/dockerfile/Dockerfile
+        context: ./security-market/dockerfile
+        artifacts:
+          - ${security-market}
+        isCache: false
+        parameter: {}
+        notify: []
+        strategy:
+          retry: '0'
+      - step: build@docker
+        name: build_docker4
+        displayName: security-inventory镜像构建
+        type: cert
+        certificate: 30fb7aa0-4e5a-013d-a26b-2a4f25a690ec
+        tag: ${GITEE_PIPELINE_BUILD_NUMBER}
+        dockerfile: ./security-inventory/dockerfile/Dockerfile
+        context: ./security-inventory/dockerfile
+        artifacts:
+          - ${security-inventory}
         isCache: false
         parameter: {}
         notify: []
