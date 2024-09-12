@@ -38,7 +38,10 @@ stages:
         artifacts:
           - name: BUILD_ARTIFACT
             path:
-              - ./target
+              - ./docker-swarm-demo/target
+              - ./security-order/target
+              - ./security-market/target
+              - ./security-inventory/target
         settings: []
         caches:
           - ~/.m2
