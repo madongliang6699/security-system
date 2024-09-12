@@ -1,5 +1,5 @@
 # 使用基础镜像
-FROM openjdk:8
+FROM registry.cn-hangzhou.aliyuncs.com/mdl_study/openjdk:8
 
 # 设置标签（工作中一般不写这个，或不写自己的信息，写开源镜像的时候可以写上自己的信息）
 LABEL maintainer="madongliang"
