@@ -74,7 +74,7 @@ stages:
         context: ./docker-swarm-demo/dockerfile
         artifacts:
           - ${docker_swarm_demo}
-        isCache: false
+        isCache: true
         parameter: {}
         notify: []
         strategy:
@@ -89,7 +89,7 @@ stages:
         context: ./security-order/dockerfile
         artifacts:
           - ${security_order}
-        isCache: false
+        isCache: true
         parameter: {}
         notify: []
         strategy:
@@ -104,7 +104,7 @@ stages:
         context: ./security-market/dockerfile
         artifacts:
           - ${security_market}
-        isCache: false
+        isCache: true
         parameter: {}
         notify: []
         strategy:
@@ -119,7 +119,7 @@ stages:
         context: ./security-inventory/dockerfile
         artifacts:
           - ${security_inventory}
-        isCache: false
+        isCache: true
         parameter: {}
         notify: []
         strategy:
