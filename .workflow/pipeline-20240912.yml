@@ -8,7 +8,7 @@ triggers:
       precise:
         - master
 stages:
-  - name: stage-f76102d1
+  - name: stage-maven-goujian
     displayName: maven构建
     strategy: naturally
     trigger: auto
@@ -51,6 +51,27 @@ stages:
         settings: []
         caches:
           - ~/.m2
+        notify: []
+        strategy:
+          retry: '0'
+  - name: stage-docker-jingxiang-goujian
+    displayName: docker镜像构建
+    strategy: naturally
+    trigger: auto
+    executor: []
+    steps:
+      - step: build@docker
+        name: build_docker
+        displayName: docker镜像构建
+        type: cert
+        certificate: 30fb7aa0-4e5a-013d-a26b-2a4f25a690ec
+        tag: ${GITEE_PIPELINE_BUILD_NUMBER}
+        dockerfile: ./docker_swarm_demo/dockerfile
+        context: ./docker_swarm_demo
+        artifacts:
+          - ${docker_swarm_demo}
+        isCache: false
+        parameter: {}
         notify: []
         strategy:
           retry: '0'
