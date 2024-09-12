@@ -115,14 +115,14 @@
                 <targetPath>${project.build.directory}</targetPath>
                 <filtering>true</filtering>
             </resource>
-            <resource>
-                <directory>dockerfile</directory>
-                <includes>
-                    <include>Dockerfile</include>
-                </includes>
-                <targetPath>${project.build.directory}</targetPath>
-                <filtering>true</filtering>
-            </resource>
+<!--            <resource>-->
+<!--                <directory>dockerfile</directory>-->
+<!--                <includes>-->
+<!--                    <include>Dockerfile</include>-->
+<!--                </includes>-->
+<!--                <targetPath>${project.build.directory}</targetPath>-->
+<!--                <filtering>true</filtering>-->
+<!--            </resource>-->
             <resource>
                 <directory>src/main/resources</directory>
                 <includes>
