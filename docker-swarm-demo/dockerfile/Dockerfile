@@ -9,7 +9,7 @@ LABEL email="mdl6699@163.com"
 ARG VERSION=1.0
 
 # 添加文件当前文件夹下的jar包到镜像中，改名字为app.jar
-ADD *.jar /app/service/myApp.jar
+ADD docker-swarm-demo-1.0.0-SNAPSHOT.jar /app/service/myApp.jar
 ADD *.properties /app/service/
 
 

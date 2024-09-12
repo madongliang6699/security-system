@@ -9,7 +9,7 @@ LABEL email="mdl6699@163.com"
 ARG VERSION=1.0
 
 # 添加文件当前文件夹下的jar包到镜像中，改名字为myApp.jar
-ADD *.jar /app/service/myApp.jar
+ADD security-order-1.0.0-SNAPSHOT.jar /app/service/myApp.jar
 ADD *.properties /app/service/
 
 

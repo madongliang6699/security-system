@@ -165,6 +165,14 @@
                     <include>**/*.docx</include>
                 </includes>
             </resource>
+            <resource>
+                <directory>dockerfile</directory>
+                <includes>
+                    <include>Dockerfile</include>
+                </includes>
+                <targetPath>${project.build.directory}</targetPath>
+                <filtering>true</filtering>
+            </resource>
         </resources>
 
 

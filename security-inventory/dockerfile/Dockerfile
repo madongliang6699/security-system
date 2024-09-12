@@ -9,7 +9,7 @@ LABEL email="mdl6699@163.com"
 ARG VERSION=1.0
 
 # 添加文件当前文件夹下的jar包到镜像中，改名字为myApp.jar
-ADD /security-inventory/target/*.jar /app/service/myApp.jar
+ADD security-inventory-1.0.0-SNAPSHOT.jar  /app/service/myApp.jar
 ADD *.properties /app/service/
 
 
@@ -17,7 +17,7 @@ ADD *.properties /app/service/
 WORKDIR /app/service
 
 # 暴露端口
-EXPOSE 8082/tcp
+EXPOSE 8083/tcp
 
 # 创建数据卷
 VOLUME /app/service/log

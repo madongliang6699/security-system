@@ -21,7 +21,7 @@
 
     <modules>
         <module>security-common</module>
-        <module>security-study</module>
+<!--        <module>security-study</module>-->
         <module>security-order</module>
         <module>security-market</module>
         <module>security-inventory</module>
