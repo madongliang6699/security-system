@@ -124,3 +124,26 @@ stages:
         notify: []
         strategy:
           retry: '0'
+  - name: stage-3401ec4e
+    displayName: 发布
+    strategy: naturally
+    trigger: auto
+    executor: []
+    steps:
+      - step: shell@agent
+        name: execute_shell
+        displayName: Shell 脚本执行
+        hostGroupID:
+          ID: myTengXunYun
+          hostID:
+            - 148a8238-12df-4f7f-be81-34039dafb7f0
+        script:
+          - '# 请在此输入您想执行的脚本'
+          - echo '----------------------------------------------------'
+          - echo '----- 使用 docker swarm 开始部署 docker-demo服务-----'
+          - echo '----------------------------------------------------'
+          - docker service create --name docker-demo -p 8084:8084 --replicas 2 --network my-overlay-net --with-registry-auth registry.cn-hangzhou.aliyuncs.com/mdl_study/docker-demo:1.2
+          - ''
+        notify: []
+        strategy:
+          retry: '0'
