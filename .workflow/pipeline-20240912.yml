@@ -70,12 +70,12 @@ stages:
     steps:
       - step: build@docker
         name: build_docker
-        displayName: docker镜像构建
+        displayName: dockerSwarmdemo镜像构建
         type: cert
         certificate: 30fb7aa0-4e5a-013d-a26b-2a4f25a690ec
         tag: ${GITEE_PIPELINE_BUILD_NUMBER}
-        dockerfile: ./docker_swarm_demo/dockerfile
-        context: ./docker_swarm_demo
+        dockerfile: ./docker_swarm_demo/dockerfile/Dockerfile
+        context: ./docker_swarm_demo/dockerfile
         artifacts:
           - ${docker_swarm_demo}
         isCache: false
