@@ -2,11 +2,11 @@ version: '1.0'
 name: pipeline-master-bushu
 displayName: pipeline-部署镜像
 triggers:
-  trigger: auto
-  push:
+  trigger: manual
+  pr:
     branches:
-      precise:
-        - master
+      prefix:
+        - ''
 stages:
   - name: stage-3c68c6cf
     displayName: 部署
