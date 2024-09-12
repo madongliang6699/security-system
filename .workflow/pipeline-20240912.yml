@@ -40,22 +40,18 @@ stages:
             path:
               - ./docker-swarm-demo/target/*.jar
               - ./docker-swarm-demo/target/*.properties
-              - ./docker-swarm-demo/target/Dockerfile
           - name: security_order
             path:
               - ./security-order/target/*.jar
               - ./security-order/target/*.properties
-              - ./security-order/target/Dockerfile
           - name: security_market
             path:
               - ./security-market/target/*.jar
               - ./security-market/target/*.properties
-              - ./security-market/target/Dockerfile
           - name: security_inventory
             path:
               - ./security-inventory/target/*.jar
               - ./security-inventory/target/*.properties
-              - ./security-inventory/target/Dockerfile
         settings: []
         caches:
           - ~/.m2
@@ -73,12 +69,12 @@ stages:
         displayName: docker-swarm-demo镜像构建
         type: cert
         certificate: 30fb7aa0-4e5a-013d-a26b-2a4f25a690ec
-        tag: ${GITEE_PIPELINE_BUILD_NUMBER}
-        dockerfile: ./docker_swarm_demo/dockerfile/Dockerfile
-        context: ./docker_swarm_demo/dockerfile
+        tag: mdl_study/docker-demo:${GITEE_PIPELINE_BUILD_NUMBER}
+        dockerfile: ./docker-swarm-demo/dockerfile/Dockerfile
+        context: ./docker-swarm-demo/dockerfile
         artifacts:
           - ${docker_swarm_demo}
-        isCache: false
+        isCache: true
         parameter: {}
         notify: []
         strategy:
@@ -88,12 +84,12 @@ stages:
         displayName: security-order镜像构建
         type: cert
         certificate: 30fb7aa0-4e5a-013d-a26b-2a4f25a690ec
-        tag: ${GITEE_PIPELINE_BUILD_NUMBER}
+        tag: mdl_study/security-order:${GITEE_PIPELINE_BUILD_NUMBER}
         dockerfile: ./security-order/dockerfile/Dockerfile
         context: ./security-order/dockerfile
         artifacts:
-          - ${security-order}
-        isCache: false
+          - ${security_order}
+        isCache: true
         parameter: {}
         notify: []
         strategy:
@@ -103,12 +99,12 @@ stages:
         displayName: security-market镜像构建
         type: cert
         certificate: 30fb7aa0-4e5a-013d-a26b-2a4f25a690ec
-        tag: ${GITEE_PIPELINE_BUILD_NUMBER}
+        tag: mdl_study/security-market:${GITEE_PIPELINE_BUILD_NUMBER}
         dockerfile: ./security-market/dockerfile/Dockerfile
         context: ./security-market/dockerfile
         artifacts:
-          - ${security-market}
-        isCache: false
+          - ${security_market}
+        isCache: true
         parameter: {}
         notify: []
         strategy:
@@ -118,13 +114,36 @@ stages:
         displayName: security-inventory镜像构建
         type: cert
         certificate: 30fb7aa0-4e5a-013d-a26b-2a4f25a690ec
-        tag: ${GITEE_PIPELINE_BUILD_NUMBER}
+        tag: mdl_study/security-inventory:${GITEE_PIPELINE_BUILD_NUMBER}
         dockerfile: ./security-inventory/dockerfile/Dockerfile
         context: ./security-inventory/dockerfile
         artifacts:
-          - ${security-inventory}
-        isCache: false
+          - ${security_inventory}
+        isCache: true
         parameter: {}
+        notify: []
+        strategy:
+          retry: '0'
+  - name: stage-3401ec4e
+    displayName: 发布
+    strategy: naturally
+    trigger: auto
+    executor: []
+    steps:
+      - step: shell@agent
+        name: execute_shell
+        displayName: Shell 脚本执行
+        hostGroupID:
+          ID: myTengXunYun
+          hostID:
+            - 148a8238-12df-4f7f-be81-34039dafb7f0
+        script:
+          - '# 请在此输入您想执行的脚本'
+          - echo '----------------------------------------------------'
+          - echo '----- 使用 docker swarm 开始部署 docker-demo服务-----'
+          - echo '----------------------------------------------------'
+          - docker service create --name docker-demo -p 8084:8084 --replicas 2 --network my-overlay-net --with-registry-auth registry.cn-hangzhou.aliyuncs.com/mdl_study/docker-demo:1.2
+          - ''
         notify: []
         strategy:
           retry: '0'
