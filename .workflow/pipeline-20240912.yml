@@ -1,6 +1,6 @@
 version: '1.0'
 name: pipeline-20240912
-displayName: pipeline-20240912
+displayName: pipeline-master
 triggers:
   trigger: auto
   push:
