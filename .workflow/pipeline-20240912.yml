@@ -69,7 +69,7 @@ stages:
         displayName: docker-swarm-demo镜像构建
         type: cert
         certificate: 30fb7aa0-4e5a-013d-a26b-2a4f25a690ec
-        tag: ${GITEE_PIPELINE_BUILD_NUMBER}
+        tag: registry.cn-hangzhou.aliyuncs.com/mdl_study/docker-swarm-demo:${GITEE_PIPELINE_BUILD_NUMBER}
         dockerfile: ./docker-swarm-demo/dockerfile/Dockerfile
         context: ./docker-swarm-demo/dockerfile
         artifacts:
