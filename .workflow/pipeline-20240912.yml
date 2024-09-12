@@ -38,16 +38,20 @@ stages:
         artifacts:
           - name: docker_swarm_demo
             path:
-              - ./docker-swarm-demo/target
+              - ./docker-swarm-demo/target/*.jar
+              - ./docker-swarm-demo/target/*.properties
           - name: security_order
             path:
-              - ./security-order/target
+              - ./security-order/target/*.jar
+              - ./security-order/target/*.properties
           - name: security_market
             path:
-              - ./security-market/target
+              - ./security-market/target/*.jar
+              - ./security-market/target/*.properties
           - name: security_inventory
             path:
-              - ./security-inventory/target
+              - ./security-inventory/target/*.jar
+              - ./security-inventory/target/*.properties
         settings: []
         caches:
           - ~/.m2
