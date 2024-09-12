@@ -40,18 +40,22 @@ stages:
             path:
               - ./docker-swarm-demo/target/*.jar
               - ./docker-swarm-demo/target/*.properties
+              - ./docker-swarm-demo/target/Dockerfile
           - name: security_order
             path:
               - ./security-order/target/*.jar
               - ./security-order/target/*.properties
+              - ./security-order/target/Dockerfile
           - name: security_market
             path:
               - ./security-market/target/*.jar
               - ./security-market/target/*.properties
+              - ./security-market/target/Dockerfile
           - name: security_inventory
             path:
               - ./security-inventory/target/*.jar
               - ./security-inventory/target/*.properties
+              - ./security-inventory/target/Dockerfile
         settings: []
         caches:
           - ~/.m2
