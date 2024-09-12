@@ -69,7 +69,7 @@ stages:
         displayName: docker-swarm-demo镜像构建
         type: cert
         certificate: 30fb7aa0-4e5a-013d-a26b-2a4f25a690ec
-        tag: registry.cn-hangzhou.aliyuncs.com/mdl_study/docker-swarm-demo:${GITEE_PIPELINE_BUILD_NUMBER}
+        tag: registry.cn-hangzhou.aliyuncs.com/mdl_study/docker-demo:${GITEE_PIPELINE_BUILD_NUMBER}
         dockerfile: ./docker-swarm-demo/dockerfile/Dockerfile
         context: ./docker-swarm-demo/dockerfile
         artifacts:
@@ -84,11 +84,11 @@ stages:
         displayName: security-order镜像构建
         type: cert
         certificate: 30fb7aa0-4e5a-013d-a26b-2a4f25a690ec
-        tag: ${GITEE_PIPELINE_BUILD_NUMBER}
+        tag: registry.cn-hangzhou.aliyuncs.com/mdl_study/security-order:${GITEE_PIPELINE_BUILD_NUMBER}
         dockerfile: ./security-order/dockerfile/Dockerfile
         context: ./security-order/dockerfile
         artifacts:
-          - ${security-order}
+          - ${security_order}
         isCache: false
         parameter: {}
         notify: []
@@ -99,11 +99,11 @@ stages:
         displayName: security-market镜像构建
         type: cert
         certificate: 30fb7aa0-4e5a-013d-a26b-2a4f25a690ec
-        tag: ${GITEE_PIPELINE_BUILD_NUMBER}
+        tag: registry.cn-hangzhou.aliyuncs.com/mdl_study/security-market:${GITEE_PIPELINE_BUILD_NUMBER}
         dockerfile: ./security-market/dockerfile/Dockerfile
         context: ./security-market/dockerfile
         artifacts:
-          - ${security-market}
+          - ${security_market}
         isCache: false
         parameter: {}
         notify: []
@@ -114,11 +114,11 @@ stages:
         displayName: security-inventory镜像构建
         type: cert
         certificate: 30fb7aa0-4e5a-013d-a26b-2a4f25a690ec
-        tag: ${GITEE_PIPELINE_BUILD_NUMBER}
+        tag: registry.cn-hangzhou.aliyuncs.com/mdl_study/security-inventory:${GITEE_PIPELINE_BUILD_NUMBER}
         dockerfile: ./security-inventory/dockerfile/Dockerfile
         context: ./security-inventory/dockerfile
         artifacts:
-          - ${security-inventory}
+          - ${security_inventory}
         isCache: false
         parameter: {}
         notify: []
