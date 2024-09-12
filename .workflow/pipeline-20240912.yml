@@ -36,11 +36,17 @@ stages:
           - '# mvn -U clean package -s ./settings.xml'
           - ''
         artifacts:
-          - name: BUILD_ARTIFACT
+          - name: docker_swarm_demo
             path:
               - ./docker-swarm-demo/target
+          - name: security_order
+            path:
               - ./security-order/target
+          - name: security_market
+            path:
               - ./security-market/target
+          - name: security_inventory
+            path:
               - ./security-inventory/target
         settings: []
         caches:
