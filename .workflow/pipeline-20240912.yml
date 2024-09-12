@@ -70,8 +70,8 @@ stages:
         type: cert
         certificate: 30fb7aa0-4e5a-013d-a26b-2a4f25a690ec
         tag: ${GITEE_PIPELINE_BUILD_NUMBER}
-        dockerfile: ./docker_swarm_demo/dockerfile/Dockerfile
-        context: ./docker_swarm_demo/dockerfile
+        dockerfile: ./docker-swarm-demo/dockerfile/Dockerfile
+        context: ./docker-swarm-demo/dockerfile
         artifacts:
           - ${docker_swarm_demo}
         isCache: false
