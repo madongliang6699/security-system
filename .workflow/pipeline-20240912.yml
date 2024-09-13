@@ -142,7 +142,46 @@ stages:
           - echo '----------------------------------------------------'
           - echo '----- 使用 docker swarm 开始部署 docker-demo服务-----'
           - echo '----------------------------------------------------'
-          - docker service create --name docker-demo -p 8084:8084 --replicas 2 --network my-overlay-net --with-registry-auth registry.cn-hangzhou.aliyuncs.com/mdl_study/docker-demo:1.2
+          - '#docker service create --name docker-demo -p 8084:8084 --replicas 2 --network my-overlay-net --with-registry-auth registry.cn-hangzhou.aliyuncs.com/mdl_study/docker-demo:1.2'
+          - ''
+          - ''
+          - '# 服务名称'
+          - SERVICE_NAME="docker-demo"
+          - '# Docker 镜像'
+          - IMAGE="registry.cn-hangzhou.aliyuncs.com/mdl_study/docker-demo:${GITEE_PIPELINE_BUILD_NUMBER}"
+          - '# 运行的端口（示例：映射主机的8080端口到容器的80端口）'
+          - PORT_MAPPING="8084:8084"
+          - '# Docker 网络（如果需要指定网络的话）'
+          - NETWORK="my-overlay-net"
+          - ''
+          - '# 检查服务是否已经存在'
+          - SERVICE_EXISTS=$(docker service ls --filter name="$SERVICE_NAME" --format "{{.Name}}")
+          - ''
+          - if [ "$SERVICE_EXISTS" ]; then
+          - '  echo "服务 $SERVICE_NAME 已存在，正在更新服务..."'
+          - ''
+          - '  # 更新服务'
+          - '  docker service update \'
+          - '    --image "$IMAGE" \'
+          - '    --publish-add "$PORT_MAPPING" \'
+          - '    --force \'
+          - '    "$SERVICE_NAME"'
+          - ''
+          - '  echo "服务 $SERVICE_NAME 更新完成。"'
+          - else
+          - '  echo "服务 $SERVICE_NAME 不存在，正在创建服务..."'
+          - ''
+          - '  # 创建新服务'
+          - '  docker service create \'
+          - '    --name "$SERVICE_NAME" \'
+          - '    --publish "$PORT_MAPPING" \'
+          - '    --network "$NETWORK" \'
+          - '    --replicas 2 \'
+          - '    --with-registry-auth \'
+          - '    "$IMAGE"'
+          - ''
+          - '  echo "服务 $SERVICE_NAME 创建完成。"'
+          - fi
           - ''
         notify: []
         strategy:
