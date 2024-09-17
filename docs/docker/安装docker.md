@@ -18,7 +18,7 @@ yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/d
 ### 4）列出需要安装的版本列表
 yum list docker-ce --showduplicates | sort -r
 
-如果上面的命令列不错可用的docker-ce的软件包，那么：  
+如果上面的命令列不出可用的docker-ce的软件包，那么：  
 更新你的软件包列表，确保所有的仓库都是最新的:  
 yum makecache fast  
 如果你的系统是CentOS 7，你可能需要启用docker-ce仓库:  
@@ -26,10 +26,9 @@ yum-config-manager --enable docker-ce-edge
 然后再尝试上面的命令列出安装版本。
 
 
-### 5）安装指定版本（这里使用18.0.1版本）
-yum install docker-ce-18.06.1.ce 
-或使用这个版本:
-yum install docker-ce-3:20.10.14-3.el7 docker-ce-cli-3:20.10.14-3.el7 containerd.io
+### 5）安装指定版本
+yum install -y docker-ce-20.10.7 docker-ce-cli-20.10.7 containerd.io
+
 
 ### 6）查看版本
 docker -v 简单查看docker版本；  
@@ -47,7 +46,7 @@ vim /etc/docker/daemon.json
 在里面添加内容如下：
 ```json
 {
-"registry-mirrors": ["https://xxxxx.mirror.aliyuncs.com"]
+  "registry-mirrors": ["https://lhh2ku35.mirror.aliyuncs.com"]
 }
 ```
 注意：上面的地址是需要去阿里云官网开通的，具体可以百度一下“阿里云容器镜像加速服务”的关键字。

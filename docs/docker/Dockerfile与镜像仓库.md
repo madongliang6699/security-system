@@ -331,6 +331,23 @@ docker push registry.cn-hangzhou.aliyuncs.com/mdl_study/security-order:1.1
 
 
 
+## 备份重要镜像到阿里云私有仓库
+一般镜像源都在docker hub上,但是这个官方源往往访问不通,拉取镜像超时.
+因此,可以预先手动把docker hub的重要镜像pull下来, 在自己的阿里仓库创建对应的仓库,把pull下来的重要镜像push到阿里云仓库以备平时使用,
+比如在自己的阿里云仓库创建一个openjdk的仓库, 然后把从docker hub pull下来的openjdk:8的镜像
+打一个"registry.cn-hangzhou.aliyuncs.com/mdl_study/openjdk:8"的tag, 
+然后 docker push registry.cn-hangzhou.aliyuncs.com/mdl_study/openjdk:8 一下,就把openjdk8镜像备份到了自己的阿里云仓库,
+以后使用镜像就直接使用registry.cn-hangzhou.aliyuncs.com/mdl_study/openjdk:8镜像,比如dockerfile文件里如果使用jdk镜像,就使用
+registry.cn-hangzhou.aliyuncs.com/mdl_study/openjdk:8镜像.
+
+反过来使用也是可以的:比如在本地先下载registry.cn-hangzhou.aliyuncs.com/mdl_study/openjdk:8的镜像,然后给这个镜像打上openjdk:8的标签,
+或docker.io/xxxx/openjdk:8的标签,模拟是从docker hub下载的镜像,以便适应有的公共配置文件就指定使用docker hub的镜像.
+当然openjdk8只是举个例子,出现这种情况的往往是一些不常用的镜像.
+
+但是往往在手动pull镜像的时候可能就无法pull下来,那就pull国内一个开放的镜像网站上的镜像:  
+https://docker.aityp.com/  
+这个网站上有很多镜像备份,可以搜索自己想要的.比如calico网络插件的镜像就是这里下载的.
+
 
 
 

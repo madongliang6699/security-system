@@ -487,3 +487,120 @@ Docker Swarm 是一个功能强大的容器编排工具，提供了简单易用�
 ## 问题:
 ### 如果客户现场不能使用外网, 我们的镜像怎么带到客户环境中使用, 每次更新会不会很麻烦.
 ChatGPT给的答案中有一条是通过离线导出导入镜像的方式.
+
+
+
+
+## 彻底删除docker swarm
+场景,在两个服务器上都安装和使用了docker swarm后, 又学习k8s,但是k8s好像也使用了2377端口,或其他相关的配置或网络问题,会影响k8s集群的初始化,
+因此,需要彻底删除docker swarm.
+
+删除步骤如下:
+
+
+要彻底删除 Docker Swarm，您需要执行一系列步骤来移除 Swarm 集群和相关的配置。这包括撤销 Swarm 集群的初始化、删除所有服务和节点，以及清除与 Swarm 相关的 Docker 配置。以下是详细步骤：
+
+### 1. **离开 Swarm 集群**
+
+如果您的节点已经加入了 Swarm 集群，您需要让这些节点离开集群。
+
+在每个节点上执行：
+```bash
+docker swarm leave --force
+```
+
+`--force` 标志强制节点离开 Swarm，即使节点不是集群的管理节点。
+
+### 2. **撤销 Swarm 初始化**
+
+在 Swarm 管理节点上，执行以下命令以撤销 Swarm 初始化：
+
+```bash
+docker swarm leave --force
+```
+
+这将撤销 Swarm 的初始化，并将节点从集群中移除。
+
+### 3. **删除 Docker 服务和网络**
+
+如果您在 Swarm 中创建了服务和网络，您需要先删除这些服务和网络。
+
+- **删除所有服务**：
+
+  ```bash
+  docker service ls -q | xargs docker service rm
+  ```
+
+- **删除所有网络**：
+
+  ```bash
+  docker network ls -q | xargs docker network rm
+  ```
+
+### 4. **清理 Docker 配置**
+
+在删除 Swarm 和服务之后，您可能还需要清理 Docker 的配置文件和数据目录。
+
+- **删除 Docker 数据目录**：
+
+  这将删除 Docker 的所有数据，包括镜像、容器、网络等。请确保您确实需要删除这些数据。
+
+  ```bash
+  sudo rm -rf /var/lib/docker
+  ```
+
+- **重启 Docker 服务**：
+
+  重启 Docker 服务以应用更改：
+
+  ```bash
+  sudo systemctl restart docker
+  ```
+
+### 5. **检查和删除 Swarm 相关的 Docker 配置**
+
+- **查看和删除 Swarm 相关的 Docker 配置文件**：
+
+  检查 `/etc/docker/daemon.json` 文件（如果存在）中是否有 Swarm 相关的配置，并进行相应的修改或删除。
+
+- **清理未使用的 Docker 网络**：
+
+  ```bash
+  docker network prune
+  ```
+
+- **清理未使用的 Docker 镜像和容器**：
+
+  ```bash
+  docker system prune -a
+  ```
+
+### 6. **验证 Docker Swarm 已彻底删除**
+
+- **查看 Docker 服务和节点**：
+
+  确保没有 Swarm 相关的服务和节点：
+
+  ```bash
+  docker service ls
+  docker node ls
+  ```
+
+- **检查 Docker 网络**：
+
+  确保没有 Swarm 网络存在：
+
+  ```bash
+  docker network ls
+  ```
+
+### 总结
+
+1. **离开 Swarm 集群**：在每个节点上执行 `docker swarm leave --force`。
+2. **撤销 Swarm 初始化**：在 Swarm 管理节点上执行 `docker swarm leave --force`。
+3. **删除 Docker 服务和网络**。
+4. **清理 Docker 配置**：删除 Docker 数据目录 `/var/lib/docker` 并重启 Docker 服务。
+5. **检查和删除 Swarm 相关的 Docker 配置**。
+6. **验证删除结果**：确保没有 Swarm 相关的服务、网络或配置。
+
+按照这些步骤执行后，Docker Swarm 应该会被彻底删除。您可以继续检查和配置 Kubernetes 以确保其正常运行。
