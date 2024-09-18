@@ -123,6 +123,7 @@ ntpdate time.windows.com
 ## 安装docker
 看之前的笔记安装,安装20.10.xx版本的docker,  因为官方验证的对应版本列表中就是有这个版本, 高于这个版本的好像兼容性不确定.
 
+安装步骤看总结的docker笔记.
 
 ==========================================================================
 ## 添加k8s的yum仓库源,所有机器都执行:
@@ -453,11 +454,11 @@ k8s-master   NotReady   control-plane,master   46m   v1.23.6
 
 然后可以使用上面给的命令在阿里云机器上执行加入集群:
 kubeadm join 124.222.246.77:6443 --token pkbxmr.klisrbofil7khth7 --discovery-token-ca-cert-hash sha256:b06afc3bd50d4e6b8477be7d570db3ea39b4a0e1e1354d2f8fc0adfd9c67d350
+
 显示下面的信息就是加入集群成功:
 ~~~shell
 [root@k8s-worker ~]# 
-[root@k8s-worker ~]# kubeadm join 124.222.246.77:6443 --token pkbxmr.klisrbofil7khth7 \
-> --discovery-token-ca-cert-hash sha256:b06afc3bd50d4e6b8477be7d570db3ea39b4a0e1e1354d2f8fc0adfd9c67d350
+[root@k8s-worker ~]# kubeadm join 124.222.246.77:6443 --token pkbxmr.klisrbofil7khth7 --discovery-token-ca-cert-hash sha256:b06afc3bd50d4e6b8477be7d570db3ea39b4a0e1e1354d2f8fc0adfd9c67d350
 [preflight] Running pre-flight checks
 [preflight] Reading configuration from the cluster...
 [preflight] FYI: You can look at this config file with 'kubectl -n kube-system get cm kubeadm-config -o yaml'
@@ -480,34 +481,51 @@ systemctl status kubelet
 
 
 
-注意:
-待总结,这里要先
-把阿里云也加上公网ip对应的私网ip, 修改kubelet的配置文件,指定ip和cgroup,和配置文件, 重启
 
-因为kubeadm加入节点的时候不能指定自己的ip,所有必须使用下面的配置文件:
-添加文件: /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+注意, 执行上面的加入节点命令之后,在控制平面节点查看节点pod信息, 会发现阿里云的这个节点的ip使用的是内网ip, 因此, 这里要添加一个配置文件:  
+/etc/systemd/system/kubelet.service.d/10-kubeadm.conf   
 
-文件中的内容:
+这个配置文件的作用是: 因为直接执行上面的join命令的话,把当前阿里云的服务器加入集群使用的是阿里云服务器的内网ip, 因此在控制平面节点上看到的该节点的ip是其内网ip, 
+这样控制平面节点或其他节点与阿里云服务器这个节点通信就会使用这个内网ip,这样是调不通该节点的. (当然如果所有集群节点本身都在一个内网中,
+或节点不区分公网ip和内网ip的话,就不存在这个问题了)
+因此,这个配置文件是指定一些kubelet启动时的参数, 配置文件的内容:
+~~~
 [Service]
+
+# 指定依然要使用默认的配置文件的配置,这里的配置只是多加的配置
 Environment="KUBELET_CONFIG_ARGS=--config=/var/lib/kubelet/config.yaml"
+
+# 指定本节点的kubelet对外使用的ip,这里指定使用公网ip(命令行中不能指定ip,只能使用配置文件指定), 
+# 好像加了这个配置文件后cgroup-driver就变了,不知道为什么,这里也直接指定cgroup-driver为systemd,
+# 防止启动的时候kubelet报错与docker的cgroup-driver不一致,docker的已经通过配置修改成systemd了
 Environment="KUBELET_EXTRA_ARGS=--node-ip=121.40.156.98 --cgroup-driver=systemd"
+
+# 这一行时清空一下原本的参数,防止下面的不生效
 ExecStart=
+
+# 指定启动kubelet的配置文件和参数(就是上面设置的参数)
 ExecStart=/usr/bin/kubelet --kubeconfig=/etc/kubernetes/kubelet.conf $KUBELET_EXTRA_ARGS
+~~~
 
+注意,上面配置文件中,因为我们指定使用121.40.156.98这个公网ip,但是这个ip在Linux系统的网卡中是没这个ip的(通过 ip a 命令查看),因此启动的时候会报错, 
+所以要和上面初始化控制平面节点的时候一样, 给当前Linux系统添加一个虚拟网卡,网卡的地址是本机的公网ip, 也就是把公网ip也添加成为一个内网ip. 重置一下网络.
 
-kubelet后
+添加完配置文件后,加载一下配置文件,重启kubelet:
+systemctl daemon-reload
+systemctl restart kubelet
 
-查看主节点的pod的ip是不是改成121.40.156.98了, 如果已经改了就可以连同从节点,让从节点的pod去安装calico相关的东西了.
+查看启动有没有报错:
+systemctl status kubelet
+如果有报错,查看详细启动日志:
+journalctl -u kubelet -f -n 1000
 
-这个过程中要一直查看主节点的pod状态:
+重启kubelet后没问题的话, 在控制平面节点查看阿里云节点(k8s-worker)的pod的ip是不是改成121.40.156.98了, 如果已经改了就可以通过ip通信了, 
+控制平面节点的指令就会自动同步到阿里云节点执行了,比如下载镜像启动pod等.
+
+在控制平面节点查看阿里云节点(k8s-worker)的pod的ip是不是改成121.40.156.98了:
 ~~~shell
 [root@k8s-master k8s]# kubectl get pods --all-namespaces  -o wide
 NAMESPACE     NAME                                     READY   STATUS              RESTARTS   AGE    IP               NODE         NOMINATED NODE   READINESS GATES
-kube-system   calico-kube-controllers-664f4f4d-5mlb7   1/1     Running             0          4h2m   10.244.235.195   k8s-master   <none>           <none>
-kube-system   calico-node-mp6tg                        1/1     Running             0          4h2m   124.222.246.77   k8s-master   <none>           <none>
-kube-system   calico-node-qd58x                        0/1     Init:ErrImagePull   0          75m    121.40.156.98    k8s-worker   <none>           <none>
-kube-system   coredns-6d8c4cb4d-6np82                  1/1     Running             0          27h    10.244.235.193   k8s-master   <none>           <none>
-kube-system   coredns-6d8c4cb4d-qng8t                  1/1     Running             0          27h    10.244.235.194   k8s-master   <none>           <none>
 kube-system   etcd-k8s-master                          1/1     Running             0          27h    124.222.246.77   k8s-master   <none>           <none>
 kube-system   kube-apiserver-k8s-master                1/1     Running             0          27h    124.222.246.77   k8s-master   <none>           <none>
 kube-system   kube-controller-manager-k8s-master       1/1     Running             6          27h    124.222.246.77   k8s-master   <none>           <none>
@@ -516,16 +534,6 @@ kube-system   kube-proxy-rgp5c                         1/1     Running          
 kube-system   kube-scheduler-k8s-master                1/1     Running             6          27h    124.222.246.77   k8s-master   <none>           <none>
 [root@k8s-master k8s]# 
 ~~~
-查看到上面的""k8s-worker"从节点的状态必须都是Running,如果不是Running, 就查看对应pod的执行日志,看看是正在正常执行中,还是执行在一直报错,
-往往""calico-node-qd58x   0/1     Init:ErrImagePull" 抱这种拉取镜像失败的, 就要在这个pod对应的节点上,手动帮助拉取镜像.
-
-比如上面已经备份好的calico的镜像,如果在阿里云仓库还是不能自动拉取镜像,就手动帮助拉取.
-其中还有一个镜像:
-docker pull swr.cn-north-4.myhuaweicloud.com/ddn-k8s/k8s.gcr.io/pause:3.6  
-docker tag  swr.cn-north-4.myhuaweicloud.com/ddn-k8s/k8s.gcr.io/pause:3.6  k8s.gcr.io/pause:3.6
-
-
-
 
 
 ===================================================================================
@@ -563,7 +571,7 @@ kubectl get pods 查看pod:
 No resources found in default namespace.
 ~~~
 但是这里却看不到有任何pod,其实安装集群成功之后是有一些k8s组件自己的pod的,只不过pod是放在命名空间里的,
-这样查看没有指定命名空间,查看的就是默认的命名空间,一些k8s组件自己的pod是没有放在默认命名空间的,放在了kube-system命名空间.
+这样查看没有指定命名空间,查看的就是默认的命名空间("default"命名空间),一些k8s组件自己的pod是没有放在默认命名空间的,放在了kube-system命名空间.
 
 可以使用:
 kubectl get pods -n kube-system 
@@ -587,13 +595,19 @@ kube-scheduler-k8s-master            1/1     Running   6          98m
 
 
 kubectl get pods --all-namespaces -w
-该命令是查看所有命名空间的pod,并且是-w实时监控不断变化的pod,类似于tail -f查看一个日志文件.
-
+该命令是查看所有命名空间的pod,并且是-w实时监控刷新pod动态,类似于tail -f查看一个日志文件.
 
 
 kubectl get pods -A -o wide
+该命令是查看所有命名空间的pod,并且显示出pod的节点和ip信息等
+
 
 curl -k https://localhost:6443/healthz  返回ok
+
+
+kubectl get pods -A -o wide -w
+该命令是查看所有命名空间的pod,并且显示出pod的节点和ip信息等, 并且实时监控刷新pod动态
+
 
 
 
@@ -605,11 +619,10 @@ kubectl create -f https://docs.projectcalico.org/manifests/calico.yaml
 上面这个命令就是以这种方式从网路文件的yaml文件直接下载并安装calico插件相关的pod,该插件在存在方式就是在k8s集群中安装并启动一些calico的pod.
 
 但是直接执行上面的命令的话,里面的镜像下载默认是固定从Docker Hub源下载, 几乎没办法下载下来, 因此应该先下载下来这个yaml文件,
-修改该yaml里面下载镜像的源:
-curl https://docs.projectcalico.org/manifests/calico.yaml -O 这个地址好像不能用了,并重定向到下面的地址了,使用下面的地址就行了:
-curl https://calico-v3-25.netlify.app/archive/v3.25/manifests/calico.yaml -O
-
-下面下来这个calico.yaml文件之后,修改里面的配置"CALICO_IPV4POOL_CIDR",修改成我们初始化的时候
+再修改该yaml里面下载镜像的源:  
+curl https://docs.projectcalico.org/manifests/calico.yaml -O 这个地址好像不能用了,并重定向到下面的地址了,使用下面的地址就行了:  
+curl https://calico-v3-25.netlify.app/archive/v3.25/manifests/calico.yaml -O  
+下载下来这个calico.yaml文件之后,修改里面的配置"CALICO_IPV4POOL_CIDR",修改成我们初始化的时候  
 指定的--pod-network-cidr=10.244.0.0/16的ip:
 ~~~shell
 - name: CALICO_IPV4POOL_CIDR
@@ -687,6 +700,39 @@ kube-system   kube-proxy-pkrnj                           1/1     Running        
 kube-system   kube-scheduler-k8s-master                  1/1     Running                 6          7h4m
 [root@k8s-master ~]# 
 ~~~
+
+
+这个过程中要一直查看主节点的pod状态, 并且要查看是哪个节点上的哪个pod启动有问题:
+~~~shell
+[root@k8s-master k8s]# kubectl get pods --all-namespaces  -o wide
+NAMESPACE     NAME                                     READY   STATUS              RESTARTS   AGE    IP               NODE         NOMINATED NODE   READINESS GATES
+kube-system   calico-kube-controllers-664f4f4d-5mlb7   1/1     Running             0          4h2m   10.244.235.195   k8s-master   <none>           <none>
+kube-system   calico-node-mp6tg                        1/1     Running             0          4h2m   124.222.246.77   k8s-master   <none>           <none>
+kube-system   calico-node-qd58x                        0/1     Init:ErrImagePull   0          75m    121.40.156.98    k8s-worker   <none>           <none>
+kube-system   coredns-6d8c4cb4d-6np82                  1/1     Running             0          27h    10.244.235.193   k8s-master   <none>           <none>
+kube-system   coredns-6d8c4cb4d-qng8t                  1/1     Running             0          27h    10.244.235.194   k8s-master   <none>           <none>
+kube-system   etcd-k8s-master                          1/1     Running             0          27h    124.222.246.77   k8s-master   <none>           <none>
+kube-system   kube-apiserver-k8s-master                1/1     Running             0          27h    124.222.246.77   k8s-master   <none>           <none>
+kube-system   kube-controller-manager-k8s-master       1/1     Running             6          27h    124.222.246.77   k8s-master   <none>           <none>
+kube-system   kube-proxy-pkrnj                         1/1     Running             0          27h    124.222.246.77   k8s-master   <none>           <none>
+kube-system   kube-proxy-rgp5c                         1/1     Running             0          75m    121.40.156.98    k8s-worker   <none>           <none>
+kube-system   kube-scheduler-k8s-master                1/1     Running             6          27h    124.222.246.77   k8s-master   <none>           <none>
+[root@k8s-master k8s]# 
+~~~
+查看到上面的""k8s-worker"从节点的状态必须都是Running,如果不是Running, 就查看该节点的pod的执行日志,看看是正在正常执行中,还是执行在一直报错,
+往往""calico-node-qd58x   0/1     Init:ErrImagePull" 报这种拉取镜像失败的, 就要在这个pod对应的节点上,手动帮助拉取镜像.
+
+比如上面已经备份好的calico的镜像,如果在阿里云仓库还是不能自动拉取镜像,就手动帮助拉取.
+其中还有一个镜像,可以通过手动下载下来,打一个和calico需要的镜像一样的tag(k8s.gcr.io/pause:3.6), 这样calico的pod启动就直接使用这个镜像了:
+docker pull registry.cn-hangzhou.aliyuncs.com/mdl_study/pause:3.6  
+docker tag  registry.cn-hangzhou.aliyuncs.com/mdl_study/pause:3.6  k8s.gcr.io/pause:3.6
+
+还要先确认这个节点的ip能不能与控制平面节点相互通信,这里如果上面配置的阿里云的节点ip没问题的话,阿里云节点那边应该就在执行calico的pod的启动流程.
+
 ImagePullBackOff 是 Kubernetes 中 Pod 状态的一种错误信息，表示 Kubernetes 尝试从镜像仓库拉取容器镜像失败，
 并且系统会在一段时间后重试拉取操作。这个状态是对 ErrImagePull 错误的延续，表明 Kubernetes 
 正在等待一段时间（BackOff 机制）后重试拉取镜像。
+
+
+
+最后如果上面的pod都是Running的状态了,说明就安装集群搭建完成了. 可以使用了.
