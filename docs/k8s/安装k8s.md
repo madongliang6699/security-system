@@ -1,4 +1,12 @@
 
+## 用词说明
+下面文字中如果出现了 主节点,master节点,控制平面节点,控制面板节点 这几个词语, 讲的都是一个意思, 
+就是指的k8s的集群中的控制面板节点
+
+如果出现了 从节点,slave节点,工作节点,worker节点, 这几个词语, 讲的都是一个意思,
+就是指的k8s的集群中的worker节点
+
+=====================================================================================
 ## 一般就是用 kubeadm 去安装k8s
 kubeadm用于安装和管理生产级别的 Kubernetes 集群, 是一个工具软件, 用于安装k8s集群和管理集群, 他本身不是集群, 是官方推荐的用于生产环境的工具.
 它能够自动化地初始化控制平面（master 节点）并将工作节点（worker 节点）加入集群中。
@@ -573,6 +581,17 @@ No resources found in default namespace.
 但是这里却看不到有任何pod,其实安装集群成功之后是有一些k8s组件自己的pod的,只不过pod是放在命名空间里的,
 这样查看没有指定命名空间,查看的就是默认的命名空间("default"命名空间),一些k8s组件自己的pod是没有放在默认命名空间的,放在了kube-system命名空间.
 
+初始化集群后会自动创建的命名空间:
+~~~shell
+[root@master ~]# kubectl  get namespace
+NAME              STATUS   AGE
+default           Active   45h     #  所有未指定Namespace的对象都会被分配在default命名空间
+kube-node-lease   Active   45h     #  集群节点之间的心跳维护，v1.13开始引入
+kube-public       Active   45h     #  此命名空间下的资源可以被所有人访问（包括未认证用户）
+kube-system       Active   45h     #  所有由Kubernetes系统创建的资源都处于这个命名空间
+~~~
+
+
 可以使用:
 kubectl get pods -n kube-system 
 查看指定的命名空间来查看自带的pod:
@@ -612,7 +631,7 @@ kubectl get pods -A -o wide -w
 
 
 ===========================================================================
-## 部署calico网络插件
+## 部署calico网络插件(网络插件属于k8s网络大模块知识点里面的,以后可以单独总结)
 在k8s中安装calico（这条命令很快的）
 kubectl create -f https://docs.projectcalico.org/manifests/calico.yaml
 这条命令就是以执行yaml配置文件的方式去安装一些pod,就类似于docker compose 可以执行一个yaml文件去统一执行或编排一些容器一样,应该是一个道理.
@@ -736,3 +755,45 @@ ImagePullBackOff 是 Kubernetes 中 Pod 状态的一种错误信息，表示 Kub
 
 
 最后如果上面的pod都是Running的状态了,说明就安装集群搭建完成了. 可以使用了.
+
+
+
+## 配置其他节点的kubectl能访问主节点的server-API
+目前虽然主节点和从节点都安装的kubectl命令行工具, 但是这个命令行的命令执行本质上是去调用k8s的server-api服务,
+但是这个服务是安装在主节点的,其他节点调用不通,默认调用自身节点的server-api,就提示错误:
+[root@k8s-worker ~]# kubectl get node
+The connection to the server localhost:8080 was refused - did you specify the right host or port?
+
+
+现在给其他节点配置kubectl命令访问主节点的api服务:
+
+第一步.将 master 节点中 /etc/kubernetes/admin.conf拷贝到其他节点的服务器的 /etc/kubernetes 目录中:
+
+原本主节点的配置文件(主节点因为初始化成集群的主节点,所以不仅有kubelet服务,还有调度服务,api服务,等其他服务,从配置文件就能看出来):
+![img_5.png](img_5.png)
+
+从节点的配置文件(从节点只有kubelet,因为从节点只需要启动kubelet服务):
+![img_6.png](img_6.png)
+
+复制配置文件到从节点:
+scp /etc/kubernetes/admin.conf root@k8s-worker:/etc/kubernetes
+
+
+
+
+第二步:在对应的服务器上配置环境变量:
+echo "export KUBECONFIG=/etc/kubernetes/admin.conf" >>~/.bash_profile  
+source ~/.bash_profile
+
+
+然后该从节点就能使用kubectl命令调用集群了.
+
+
+其他节点同理做配置即可.
+
+
+
+
+
+
+
