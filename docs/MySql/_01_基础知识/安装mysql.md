@@ -22,7 +22,40 @@ rpm -e mariadb-libs-5.5.68-1.el7.x86_64 --nodeps
 
 根据提示，可能还要安装一些基础包：libaio.x86_64  "perl(Data::Dumper)" 等。
 
-上面安装没有指定安装的目录，就是安装到了mysql默认的目录。
+通过rpm安装,上面安装没有指定安装的目录，就是安装到了mysql默认的目录:  
+配置文件：/etc/my.cnf
+MySQL 程序目录：/usr/bin/，包括 mysql、mysqldump 等命令行工具。
+MySQL 数据目录：/var/lib/mysql，存放所有数据库的数据文件。
+服务启动脚本：/usr/lib/systemd/system/mysqld.service，用于启动、停止 MySQL 服务。
+日志文件：默认在 /var/log/mysqld.log 中记录 MySQL 服务的日志。
+
+安装完成后，可以通过查看 my.cnf 配置文件，来确认数据目录和日志目录等是否与默认一致。如有需要，也可以在配置文件中修改相关目录。
+
+安装完之后：
+systemctl status mysqld 查看服务状态.
+
+然后修改my.cnf(先备份一下该文件), 配置文件案例在下面的"参数优化"文件夹内的"my.cnf".
+
+
+
+## 默认安装后，mysql相关文件的位置
+
+配置文件：`/etc/my.cnf`  （其他版本的可能在/etc/mysql/my.cnf）
+
+数据库数据文件：默认路径是 `/var/lib/mysql`，每个数据库会在此目录下有一个相应的子目录。数据文件以 `.ibd` 或 `.MYD` 为后缀。
+
+frm文件：存放表结构，myd文件：存放表数据，myi文件：存放索引。
+
+二进制日志文件：如果启用了二进制日志，默认位置通常也是在 `/var/lib/mysql` 目录下，文件名一般以 `mysql-bin` 开头。
+
+日志文件：位置可以在配置文件中定义，默认情况下可能是 `/var/log/mysqld.log` 或 `/var/log/mysql/error.log`。
+
+socket 文件：默认位置为 `/var/run/mysqld/mysqld.sock`，用于本地进程与 MySQL 服务器之间的通信。mysqld.pid文件也在这个文件夹。这个文件夹可以拿到MySQL的进程id。
+
+启动脚本： 在 Linux 上，MySQL 的启动脚本通常位于 `/usr/lib/systemd/system/mysqld.service` 或 `/etc/init.d/mysql`。
+
+注意：上面这些文件的位置可以通过查看 MySQL 配置文件（`my.cnf` 或 `my.ini`）来确认和修改。如果安装时使用了自定义路径，这些文件和目录的位置也会随之变化。
+
 
 ## 启动服务 和 修改root密码
 
@@ -30,8 +63,9 @@ rpm -e mariadb-libs-5.5.68-1.el7.x86_64 --nodeps
 systemctl status mysqld
 systemctl start mysqld
 
-第一次启动mysql服务后，会自动给root生成一个密码，在：
-cat /var/log/mysqld.log 日志文件里，可以看看启动的日志，
+注意:如果因为各种参数配置问题导致启动失败的,修改参数后,也要把数据文件夹(/var/lib/mysql)下初始化生成的的文件全部删除再重启,因为这些文件可能是有问题的或不完整的.
+
+第一次启动mysql服务后，会自动给root生成一个密码，在日志文件里(`/var/log/mysqld.log` 或 `/var/log/mysql/error.log`)，
 里面有一句：
 A temporary password is generated for root@localhost: gI7zDjb<)vIr
 告诉了你生成的临时密码：gI7zDjb<)vIr
@@ -50,30 +84,6 @@ mysql -uroot -p 回车输入密码
 
 /etc/my.cnf配置文件里的配置可以看一下。
 
-
-## 默认安装后，mysql相关文件的位置
-
-配置文件：`/etc/my.cnf`  （其他版本的可能在/etc/mysql/my.cnf）
-
-
-数据库数据文件：默认路径是 `/var/lib/mysql`，每个数据库会在此目录下有一个相应的子目录。数据文件以 `.ibd` 或 `.MYD` 为后缀。
-
-frm文件：存放表结构，myd文件：存放表数据，myi文件：存放索引。
-
-
-二进制日志文件：如果启用了二进制日志，默认位置通常也是在 `/var/lib/mysql` 目录下，文件名一般以 `mysql-bin` 开头。
-
-
-错误日志文件：位置可以在配置文件中定义，默认情况下可能是 `/var/log/mysqld.log` 或 `/var/log/mysql/error.log`。
-
-
-socket 文件：默认位置为 `/var/run/mysqld/mysqld.sock`，用于本地进程与 MySQL 服务器之间的通信。mysqld.pid文件也在这个文件夹。这个文件夹可以拿到MySQL的进程id。
-
-
-启动脚本： 在 Linux 上，MySQL 的启动脚本通常位于 `/usr/lib/systemd/system/mysqld.service` 或 `/etc/init.d/mysql`。
-
-
-注意：上面这些文件的位置可以通过查看 MySQL 配置文件（`my.cnf` 或 `my.ini`）来确认和修改。如果安装时使用了自定义路径，这些文件和目录的位置也会随之变化。
 
 
 ### 知识点补充
