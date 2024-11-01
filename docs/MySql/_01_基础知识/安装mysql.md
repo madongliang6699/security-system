@@ -36,6 +36,20 @@ systemctl status mysqld 查看服务状态.
 
 然后修改my.cnf(先备份一下该文件), 配置文件案例在下面的"参数优化"文件夹内的"my.cnf".
 
+注意: 好像是因为my.cnf文件中手动指定了一些文件的存放目录,比如数据文件的存放目录,日志文件的目录,虽然存放的默认的文件夹,但是安装后启动的时候还是会提示权限问题,
+导致一些文件无法生成,比如日志文件,也可能是因为默认的错误日志文件名字改了(mysqld.log改成了error.log),导致生成不了文件. 
+不管怎样, 反正一律先执行一下下面的命令,授权下面这些整个文件夹给msyql用户就行了,就可以随意创建文件修改文件了:
+sudo mkdir /var/lib/mysql
+sudo chown -R mysql:mysql /var/lib/mysql
+sudo chmod -R 750 /var/lib/mysql
+
+sudo mkdir -p /var/log/mysql
+sudo chown -R mysql:mysql /var/log/mysql
+sudo chmod -R 750 /var/log/mysql
+sudo chown -R mysql:mysql /var/log
+sudo chmod -R 750 /var/log
+
+
 
 
 ## 默认安装后，mysql相关文件的位置
@@ -63,7 +77,8 @@ socket 文件：默认位置为 `/var/run/mysqld/mysqld.sock`，用于本地进�
 systemctl status mysqld
 systemctl start mysqld
 
-注意:如果因为各种参数配置问题导致启动失败的,修改参数后,也要把数据文件夹(/var/lib/mysql)下初始化生成的的文件全部删除再重启,因为这些文件可能是有问题的或不完整的.
+注意:如果因为各种配置文件的参数配置问题导致启动失败的,先systemctl stop mysqld, 然后修正配置参数, 每次修改参数后,
+也要把数据文件夹(/var/lib/mysql)下刚刚自动初始化生成的的文件全部删除再重启, 因为这些文件可能是有问题的或不完整的.
 
 第一次启动mysql服务后，会自动给root生成一个密码，在日志文件里(`/var/log/mysqld.log` 或 `/var/log/mysql/error.log`)，
 里面有一句：
@@ -144,3 +159,8 @@ MySQL 中某些命令（如 ALTER USER）是与数据库服务器的全局配置
 
 出于安全考虑,root用户就控制只能本地访问, 然后创建一些特定的用户,给外部访问.
 创建用户的方式,以及给用户授权，看下面的管理员常用命令.
+
+
+
+
+如果要配置主从复制,参考下面的"阿里云3306和3307做主从复制"笔记.
