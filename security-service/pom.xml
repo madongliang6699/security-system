@@ -9,31 +9,22 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>rate-limiter-starter</artifactId>
+    <groupId>com.security</groupId>
+    <artifactId>security-service</artifactId>
+    <name>${project.artifactId}</name>
+    <packaging>pom</packaging>
+    <description>微服务集合</description>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-        </dependency>
-    </dependencies>
 
+    <modules>
+        <module>security-order</module>
+        <module>security-market</module>
+        <module>security-inventory</module>
+    </modules>
 
 </project>

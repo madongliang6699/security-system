@@ -22,12 +22,10 @@
     <modules>
         <module>security-common</module>
 <!--        <module>security-study</module>-->
-        <module>security-order</module>
-        <module>security-market</module>
-        <module>security-inventory</module>
-        <module>security-api</module>
-        <module>rate-limiter-starter</module>
+        <module>security-service-api</module>
         <module>docker-swarm-demo</module>
+        <module>security-starter</module>
+        <module>security-service</module>
     </modules>
 
     <dependencyManagement>
